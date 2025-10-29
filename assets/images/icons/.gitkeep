@@ -1,0 +1,18 @@
+# Icons Directory
+
+This directory contains icon files for the website.
+
+Expected icons:
+- checkmark.svg - For success states and checklists
+- arrow-left.svg - For navigation (previous)
+- arrow-right.svg - For navigation (next)
+- phone.svg - For contact information
+- email.svg - For contact information
+- location.svg - For address/map
+- menu.svg - For mobile hamburger menu
+- close.svg - For closing modals/menus
+- user.svg - For user account/profile
+- document.svg - For application forms
+- money.svg - For financial aid sections
+
+Icons should be SVG format for scalability and accessibility.

@@ -1,0 +1,12 @@
+/* UniKL RCMP Financial Aids Website Styles */
+
+/* Import CSS modules */
+@import url('variables.css');
+@import url('base.css');
+@import url('components.css');
+@import url('layout.css');
+
+/* Form message styles */
+.form-message {
+  margin-bottom: var(--spacing-lg);
+}

@@ -1,0 +1,108 @@
+/* UniKL RCMP Design System Variables */
+:root {
+  /* Color Scheme */
+  --primary-color: #16476A;
+  --secondary-color: #FAF9EE;
+  --accent-color: #C8A882;
+  
+  /* Extended Color Palette */
+  --primary-dark: #0f3651;
+  --primary-light: #1d5a7d;
+  --accent-light: #d4b896;
+  --accent-dark: #b8976e;
+  
+  /* WCAG AA Compliant Colors */
+  --accent-accessible: #9d7c4f; /* Darker accent for better contrast on primary */
+  --text-on-accent: #2c2c2c; /* Dark text for accent backgrounds */
+  
+  /* Neutral Colors */
+  --white: #ffffff;
+  --black: #000000;
+  --gray-100: #f8f9fa;
+  --gray-200: #e9ecef;
+  --gray-300: #dee2e6;
+  --gray-400: #ced4da;
+  --gray-500: #adb5bd;
+  --gray-600: #6c757d;
+  --gray-700: #495057;
+  --gray-800: #343a40;
+  --gray-900: #212529;
+  
+  /* Status Colors */
+  --success: #28a745;
+  --warning: #ffc107;
+  --error: #dc3545;
+  --info: #17a2b8;
+  
+  /* Typography */
+  --font-heading: 'Montserrat', 'Poppins', sans-serif;
+  --font-body: 'Inter', 'Open Sans', sans-serif;
+  
+  /* Font Sizes - Desktop */
+  --font-size-h1: 48px;
+  --font-size-h2: 36px;
+  --font-size-h3: 28px;
+  --font-size-h4: 24px;
+  --font-size-h5: 20px;
+  --font-size-h6: 18px;
+  --font-size-body: 16px;
+  --font-size-small: 14px;
+  --font-size-xs: 12px;
+  
+  /* Font Sizes - Mobile */
+  --font-size-h1-mobile: 32px;
+  --font-size-h2-mobile: 28px;
+  --font-size-h3-mobile: 24px;
+  --font-size-h4-mobile: 20px;
+  --font-size-h5-mobile: 18px;
+  --font-size-h6-mobile: 16px;
+  --font-size-body-mobile: 14px;
+  
+  /* Font Weights */
+  --font-weight-light: 300;
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+  
+  /* Spacing (8px grid system) */
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+  --spacing-xl: 32px;
+  --spacing-2xl: 48px;
+  --spacing-3xl: 64px;
+  
+  /* Border Radius */
+  --border-radius-sm: 4px;
+  --border-radius-md: 8px;
+  --border-radius-lg: 12px;
+  --border-radius-xl: 16px;
+  --border-radius-full: 50%;
+  
+  /* Shadows */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+  --shadow-xl: 0 20px 25px rgba(0, 0, 0, 0.15);
+  
+  /* Transitions */
+  --transition-fast: 0.15s ease-in-out;
+  --transition-normal: 0.3s ease-in-out;
+  --transition-slow: 0.5s ease-in-out;
+  
+  /* Breakpoints */
+  --breakpoint-mobile: 320px;
+  --breakpoint-tablet: 768px;
+  --breakpoint-desktop: 1024px;
+  --breakpoint-wide: 1440px;
+  
+  /* Layout */
+  --header-height-desktop: 80px;
+  --header-height-mobile: 60px;
+  --hero-height: 70vh;
+  --hero-min-height: 500px;
+  --container-max-width: 1200px;
+  --touch-target-min: 44px;
+}

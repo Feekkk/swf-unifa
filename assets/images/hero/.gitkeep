@@ -1,0 +1,11 @@
+# Hero Slideshow Images
+
+This directory contains hero slideshow images for the homepage.
+
+Expected files:
+- campus-1.jpg (1920x1080) - Main campus building
+- students-1.jpg (1920x1080) - Students studying together  
+- graduation-1.jpg (1920x1080) - Graduation ceremony
+- campus-2.jpg (1920x1080) - Campus facilities
+
+Images should be optimized and available in WebP format with JPEG fallbacks.
