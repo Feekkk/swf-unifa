@@ -10,8 +10,11 @@
     <style>
         :root{--primary-dark:#191970;--primary:#4169E1;--background:#FAF9F6;--text:#0f172a;--text-muted:#475569}
         body{background:var(--background)}
-        .auth-hero{background:radial-gradient(1200px 600px at 60% 40%, rgba(25,25,112,.35), rgba(25,25,112,0) 60%),linear-gradient(135deg, rgba(25,25,112,1), rgba(65,105,225,.75));border-radius:16px;min-height:560px;position:relative;overflow:hidden}
-        .auth-hero .hero-content{position:absolute;inset:auto 0 0 0;padding:2rem;color:#e6fffb}
+        .auth-hero{background:radial-gradient(1200px 600px at 60% 40%, rgba(25,25,112,.35), rgba(25,25,112,0) 60%),linear-gradient(135deg, rgba(25,25,112,1), rgba(65,105,225,.75));border-radius:16px;min-height:560px;position:relative;overflow:hidden;border:1px solid rgba(255,255,255,.15);box-shadow:0 18px 40px rgba(0,0,0,.2)}
+        .auth-hero::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg, rgba(0,0,0,.25) 0%, rgba(0,0,0,.55) 70%);z-index:1}
+        .auth-hero .hero-content{position:absolute;left:0;right:0;bottom:0;padding:2rem;color:#e6fffb;z-index:2}
+        .auth-hero .brand-chip{display:inline-flex;align-items:center;gap:.5rem;padding:.4rem .7rem;border-radius:999px;background:rgba(255,255,255,.14);backdrop-filter:blur(6px);border:1px solid rgba(255,255,255,.25);color:#f8fafc;font-weight:700}
+        .auth-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;filter:saturate(1.1)}
         .card.auth-card{background:#ffffff;border:1px solid #eef0f4;border-top:4px solid var(--primary);border-radius:16px;box-shadow:0 12px 24px rgba(0,0,0,.06)}
         .card.auth-card .title{color:var(--primary-dark)}
         .card.auth-card .subtitle{color:var(--text-muted)}
@@ -221,9 +224,12 @@
     				</div>
     			</div>
     			<div class="column is-6">
-    				<div class="auth-hero">
-    					<div class="hero-content">
-    						<p class="has-text-weight-semibold">UniKL RCMP • SWF</p>
+                <div class="auth-hero">
+                    <video class="auth-video" autoplay muted loop playsinline>
+                        <source src="/assets/images/logos/logo-animation.mp4" type="video/mp4">
+                    </video>
+                    <div class="hero-content">
+                        <p class="brand-chip"><span class="icon"><i class="fa-solid fa-graduation-cap"></i></span> UniKL RCMP • SWF</p>
     						<h2 class="title is-2 has-text-white">Smarter Support for Students</h2>
     						<p class="is-size-5" style="color:#c7f7f3">Fast, reliable assistance to keep you focused on success.</p>
     					</div>

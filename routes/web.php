@@ -37,5 +37,12 @@ Route::group(['middleware' => 'guest'], function () {
     Route::post('/password/reset', [ResetPasswordController::class, 'reset'])->name('password.update')->middleware('throttle:3,1');
 });
 
+// Authenticated Student Dashboard
+Route::middleware('auth')->group(function () {
+    Route::get('/dashboard', function () {
+        return view('student.dashboard');
+    })->name('dashboard');
+});
+
 // Logout Route (for authenticated users)
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout')->middleware('auth');

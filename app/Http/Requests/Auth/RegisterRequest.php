@@ -31,7 +31,7 @@ class RegisterRequest extends FormRequest
             'bank_account_number' => ['required', 'string', 'max:20', 'regex:/^[0-9]+$/'],
             
             // Contact Information
-            'phone_number' => ['required', 'string', 'max:20', 'regex:/^\+?[1-9]\d{1,14}$/'],
+            'phone_number' => ['required', 'string', 'max:20', 'regex:/^[0-9]{7,20}$/'],
             'street_address' => ['required', 'string', 'max:255'],
             'city' => ['required', 'string', 'max:100', 'regex:/^[a-zA-Z\s]+$/'],
             'state' => ['required', 'string', 'max:100'],
@@ -69,7 +69,7 @@ class RegisterRequest extends FormRequest
             'bank_account_number.regex' => 'Bank account number can only contain numbers.',
             
             // Contact Information
-            'phone_number.regex' => 'Please enter a valid phone number with country code.',
+            'phone_number.regex' => 'Please enter a valid phone number (digits only).',
             'city.regex' => 'City name can only contain letters and spaces.',
             'postal_code.regex' => 'Postal code must be exactly 5 digits.',
             
