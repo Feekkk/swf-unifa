@@ -32,6 +32,12 @@
         .button.is-primary{background-color:var(--primary);border-color:var(--primary);color:#fff}
         .button.is-primary:hover{background-color:var(--primary-dark);border-color:var(--primary-dark);color:#fff}
         .password-toggle{cursor:pointer}
+        /* Role selector */
+        .role-options{display:grid;grid-template-columns:repeat(2,1fr);gap:.75rem}
+        .role-option{display:flex;align-items:center;gap:.6rem;border:1px solid #dfe3ea;border-radius:12px;padding:.6rem .8rem;background:#fff;cursor:pointer;transition:border-color .2s ease, box-shadow .2s ease}
+        .role-option .icon{color:var(--primary)}
+        .role-option.is-active{border-color:var(--primary);box-shadow:0 0 0 0.125em rgba(65,105,225,.15)}
+        @media(max-width:480px){.role-options{grid-template-columns:1fr}}
     </style>
 </head>
 <body>
@@ -85,9 +91,36 @@
                 <form method="POST" action="{{ route('login') }}">
                     @csrf
                     <div class="field">
-                        <label class="label">Student ID or Email</label>
+                        <label class="label">Sign in as</label>
+                        <div class="role-options">
+                            <div id="role-student" class="role-option is-active" role="button" tabindex="0">
+                                <span class="icon"><i class="fa-solid fa-user-graduate"></i></span>
+                                <span>Student</span>
+                            </div>
+                            <div id="role-staff" class="role-option" role="button" tabindex="0">
+                                <span class="icon"><i class="fa-solid fa-user-tie"></i></span>
+                                <span>Staff</span>
+                            </div>
+                        </div>
+                        <input type="hidden" name="user_type" id="user_type" value="student">
+                    </div>
+
+                    <div class="field" id="staff-role-field" style="display:none">
+                        <label class="label">Staff role</label>
                         <div class="control">
-                            <input class="input" type="text" name="login" value="{{ old('login') }}" placeholder="RCMP123456 or your@email.com" required autocomplete="username">
+                            <div class="select is-fullwidth">
+                                <select id="staff_role" name="staff_role">
+                                    <option value="approval">Approval</option>
+                                    <option value="admin">Admin</option>
+                                    <option value="committee">Committee</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label class="label">Email or ID number</label>
+                        <div class="control">
+                            <input id="login-identifier" class="input" type="text" name="login" value="{{ old('login') }}" placeholder="RCMP123456 or your@email.com" required autocomplete="username">
                         </div>
                     </div>
 
@@ -140,8 +173,7 @@
                     <div class="mb-3">
                         <img src="/assets/images/logos/rcmp-white.png" alt="UniKL RCMP White Logo" style="height:90px">
                     </div>
-                    <p class="has-text-white-ter">Universiti Kuala Lumpur Royal College of Medicine Perak is committed to providing quality medical education and supporting our students through comprehensive welfare programs.</p>
-                    <p class="has-text-white-ter mt-3">The Student Welfare Fund ensures that financial challenges do not impede academic success, fostering an environment where every student can thrive academically.</p>
+                        <p class="has-text-white-ter">Universiti Kuala Lumpur Royal College of Medicine Perak is committed to providing quality medical education and supporting our students through comprehensive welfare programs.</p>
                     <p class="tag is-warning mt-4">Accredited by the Malaysian Medical Council</p>
                 </div>
                 <div class="column is-2">
@@ -210,6 +242,41 @@
                     }
                 });
             });
+
+            // Role toggle: Student vs Staff (supports preselection via ?type=...)
+            const roleStudentBtn = document.getElementById('role-student');
+            const roleStaffBtn = document.getElementById('role-staff');
+            const roleInput = document.getElementById('user_type');
+            const loginIdentifier = document.getElementById('login-identifier');
+            const loginLabel = document.querySelector('label.label');
+            const staffRoleField = document.getElementById('staff-role-field');
+            const setActive = (isStudent) => {
+                if (!roleStudentBtn || !roleStaffBtn || !roleInput) return;
+                roleStudentBtn.classList.toggle('is-active', isStudent);
+                roleStaffBtn.classList.toggle('is-active', !isStudent);
+                roleInput.value = isStudent ? 'student' : 'staff';
+                if (loginIdentifier && loginLabel) {
+                    if (isStudent) {
+                        loginIdentifier.setAttribute('placeholder', 'RCMP123456 or your@email.com');
+                        loginLabel.textContent = 'Student ID or Email';
+                    } else {
+                        loginIdentifier.setAttribute('placeholder', 'your@email.com');
+                        loginLabel.textContent = 'Staff Email';
+                    }
+                }
+                if (staffRoleField) { staffRoleField.style.display = isStudent ? 'none' : ''; }
+            };
+            if (roleStudentBtn && roleStaffBtn) {
+                const activateStudent = () => setActive(true);
+                const activateStaff = () => setActive(false);
+                roleStudentBtn.addEventListener('click', activateStudent);
+                roleStaffBtn.addEventListener('click', activateStaff);
+                roleStudentBtn.addEventListener('keydown', (e)=>{ if(e.key==='Enter'||e.key===' '){e.preventDefault();activateStudent();}});
+                roleStaffBtn.addEventListener('keydown', (e)=>{ if(e.key==='Enter'||e.key===' '){e.preventDefault();activateStaff();}});
+                const url = new URL(window.location.href);
+                const type = (url.searchParams.get('type') || 'student').toLowerCase();
+                setActive(type !== 'staff');
+            }
         });
     </script>
 </body>

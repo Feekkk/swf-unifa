@@ -54,6 +54,7 @@
         .navbar {
             background-color: var(--primary-dark) !important;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            min-height: 4.5rem;
         }
         
         .navbar-brand .navbar-item,
@@ -65,6 +66,12 @@
         .navbar-menu .navbar-item {
             color: #fff !important;
         }
+
+        .navbar-brand .brand-wrap { display: flex; align-items: center; }
+        .navbar-brand .brand-wrap img.logo { max-height: 3.5rem; }
+        .navbar-brand .brand-name { display: flex; flex-direction: column; margin-left: .5rem; }
+        .navbar-brand .brand-name img.wordmark { height: 1.6rem; }
+        .navbar-brand .brand-name .rcmp { margin-top: .15rem; font-weight: 800; letter-spacing: .5px; color: #fff; font-size: .85rem; }
         
         .navbar-menu .navbar-item:hover {
             background-color: rgba(255, 255, 255, 0.1) !important;
@@ -168,6 +175,13 @@
             background: linear-gradient(90deg, var(--primary), var(--accent));
             border-radius: 2px;
         }
+
+        /* Role cards */
+        .login-role-card { position: relative; border-radius: 16px; padding: 1.75rem; border: 1px solid rgba(65,105,225,.25); background:#fff; transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease; height: 100%; }
+        .login-role-card:hover { transform: translateY(-4px); box-shadow: 0 14px 28px rgba(0,0,0,.08); border-color: var(--primary); }
+        .login-role-card .icon-wrap { width:64px; height:64px; border-radius:12px; display:flex; align-items:center; justify-content:center; background: linear-gradient(135deg, rgba(65,105,225,.12), rgba(255,192,0,.12)); color: var(--primary); margin-bottom: .75rem; }
+        .login-role-card .title { margin-bottom: .25rem; }
+        .login-role-card .subtitle { margin-bottom: 0; }
         
         .custom-card {
             border-top: 4px solid var(--primary);
@@ -290,8 +304,10 @@
         /* Contact section improvements */
         .contact-container { max-width: 1100px; }
         .contact-card h3 { color: var(--primary-dark); }
-        .contact-card p, .contact-card .content { color: #1f2937; }
+        .contact-card p, .contact-card .content { color: #0f172a; }
         .contact-columns { align-items: flex-start; }
+        /* Stronger icon color for visibility */
+        .contact-columns .icon { color: var(--primary) !important; }
 
         /* Content text sizes */
         p, li, .content {
@@ -325,8 +341,12 @@
     <nav class="navbar is-fixed-top" role="navigation" aria-label="main navigation">
         <div class="container">
             <div class="navbar-brand">
-                <a class="navbar-item" href="#home">
-                    <img src="/assets/images/logos/unikl-rcmp.png" alt="UniKL RCMP Logo" style="max-height: 3rem;">
+                <a class="navbar-item brand-wrap" href="#home">
+                    <img class="logo" src="/assets/images/logos/unikl-rcmp.png" alt="UniKL RCMP Logo">
+                    <span class="brand-name">
+                        <img class="wordmark" src="/assets/images/logos/unikl-word.png" alt="UniKL wordmark">
+                        <span class="rcmp">RCMP</span>
+                    </span>
                 </a>
                 
                 <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarMenu">
@@ -603,19 +623,6 @@
             <div class="container contact-container">
                 <h2 class="title is-2 has-text-centered section-title">Contact</h2>
                 
-                <!-- Email Card -->
-                <div class="card custom-card contact-card" style="max-width: 720px; margin: 0 auto 2.25rem;">
-                    <div class="card-content has-text-centered">
-                        <div class="icon-wrapper">
-                            <i class="fas fa-envelope"></i>
-                        </div>
-                        <h3 class="title is-4">Contact Email</h3>
-                        <p class="is-size-5">
-                            <a href="mailto:sw.rcmp@unikl.edu.my" class="has-text-primary"><strong>sw.rcmp@unikl.edu.my</strong></a>
-                        </p>
-                    </div>
-                </div>
-                
                 <div class="columns mt-6 contact-columns is-variable is-6">
                     <div class="column">
                         <h3 class="title is-4 mb-4">Get in Touch</h3>
@@ -728,9 +735,7 @@
                     <div class="mb-3">
                         <img src="/assets/images/logos/rcmp-white.png" alt="UniKL RCMP White Logo" style="height:90px">
                     </div>
-
                     <p class="has-text-white-ter">Universiti Kuala Lumpur Royal College of Medicine Perak is committed to providing quality medical education and supporting our students through comprehensive welfare programs.</p>
-                    <p class="has-text-white-ter mt-3">The Student Welfare Fund ensures that financial challenges do not impede academic success, fostering an environment where every student can thrive academically.</p>
                     <p class="tag is-warning mt-4">Accredited by the Malaysian Medical Council</p>
             </div>
             

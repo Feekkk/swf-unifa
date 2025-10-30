@@ -255,7 +255,6 @@
                         <img src="/assets/images/logos/rcmp-white.png" alt="UniKL RCMP White Logo" style="height:90px">
                     </div>
                     <p class="has-text-white-ter">Universiti Kuala Lumpur Royal College of Medicine Perak is committed to providing quality medical education and supporting our students through comprehensive welfare programs.</p>
-                    <p class="has-text-white-ter mt-3">The Student Welfare Fund ensures that financial challenges do not impede academic success, fostering an environment where every student can thrive academically.</p>
                     <p class="tag is-warning mt-4">Accredited by the Malaysian Medical Council</p>
                 </div>
                 <div class="column is-2">
