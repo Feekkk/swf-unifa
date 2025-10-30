@@ -28,8 +28,9 @@ class SecurityHeaders
         if ($request->is('login') || $request->is('register')) {
             $csp = "default-src 'self'; " .
                    "script-src 'self' 'unsafe-inline' https://fonts.googleapis.com; " .
-                   "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://fonts.gstatic.com; " .
-                   "font-src 'self' https://fonts.gstatic.com; " .
+                   "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://fonts.gstatic.com https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; " .
+                   "style-src-elem 'self' 'unsafe-inline' https://fonts.googleapis.com https://fonts.gstatic.com https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; " .
+                   "font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com; " .
                    "img-src 'self' data:; " .
                    "connect-src 'self'";
             
