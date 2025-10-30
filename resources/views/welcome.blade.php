@@ -10,120 +10,482 @@
 
     <title>{{ config('app.name', 'UniKL RCMP') }} - Student Welfare Fund</title>
 
-    <!-- DNS Prefetch -->
-    <link rel="dns-prefetch" href="//fonts.googleapis.com">
-    <link rel="dns-prefetch" href="//fonts.gstatic.com">
+    <!-- Bulma CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css">
     
-    <!-- Preconnect to font providers -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     
-    <!-- Preload critical resources -->
-    <link rel="preload" href="/assets/images/logos/unikl-rcmp.png" as="image" type="image/png">
-    
-    <!-- Load fonts with display=swap for better performance -->
+    <!-- Custom Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
     <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="/assets/images/logos/favicon.ico">
-    <link rel="apple-touch-icon" href="/assets/images/logos/apple-touch-icon.png">
+    <link rel="icon" type="image/png" href="/assets/images/logos/unikl-rcmp.png">
 
-    <!-- Critical CSS (inlined for performance) -->
+    <!-- Custom Styles -->
     <style>
-        /* Critical above-the-fold styles */
-        body { font-family: 'Inter', sans-serif; margin: 0; background: #FAF9EE; }
-        .header { background: #16476A; position: sticky; top: 0; z-index: 100; }
-        .skip-link { position: absolute; top: -40px; left: 6px; background: #16476A; color: white; padding: 8px 16px; text-decoration: none; border-radius: 8px; z-index: 1000; }
-        .skip-link:focus { top: 6px; }
-        .hero-slideshow { width: 100vw; height: 70vh; min-height: 500px; background: #343a40; margin-left: calc(-50vw + 50%); }
+        :root {
+            --primary-dark: #191970;
+            --primary: #4169E1;
+            --accent: #FFC000;
+            --black: #000000;
+            --background: #FAF9F6;
+            --text: #000000;
+            --text-muted: #4a4a4a;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--background);
+            color: var(--text);
+            font-size: 15px;
+            line-height: 1.65;
+        }
+        
+        /* Increased section spacing */
+        .section {
+            padding: 5rem 1.5rem !important;
+        }
+        
+        .section + .section {
+            margin-top: 0;
+        }
+        
+        .navbar {
+            background-color: var(--primary-dark) !important;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .navbar-brand .navbar-item,
+        .navbar-menu .navbar-item {
+            font-size: 0.95rem;
+        }
+        
+        .navbar-brand .navbar-item,
+        .navbar-menu .navbar-item {
+            color: #fff !important;
+        }
+        
+        .navbar-menu .navbar-item:hover {
+            background-color: rgba(255, 255, 255, 0.1) !important;
+        }
+
+        /* Theme overrides for Bulma */
+        a { color: var(--primary); }
+        a:hover { color: var(--primary-dark); }
+
+        .button.is-primary {
+            background-color: var(--primary);
+            border-color: var(--primary);
+            color: #fff;
+        }
+        .button.is-primary:hover {
+            background-color: var(--primary-dark);
+            border-color: var(--primary-dark);
+        }
+        .button.is-primary.is-light,
+        .button.is-primary.is-outlined {
+            background-color: transparent;
+            color: var(--primary);
+            border-color: var(--primary);
+        }
+        .button.is-warning {
+            background-color: var(--accent);
+            border-color: var(--accent);
+            color: var(--black);
+            font-weight: 600;
+        }
+        .button.is-warning:hover {
+            background-color: #e6ad00;
+            border-color: #e6ad00;
+        }
+        .button.is-warning.is-outlined,
+        .button.is-warning.is-light {
+            background-color: transparent;
+            border-color: var(--accent);
+            color: var(--black);
+        }
+        .tag.is-primary.is-light {
+            background-color: rgba(65, 105, 225, 0.1);
+            color: var(--primary-dark);
+            border: 1px solid rgba(65, 105, 225, 0.25);
+        }
+        .title { 
+            color: var(--primary-dark);
+            font-family: 'Montserrat', sans-serif;
+        }
+        .title.is-1 { font-size: 2rem !important; }
+        .title.is-2 { font-size: 1.75rem !important; }
+        .title.is-3 { font-size: 1.375rem !important; }
+        .title.is-4 { font-size: 1.125rem !important; }
+        .title.is-5 { font-size: 1rem !important; }
+        .title.is-6 { font-size: 0.9375rem !important; }
+        .card-header-title { color: var(--primary-dark); }
+        .subtitle { 
+            color: var(--text-muted);
+            font-size: 1rem;
+        }
+        .card { background-color: #fff; }
+        
+        .hero-slideshow {
+            position: relative;
+            min-height: 70vh;
+        }
+
+        /* Hero overlay for better contrast */
+        .hero.theme-hero { 
+            position: relative;
+            min-height: 55vh;
+        }
+        .hero.theme-hero::before {
+            content: '';
+            position: absolute; inset: 0;
+            background: linear-gradient(135deg, rgba(25, 25, 112, 0.75), rgba(65, 105, 225, 0.5));
+        }
+        .hero.theme-hero .hero-body { position: relative; z-index: 1; }
+        
+        .section-title {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            color: var(--primary-dark);
+            margin-bottom: 3rem;
+            position: relative;
+            padding-bottom: 1rem;
+            font-size: 1.75rem !important;
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            border-radius: 2px;
+        }
+        
+        .custom-card {
+            border-top: 4px solid var(--primary);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .custom-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .icon-wrapper {
+            width: 70px;
+            height: 70px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.25rem;
+            background: linear-gradient(135deg, rgba(65, 105, 225, 0.1), rgba(255, 192, 0, 0.1));
+        }
+        
+        .icon-wrapper i {
+            font-size: 2rem;
+            color: var(--primary);
+        }
+        
+        .price-amount {
+            font-size: 2.75rem;
+            font-weight: 700;
+            color: var(--primary);
+            line-height: 1;
+        }
+        
+        .price-currency {
+            font-size: 1.25rem;
+            color: var(--primary);
+            margin-right: 0.25rem;
+        }
+        
+        .timeline-item {
+            position: relative;
+            padding-left: 3rem;
+            margin-bottom: 2rem;
+        }
+        
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: 0.75rem;
+            top: 0;
+            bottom: -2rem;
+            width: 2px;
+            background: var(--primary);
+        }
+        
+        .timeline-item:last-child::before {
+            display: none;
+        }
+        
+        .timeline-badge {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 1.5rem;
+            height: 1.5rem;
+            background: var(--primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 0.875rem;
+        }
+        
+        .committee-tag {
+            margin: 0.5rem;
+        }
+
+        /* Introduction (non-card) */
+        .intro-lead { display: flex; align-items: center; gap: 12px; margin-bottom: 1.5rem; }
+        .intro-icon { display: inline-flex; align-items: center; justify-content: center; width: 46px; height: 46px; border-radius: 10px; background: linear-gradient(135deg, rgba(65, 105, 225, 0.12), rgba(255, 192, 0, 0.12)); color: var(--primary); }
+        .intro-icon i { font-size: 20px; }
+        .intro-timeline { list-style: none; margin: 0; padding-left: 26px; position: relative; }
+        .intro-timeline::before { content: ''; position: absolute; left: 10px; top: 0; bottom: 0; width: 2px; background: var(--primary); }
+        .intro-timeline-item { display: grid; grid-template-columns: 36px 1fr; gap: 12px; margin-bottom: 18px; align-items: start; }
+        .intro-timeline-item .dot { width: 32px; height: 32px; border-radius: 50%; background: var(--primary); color: #fff; display: inline-flex; align-items: center; justify-content: center; box-shadow: 0 2px 8px rgba(65, 105, 225, 0.25); }
+        .intro-timeline-item .dot i { font-size: 14px; }
+
+        /* Committee cloud (non-card) */
+        .committee-heading-icon { display: inline-flex; width: 56px; height: 56px; border-radius: 50%; background: linear-gradient(135deg, rgba(65, 105, 225, 0.12), rgba(255, 192, 0, 0.12)); color: var(--primary); align-items: center; justify-content: center; font-size: 24px; margin-bottom: 2rem !important; }
+        .committee-cloud { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; max-width: 900px; margin: 0 auto; }
+        .committee-chip { display: inline-flex; align-items: center; gap: 8px; padding: 8px 16px; border-radius: 999px; border: 1px solid rgba(65, 105, 225, 0.25); background: rgba(65, 105, 225, 0.05); color: var(--primary-dark); font-weight: 500; font-size: 0.9rem; transition: transform .2s ease, box-shadow .2s ease, background .2s ease; }
+        .committee-chip i { color: var(--primary); font-size: 14px; }
+        .committee-chip:hover { transform: translateY(-2px); background: rgba(65, 105, 225, 0.1); box-shadow: 0 4px 12px rgba(0,0,0,.1); border-color: var(--primary); }
+        
+        .footer {
+            background-color: var(--primary-dark);
+            color: #fff;
+        }
+        
+        .footer a {
+            color: rgba(255, 255, 255, 0.8);
+        }
+        
+        .footer a:hover {
+            color: var(--accent);
+        }
+        
+        /* Objectives card centering and contrast */
+        .objectives-card {
+            max-width: 960px;
+            margin: 0 auto;
+        }
+        .objectives-card .content,
+        .objectives-card p { color: #1f2937; }
+        .objectives-card h3 { color: var(--primary-dark); }
+
+        /* Contact section improvements */
+        .contact-container { max-width: 1100px; }
+        .contact-card h3 { color: var(--primary-dark); }
+        .contact-card p, .contact-card .content { color: #1f2937; }
+        .contact-columns { align-items: flex-start; }
+
+        /* Content text sizes */
+        p, li, .content {
+            font-size: 0.9375rem;
+            line-height: 1.7;
+        }
+        
+        .is-size-5 { font-size: 0.875rem !important; }
+        .is-size-6 { font-size: 0.8125rem !important; }
+        
+        @media screen and (max-width: 768px) {
+            .section {
+                padding: 3rem 1rem !important;
+            }
+            .price-amount {
+                font-size: 2rem;
+            }
+            .hero.theme-hero {
+                min-height: 50vh;
+            }
+        }
     </style>
 
-    <!-- Styles -->
-    @vite(['resources/css/app.css', 'resources/js/polyfills.js', 'resources/js/app.js', 'resources/js/accessibility.js', 'resources/js/lazy-loading.js'])
+    @vite(['resources/js/polyfills.js', 'resources/js/app.js', 'resources/js/accessibility.js', 'resources/js/lazy-loading.js'])
 </head>
 <body>
-    <!-- Skip Link for Accessibility -->
-    <a href="#main-content" class="skip-link">Skip to main content</a>
+    <!-- Skip Link -->
+    <a href="#main-content" class="skip-link is-sr-only">Skip to main content</a>
 
-    <!-- Header -->
-    <header class="header" id="header">
-        <div class="header-content">
-            <!-- Logo -->
-            <div class="logo-container">
-                <img src="/assets/images/logos/unikl-rcmp-logo-white.png" alt="Universiti Kuala Lumpur Royal College of Medicine Perak - Student Welfare Fund" class="logo" loading="eager" width="200" height="60">
+    <!-- Navigation -->
+    <nav class="navbar is-fixed-top" role="navigation" aria-label="main navigation">
+        <div class="container">
+            <div class="navbar-brand">
+                <a class="navbar-item" href="#home">
+                    <img src="/assets/images/logos/unikl-rcmp.png" alt="UniKL RCMP Logo" style="max-height: 3rem;">
+                </a>
+                
+                <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarMenu">
+                    <span aria-hidden="true"></span>
+                    <span aria-hidden="true"></span>
+                    <span aria-hidden="true"></span>
+                </a>
             </div>
 
-            <!-- Navigation -->
-            <nav class="nav" role="navigation" aria-label="Main navigation">
-                <!-- Mobile Menu Toggle -->
-                <button class="nav-toggle" aria-expanded="false" aria-controls="nav-menu" aria-label="Toggle navigation menu">
-                    ☰
-                </button>
-
-                <!-- Navigation Menu -->
-                <ul class="nav-menu" id="nav-menu">
-                    <li class="nav-item">
-                        <a href="#home" class="nav-link active">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="#about" class="nav-link">About SWF</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="#application" class="nav-link">Apply for Fund</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="#contact" class="nav-link">Contact</a>
-                    </li>
+            <div id="navbarMenu" class="navbar-menu">
+                <div class="navbar-start">
+                    <a class="navbar-item" href="#home">Home</a>
+                    <a class="navbar-item" href="#about">About SWF</a>
+                    <a class="navbar-item" href="#application">Apply for Fund</a>
+                    <a class="navbar-item" href="#contact">Contact</a>
+                </div>
+                
+                <div class="navbar-end">
                     @auth
-                        <li class="nav-item">
-                            <a href="{{ url('/dashboard') }}" class="nav-link">Dashboard</a>
-                        </li>
+                        <a class="navbar-item" href="{{ url('/dashboard') }}">Dashboard</a>
                     @else
-                        <li class="nav-item">
-                            <a href="{{ route('login') }}" class="nav-link">Login</a>
-                        </li>
+                        <a class="navbar-item" href="{{ route('login') }}">Login</a>
+                        <div class="navbar-item">
+                            <a class="button is-warning is-rounded" href="#application">
+                                <strong>Apply Now</strong>
+                            </a>
+                        </div>
                     @endauth
-                </ul>
-
-                <!-- CTA Button -->
-                <a href="#application" class="btn btn-accent">Apply Now</a>
-            </nav>
+                </div>
+            </div>
         </div>
-    </header>
+            </nav>
+
+    <!-- Hero (Bulma) -->
+    <section class="hero is-large theme-hero" id="home" style="background: url('/assets/images/hero/bgm.png') center/cover no-repeat;">
+        <div class="hero-body">
+            <div class="container has-text-centered">
+                <h1 class="title is-1 has-text-white" style="text-shadow: 0 2px 8px rgba(0,0,0,.5)">UniKL RCMP Student Welfare Fund</h1>
+                <p class="subtitle is-5 has-text-white" style="text-shadow: 0 1px 6px rgba(0,0,0,.5)">Financial assistance and student support designed to keep your studies on track.</p>
+                <div class="buttons is-centered">
+                    <a href="#application" class="button is-warning is-medium is-rounded"><strong>Apply for Financial Aid</strong></a>
+                    <a href="#about" class="button is-light is-medium is-rounded">About the Fund</a>
+        </div>
+            </div>
+        </div>
+    </section>
 
     <!-- Main Content -->
     <main id="main-content">
-        <!-- Hero Section -->
-        <section class="hero hero-slideshow" id="home" aria-label="Hero slideshow">
-            <!-- Slideshow will be initialized by JavaScript -->
-        </section>
-
         <!-- Introduction Section -->
-        <section class="content-section" id="about" aria-labelledby="about-heading">
+        <section class="section" id="about">
             <div class="container">
-                <div class="two-column two-column-60-40">
-                    <div>
-                        <h2 id="about-heading">Supporting Your Academic Journey</h2>
-                        <p>The Student Welfare Fund (SWF) at UniKL RCMP is dedicated to providing essential financial assistance to our students. Established to ensure that financial constraints do not hinder your educational aspirations, our fund offers comprehensive support for various needs including medical emergencies, bereavement, and critical situations.</p>
-                        
-                        <p>Since its establishment on September 30, 2005, and rebranding in 2017, the SWF has been managed by the Campus Lifestyle Division to ensure efficient and compassionate support for our student community.</p>
-                        
-                        <div class="mb-lg">
-                            <h3>Our Mission</h3>
-                            <p>To provide essential welfare support to UniKL students, including assistance in cases of emergencies, medical conditions or injuries, and bereavement.</p>
+                <h2 class="title is-2 has-text-centered section-title">Introduction</h2>
+                
+                <div class="columns is-vcentered intro-grid">
+                    <div class="column is-7">
+                        <div class="intro-lead">
+                            <span class="intro-icon"><i class="fas fa-university"></i></span>
+                            <h3 class="title is-3">Tabung Kebajikan Siswa (TKS) / Student Welfare Fund (SWF)</h3>
                         </div>
-
-                        <a href="#application" class="btn btn-primary">Learn About Eligibility</a>
+                        <p class="is-size-5 has-text-justified">
+                            The Student Welfare Fund (SWF) ensures financial challenges do not hinder UniKL students from succeeding in their studies. It supports emergencies, medical conditions or injuries, and bereavement with compassionate, efficient processes.
+                        </p>
                     </div>
+                    <div class="column is-5">
+                        <ul class="intro-timeline">
+                            <li class="intro-timeline-item">
+                                <span class="dot"><i class="fas fa-calendar-alt"></i></span>
                     <div>
-                        <div class="card">
-                            <div class="card-header">
-                                <h3 class="card-title">Student Contributions</h3>
+                                    <p class="has-text-weight-semibold mb-1">Established: September 30, 2005</p>
+                                    <p class="is-size-6 has-text-grey-dark">Endorsed and approved by the Management of UniKL</p>
                             </div>
-                            <div class="card-content">
-                                <p><strong>Local Students:</strong> RM30.00 per semester</p>
-                                <p><strong>International Students:</strong> RM50.00 per semester</p>
-                                <p class="mb-0">Your contributions help build a supportive community fund that assists fellow students in times of need.</p>
+                            </li>
+                            <li class="intro-timeline-item">
+                                <span class="dot"><i class="fas fa-retweet"></i></span>
+                                <div>
+                                    <p class="has-text-weight-semibold mb-1">Rebranded: December 12, 2017</p>
+                                    <p class="is-size-6 has-text-grey-dark">Approved on TMM 30th Jan 2018 (TMM NO.125 (2/2018))</p>
+                            </div>
+                            </li>
+                            <li class="intro-timeline-item">
+                                <span class="dot"><i class="fas fa-users-cog"></i></span>
+                                <div>
+                                    <p class="has-text-weight-semibold mb-1">Management</p>
+                                    <p class="is-size-6 has-text-grey-dark">Campus Lifestyle Division and Campus Lifestyle Section manage SWF operations.</p>
+                        </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Objectives Section -->
+        <section class="section has-background-light">
+            <div class="container">
+                <h2 class="title is-2 has-text-centered section-title">SWF UniKL RCMP Objectives</h2>
+                
+                <div class="card custom-card">
+                        <div class="card-content">
+                        <div class="content has-text-centered">
+                            <div class="icon-wrapper">
+                                <i class="fas fa-bullseye"></i>
+                        </div>
+                            <h3 class="title is-3">Our Primary Objective</h3>
+                            <p class="is-size-5 has-text-justified">
+                            The Student Welfare Fund (SWF) at UniKL RCMP exists to ensure that no student’s academic journey is disrupted by unforeseen financial hardship. 
+                            Established as Tabung Kebajikan Siswa (TKS) in 2005 and rebranded as SWF in 2017, the fund provides timely, compassionate assistance for 
+                            emergencies, medical needs or injuries, bereavement, and other critical circumstances that may affect students’ well‑being and continuity of study.
+                        </p>
+<p class="is-size-6 has-text-justified">
+  SWF is managed by the Campus Lifestyle Division and Campus Lifestyle Section with transparent processes and clear eligibility guidelines. 
+  Funds are sourced from student contributions and are channeled directly to support essential needs such as immediate living expenses, treatment and recovery support, 
+  transportation for urgent situations, and other welfare-related costs. Our objective is simple: to give students a reliable safety net so they can stay focused 
+  on their learning, personal growth, and contribution to the campus community.
+</p>
+    <p class="is-size-5 has-text-justified">
+  If you or a fellow student is facing an unexpected financial challenge, please review the application steps below and prepare the required documents. 
+  Our team is ready to guide you through the process with confidentiality and care.
+</p>
+                    </div>
+                        </div>
+                        </div>
+                    </div>
+        </section>
+
+        <!-- Student Contribution Section -->
+        <section class="section" id="contribution">
+            <div class="container">
+                <h2 class="title is-2 has-text-centered section-title">Student Contribution SWF</h2>
+                
+                <div class="columns is-multiline">
+                    <div class="column is-half">
+                        <div class="card custom-card">
+                            <div class="card-content has-text-centered">
+                                <div class="icon-wrapper">
+                                    <i class="fas fa-user-graduate"></i>
+                        </div>
+                                <h3 class="title is-4">Local Students</h3>
+                                <div class="has-text-primary">
+                                    <span class="price-currency">RM</span>
+                                    <span class="price-amount">30.00</span>
+                                </div>
+                                <p class="has-text-weight-semibold mb-3">per semester</p>
+                                <p class="is-size-6">The fund collection is based on SWF fees collected from registered students.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="column is-half">
+                        <div class="card custom-card">
+                            <div class="card-content has-text-centered">
+                                <div class="icon-wrapper">
+                                    <i class="fas fa-globe-americas"></i>
+                        </div>
+                                <h3 class="title is-4">International Students</h3>
+                                <div class="has-text-primary">
+                                    <span class="price-currency">RM</span>
+                                    <span class="price-amount">50.00</span>
+                                </div>
+                                <p class="has-text-weight-semibold mb-3">per semester</p>
+                                <p class="is-size-6">The fund collection is based on SWF fees collected from registered students.</p>
                             </div>
                         </div>
                     </div>
@@ -131,145 +493,102 @@
             </div>
         </section>
 
-        <!-- SWF Structure Section -->
-        <section class="content-section" aria-labelledby="swf-structure-heading">
+        <!-- Committee Section -->
+        <section class="section has-background-light" id="committee">
             <div class="container">
-                <h2 id="swf-structure-heading" class="text-center mb-xl">Student Welfare Fund Structure</h2>
+                <h2 class="title is-2 has-text-centered section-title">SWF Campus Committee Members</h2>
                 
-                <div class="grid grid-cols-4 gap-lg">
-                    <!-- Fund Types Card -->
-                    <div class="card">
-                        <div class="card-header">
-                            <h3 class="card-title">Fund Categories</h3>
-                        </div>
-                        <div class="card-content">
-                            <ul>
-                                <li><strong>Bereavement:</strong> Student (RM500), Parent (RM200), Siblings (RM100)</li>
-                                <li><strong>Medical:</strong> Out-patient (RM30/semester), In-patient (up to RM1,000)</li>
-                                <li><strong>Emergency:</strong> Critical illness, natural disasters, and other emergencies</li>
-                            </ul>
-                        </div>
-                    </div>
-
-                    <!-- Eligibility Card -->
-                    <div class="card">
-                        <div class="card-header">
-                            <h3 class="card-title">Eligibility Criteria</h3>
-                        </div>
-                        <div class="card-content">
-                            <ul>
-                                <li>Currently enrolled UniKL RCMP student</li>
-                                <li>Up-to-date SWF contribution payments</li>
-                                <li>Valid supporting documentation</li>
-                                <li>Compliance with fund guidelines</li>
-                            </ul>
-                        </div>
-                    </div>
-
-                    <!-- Application Process Card -->
-                    <div class="card">
-                        <div class="card-header">
-                            <h3 class="card-title">Application Process</h3>
-                        </div>
-                        <div class="card-content">
-                            <ol>
-                                <li>Submit online application</li>
-                                <li>Provide required documentation</li>
-                                <li>SWF Committee review</li>
-                                <li>Approval notification</li>
-                                <li>Fund disbursement</li>
-                            </ol>
-                        </div>
-                    </div>
-
-                    <!-- Committee Card -->
-                    <div class="card">
-                        <div class="card-header">
-                            <h3 class="card-title">SWF Committee</h3>
-                        </div>
-                        <div class="card-content">
-                            <ul>
-                                <li>Head of Campus / Dean</li>
-                                <li>Deputy Dean</li>
-                                <li>Campus Lifestyle Head</li>
-                                <li>Finance & Admin Representative</li>
-                                <li>Student Representative</li>
-                            </ul>
-                        </div>
-                    </div>
+                <div class="has-text-centered mb-5">
+                    <span class="committee-heading-icon"><i class="fas fa-users"></i></span>
+                </div>
+                
+                <div class="committee-cloud">
+                    <span class="committee-chip"><i class="fas fa-user-tie"></i> Head of Campus / Dean</span>
+                    <span class="committee-chip"><i class="fas fa-user-tie"></i> Deputy Dean, SDCL</span>
+                    <span class="committee-chip"><i class="fas fa-user-tie"></i> Campus Lifestyle Head</span>
+                    <span class="committee-chip"><i class="fas fa-user-tie"></i> Representative of Finance and Administration Department</span>
+                    <span class="committee-chip"><i class="fas fa-user-tie"></i> Executive, Campus Lifestyle Section or any designated staff</span>
+                    <span class="committee-chip"><i class="fas fa-user-tie"></i> President of Student Representative Committee or representative (by invitation)</span>
                 </div>
             </div>
         </section>
 
-        <!-- Application Process Timeline -->
-        <section class="content-section" id="application" aria-labelledby="application-heading">
+        <!-- Application Process Section -->
+        <section class="section" id="application">
             <div class="container">
-                <h2 id="application-heading" class="text-center mb-xl">How to Apply for Financial Aid</h2>
+                <h2 class="title is-2 has-text-centered section-title">How to Apply for Financial Aid</h2>
                 
-                <div class="two-column">
-                    <div>
-                        <h3>Step-by-Step Process</h3>
-                        <ol class="timeline" role="list" aria-label="Application process steps">
-                            <li class="timeline-item">
-                                <div class="timeline-marker" aria-hidden="true">1</div>
-                                <div class="timeline-content">
-                                    <h4>Create Account</h4>
+                <div class="columns">
+                    <div class="column is-two-thirds">
+                        <div class="content">
+                            <h3 class="title is-4 mb-5">Step-by-Step Process</h3>
+                            
+                            <div class="timeline-item">
+                                <span class="timeline-badge">1</span>
+                                <div class="content">
+                                    <h4 class="title is-5">Create Account</h4>
                                     <p>Register for an account using your student credentials and personal information.</p>
                                 </div>
-                            </li>
+                            </div>
                             
-                            <li class="timeline-item">
-                                <div class="timeline-marker" aria-hidden="true">2</div>
-                                <div class="timeline-content">
-                                    <h4>Complete Application</h4>
+                            <div class="timeline-item">
+                                <span class="timeline-badge">2</span>
+                                <div class="content">
+                                    <h4 class="title is-5">Complete Application</h4>
                                     <p>Fill out the comprehensive application form with accurate details about your situation.</p>
                                 </div>
-                            </li>
+                            </div>
                             
-                            <li class="timeline-item">
-                                <div class="timeline-marker" aria-hidden="true">3</div>
-                                <div class="timeline-content">
-                                    <h4>Submit Documentation</h4>
+                            <div class="timeline-item">
+                                <span inv="timeline-badge">3</span>
+                                <div class="content">
+                                    <h4 class="title is-5">Submit Documentation</h4>
                                     <p>Upload required supporting documents such as medical reports, receipts, or certificates.</p>
                                 </div>
-                            </li>
+                            </div>
                             
-                            <li class="timeline-item">
-                                <div class="timeline-marker" aria-hidden="true">4</div>
-                                <div class="timeline-content">
-                                    <h4>Committee Review</h4>
+                            <div class="timeline-item">
+                                <span class="timeline-badge">4</span>
+                                <div class="content">
+                                    <h4 class="title is-5">Committee Review</h4>
                                     <p>Your application will be reviewed by the SWF Campus Committee for approval.</p>
                                 </div>
-                            </li>
+                            </div>
                             
-                            <li class="timeline-item">
-                                <div class="timeline-marker" aria-hidden="true">5</div>
-                                <div class="timeline-content">
-                                    <h4>Receive Funds</h4>
+                            <div class="timeline-item">
+                                <span class="timeline-badge">5</span>
+                                <div class="content">
+                                    <h4 class="title is-5">Receive Funds</h4>
                                     <p>Upon approval, funds will be disbursed according to the established procedures.</p>
                                 </div>
-                            </li>
-                        </ol>
+                    </div>
+                            </div>
                     </div>
                     
-                    <div>
-                        <div class="card">
-                            <div class="card-header">
-                                <h3 class="card-title">Required Documents</h3>
-                            </div>
+                    <div class="column">
+                        <div class="card custom-card">
+                            <header class="card-header">
+                                <p class="card-header-title">
+                                    Required Documents
+                                </p>
+                            </header>
                             <div class="card-content">
-                                <ul class="checklist">
-                                    <li>✓ Completed application form</li>
-                                    <li>✓ Student ID verification</li>
-                                    <li>✓ Supporting documentation (medical reports, death certificates, etc.)</li>
-                                    <li>✓ Bank account details</li>
-                                    <li>✓ Academic transcript (if required)</li>
-                                    <li>✓ Proof of SWF contribution payments</li>
+                                <div class="content">
+                                    <ul>
+                                        <li><i class="fas fa-check-circle has-text-success mr-2"></i>Completed application form</li>
+                                        <li><i class="fas fa-check-circle has-text-success mr-2"></i>Student ID verification</li>
+                                        <li><i class="fas fa-check-circle has-text-success mr-2"></i>Supporting documentation (medical reports, death certificates, etc.)</li>
+                                        <li><i class="fas fa-check-circle has-text-success mr-2"></i>Bank account details</li>
+                                        <li><i class="fas fa-check-circle has-text-success mr-2"></i>Academic transcript (if required)</li>
+                                        <li><i class="fas fa-check-circle has-text-success mr-2"></i>Proof of SWF contribution payments</li>
                                 </ul>
                             </div>
-                            <div class="card-footer">
-                                <a href="{{ route('register') }}" class="btn btn-primary btn-large">Start Your Application</a>
                             </div>
+                            <footer class="card-footer">
+                                <a href="{{ route('register') }}" class="card-footer-item button is-primary is-fullwidth">
+                                    <strong>Start Your Application</strong>
+                                </a>
+                            </footer>
                         </div>
                     </div>
                 </div>
@@ -277,128 +596,36 @@
         </section>
 
         <!-- Contact Section -->
-        <section class="content-section" id="contact" aria-labelledby="contact-heading">
-            <div class="container">
-                <h2 id="contact-heading" class="text-center mb-xl">Contact Us</h2>
+        <section class="section has-background-light" id="contact">
+            <div class="container contact-container">
+                <h2 class="title is-2 has-text-centered section-title">Contact</h2>
                 
-                <div class="two-column">
-                    <!-- Contact Form -->
-                    <div>
-                        <h3>Send us a Message</h3>
-                        <form class="contact-form" data-validate method="POST" action="{{ route('contact.submit') }}" novalidate>
-                            @csrf
-                            
-                            <!-- Success/Error Messages -->
-                            @if(session('success'))
-                                <div class="alert alert-success" role="alert">
-                                    {{ session('success') }}
-                                </div>
-                            @endif
-                            
-                            @if(session('error'))
-                                <div class="alert alert-error" role="alert">
-                                    {{ session('error') }}
-                                </div>
-                            @endif
-                            
-                            <div class="form-group">
-                                <label for="contact_name" class="form-label required">Full Name</label>
-                                <input 
-                                    type="text" 
-                                    id="contact_name" 
-                                    name="name" 
-                                    class="form-input @error('name') error @enderror" 
-                                    value="{{ old('name') }}"
-                                    required 
-                                    minlength="2"
-                                    maxlength="100"
-                                    autocomplete="name"
-                                    aria-describedby="contact_name-help"
-                                >
-                                <span id="contact_name-help" class="form-help">Enter your full name as it appears on your student records</span>
-                                @error('name')
-                                    <span class="form-error" role="alert">{{ $message }}</span>
-                                @enderror
-                            </div>
-                            
-                            <div class="form-group">
-                                <label for="contact_email" class="form-label required">Email Address</label>
-                                <input 
-                                    type="email" 
-                                    id="contact_email" 
-                                    name="email" 
-                                    class="form-input @error('email') error @enderror" 
-                                    value="{{ old('email') }}"
-                                    required
-                                    autocomplete="email"
-                                    aria-describedby="contact_email-help"
-                                >
-                                <span id="contact_email-help" class="form-help">We'll use this email to respond to your inquiry</span>
-                                @error('email')
-                                    <span class="form-error" role="alert">{{ $message }}</span>
-                                @enderror
-                            </div>
-                            
-                            <div class="form-group">
-                                <label for="contact_student_id" class="form-label">Student ID</label>
-                                <input 
-                                    type="text" 
-                                    id="contact_student_id" 
-                                    name="student_id" 
-                                    class="form-input @error('student_id') error @enderror" 
-                                    value="{{ old('student_id') }}"
-                                    data-validation="student-id"
-                                    pattern="[0-9]{12}"
-                                    maxlength="12"
-                                    placeholder="e.g., 202012345678"
-                                    aria-describedby="contact_student_id-help"
-                                >
-                                <span id="contact_student_id-help" class="form-help">Optional: 12-digit student ID for faster assistance</span>
-                                @error('student_id')
-                                    <span class="form-error" role="alert">{{ $message }}</span>
-                                @enderror
-                            </div>
-                            
-                            <div class="form-group">
-                                <label for="contact_message" class="form-label required">Message</label>
-                                <textarea 
-                                    id="contact_message" 
-                                    name="message" 
-                                    class="form-textarea @error('message') error @enderror" 
-                                    rows="5" 
-                                    required
-                                    minlength="10"
-                                    maxlength="1000"
-                                    placeholder="Please describe your inquiry or question about the Student Welfare Fund..."
-                                    aria-describedby="contact_message-help"
-                                >{{ old('message') }}</textarea>
-                                <span id="contact_message-help" class="form-help">Minimum 10 characters, maximum 1000 characters</span>
-                                @error('message')
-                                    <span class="form-error" role="alert">{{ $message }}</span>
-                                @enderror
-                            </div>
-                            
-                            <div class="form-group">
-                                <button type="submit" class="btn btn-primary" aria-describedby="submit-help">
-                                    <span class="btn-text">Send Message</span>
-                                </button>
-                                <span id="submit-help" class="form-help">We typically respond within 1-2 business days</span>
-                            </div>
-                        </form>
+                <!-- Email Card -->
+                <div class="card custom-card contact-card" style="max-width: 720px; margin: 0 auto 2.25rem;">
+                    <div class="card-content has-text-centered">
+                        <div class="icon-wrapper">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <h3 class="title is-4">Contact Email</h3>
+                        <p class="is-size-5">
+                            <a href="mailto:sw.rcmp@unikl.edu.my" class="has-text-primary"><strong>sw.rcmp@unikl.edu.my</strong></a>
+                        </p>
                     </div>
-                    
-                    <!-- Contact Information -->
-                    <div>
-                        <h3>Get in Touch</h3>
-                        <div class="contact-info">
-                            <div class="contact-item">
-                                <div class="contact-icon">
-                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                                        <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" fill="currentColor"/>
-                                    </svg>
-                                </div>
-                                <div class="contact-details">
-                                    <h4>Office Location</h4>
+                </div>
+                
+                <div class="columns mt-6 contact-columns is-variable is-6">
+                    <div class="column">
+                        <h3 class="title is-4 mb-4">Get in Touch</h3>
+                        
+                        <div class="content">
+                            <div class="media">
+                                <figure class="media-left">
+                                    <span class="icon is-large has-text-primary">
+                                        <i class="fas fa-map-marker-alt fa-2x"></i>
+                                    </span>
+                                </figure>
+                                <div class="media-content">
+                                    <p class="title is-6">Office Location</p>
                                     <address>
                                         Campus Lifestyle Section<br>
                                         Universiti Kuala Lumpur<br>
@@ -409,102 +636,79 @@
                                 </div>
                             </div>
                             
-                            <div class="contact-item">
-                                <div class="contact-icon">
-                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                                        <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z" fill="currentColor"/>
-                                    </svg>
-                                </div>
-                                <div class="contact-details">
-                                    <h4>Email</h4>
+                            <div class="media">
+                                <figure class="media-left">
+                                    <span class="icon is-large has-text-primary">
+                                        <i class="fas fa-envelope fa-2x"></i>
+                                    </span>
+                                </figure>
+                                <div class="media-content">
+                                    <p class="title is-6">Email</p>
                                     <p>
-                                        <a href="mailto:sw.rcmp@unikl.edu.my" class="contact-link">
-                                            sw.rcmp@unikl.edu.my
-                                        </a>
+                                        <a href="mailto:sw.rcmp@unikl.edu.my">sw.rcmp@unikl.edu.my</a><br>
+                                        <small class="has-text-grey">Primary contact for SWF inquiries</small>
                                     </p>
-                                    <p class="contact-note">Primary contact for SWF inquiries</p>
                                 </div>
                             </div>
                             
-                            <div class="contact-item">
-                                <div class="contact-icon">
-                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                                        <path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z" fill="currentColor"/>
-                                    </svg>
-                                </div>
-                                <div class="contact-details">
-                                    <h4>Phone</h4>
+                            <div class="media">
+                                <figure class="media-left">
+                                    <span class="icon is-large has-text-primary">
+                                        <i class="fas fa-phone fa-2x"></i>
+                                    </span>
+                                </figure>
+                                <div class="media-content">
+                                    <p class="title is-6">Phone</p>
                                     <p>
-                                        <a href="tel:+6052536200" class="contact-link">
-                                            +60 5-253 6200
-                                        </a>
+                                        <a href="tel:+6052536200">+60 5-253 6200</a><br>
+                                        <small class="has-text-grey">Main campus line</small>
                                     </p>
-                                    <p class="contact-note">Main campus line</p>
                                 </div>
                             </div>
                             
-                            <div class="contact-item">
-                                <div class="contact-icon">
-                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                                        <path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z" fill="currentColor"/>
-                                        <path d="M12.5 7H11v6l5.25 3.15.75-1.23-4.5-2.67z" fill="currentColor"/>
-                                    </svg>
+                            <div class="media">
+                                <figure class="media-left">
+                                    <span class="icon is-large has-text-primary">
+                                        <i class="fas fa-clock fa-2x"></i>
+                                    </span>
+                                </figure>
+                                <div class="media-content">
+                                    <p class="title is-6">Office Hours</p>
+                                    <p>
+                                        <strong>Monday - Friday:</strong> 8:00 AM - 5:00 PM<br>
+                                        <strong>Saturday:</strong> 8:00 AM - 12:00 PM<br>
+                                        <strong>Sunday:</strong> Closed<br>
+                                        <small class="has-text-grey">Best time to visit: Tuesday - Thursday, 9:00 AM - 4:00 PM</small>
+                                    </p>
                                 </div>
-                                <div class="contact-details">
-                                    <h4>Office Hours</h4>
-                                    <div class="office-hours">
-                                        <div class="hours-row">
-                                            <span class="day">Monday - Friday:</span>
-                                            <span class="time">8:00 AM - 5:00 PM</span>
                                         </div>
-                                        <div class="hours-row">
-                                            <span class="day">Saturday:</span>
-                                            <span class="time">8:00 AM - 12:00 PM</span>
-                                        </div>
-                                        <div class="hours-row">
-                                            <span class="day">Sunday:</span>
-                                            <span class="time">Closed</span>
-                                        </div>
-                                    </div>
-                                    <p class="contact-note">Best time to visit: Tuesday - Thursday, 9:00 AM - 4:00 PM</p>
-                                </div>
                             </div>
                         </div>
                         
-                        <!-- Map Container -->
-                        <div class="map-container">
-                            <h4>Find Us</h4>
-                            <div class="map-wrapper">
-                                <div class="map-placeholder" role="img" aria-label="Map showing UniKL RCMP location at No. 3, Jalan Greentown, 30450 Ipoh, Perak">
-                                    <div class="map-content">
-                                        <div class="map-icon">
-                                            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" fill="var(--primary-color)"/>
-                                            </svg>
-                                        </div>
-                                        <p class="map-title">UniKL RCMP Campus</p>
-                                        <p class="map-address">No. 3, Jalan Greentown<br>30450 Ipoh, Perak</p>
-                                        <div class="map-actions">
-                                            <a href="https://maps.google.com/?q=UniKL+RCMP+Ipoh+Perak" 
-                                               target="_blank" 
-                                               rel="noopener noreferrer" 
-                                               class="btn btn-secondary btn-small">
-                                                View on Google Maps
-                                            </a>
-                                            <a href="https://waze.com/ul?q=UniKL%20RCMP%20Ipoh" 
-                                               target="_blank" 
-                                               rel="noopener noreferrer" 
-                                               class="btn btn-secondary btn-small">
-                                                Open in Waze
+                    <div class="column">
+                        <h3 class="title is-4 mb-4">Find Us</h3>
+                        <div class="card">
+                            <div class="card-content has-text-centered" style="min-height: 300px; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+                                <span class="icon is-large has-text-primary mb-4">
+                                    <i class="fas fa-map-marked-alt fa-3x"></i>
+                                </span>
+                                <p class="title is-5">UniKL RCMP Campus</p>
+                                <p class="subtitle is-6">No. 3, Jalan Greentown<br>30450 Ipoh, Perak</p>
+                                <div class="buttons is-centered mt-4">
+                                    <a href="https://maps.google.com/?q=UniKL+RCMP+Ipoh+Perak" target="_blank" class="button is-primary is-outlined">
+                                        <span class="icon"><i class="fab fa-google"></i></span>
+                                        <span>Google Maps</span>
+                                    </a>
+                                    <a href="https://waze.com/ul?q=UniKL%20RCMP%20Ipoh" target="_blank" class="button is-primary is-outlined">
+                                        <span class="icon"><i class="fab fa-waze"></i></span>
+                                        <span>Waze</span>
                                             </a>
                                         </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="map-info">
+                                <div class="content has-text-left mt-4" style="width: 100%;">
                                 <p><strong>Parking:</strong> Visitor parking available on campus</p>
                                 <p><strong>Public Transport:</strong> Accessible via local bus routes</p>
                                 <p><strong>Landmarks:</strong> Near Greentown Business Centre and Ipoh Parade</p>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -514,439 +718,90 @@
     </main>
 
     <!-- Footer -->
-    <footer class="footer" role="contentinfo">
-        <div class="footer-content">
-            <!-- University Information -->
-            <div class="footer-section footer-branding">
-                <div class="footer-logo">
-                    <img src="/assets/images/logos/unikl-rcmp.png" alt="Universiti Kuala Lumpur Royal College of Medicine Perak logo" class="footer-logo-img lazy-image" loading="lazy" width="150" height="45">
-                </div>
-                <h3>UniKL RCMP</h3>
-                <p class="footer-description">Universiti Kuala Lumpur Royal College of Medicine Perak is committed to providing quality medical education and supporting our students through comprehensive welfare programs.</p>
-                <p class="footer-mission">The Student Welfare Fund ensures that financial challenges do not impede academic success, fostering an environment where every student can thrive academically.</p>
-                <div class="footer-accreditation">
-                    <p class="footer-accreditation-text">Accredited by the Malaysian Medical Council</p>
-                </div>
+    <footer class="footer">
+        <div class="container">
+            <div class="columns">
+                <div class="column is-4">
+                    <h3 class="title is-5 has-text-white mb-4">UniKL RCMP</h3>
+                    <p class="has-text-white-ter">Universiti Kuala Lumpur Royal College of Medicine Perak is committed to providing quality medical education and supporting our students through comprehensive welfare programs.</p>
+                    <p class="has-text-white-ter mt-3">The Student Welfare Fund ensures that financial challenges do not impede academic success, fostering an environment where every student can thrive academically.</p>
+                    <p class="tag is-warning mt-4">Accredited by the Malaysian Medical Council</p>
             </div>
             
-            <!-- Quick Links -->
-            <div class="footer-section footer-navigation">
-                <h3>Quick Navigation</h3>
-                <div class="footer-nav-columns">
-                    <div class="footer-nav-column">
-                        <h4>Main Pages</h4>
-                        <ul class="footer-links">
+                <div class="column is-2">
+                    <h4 class="title is-6 has-text-white mb-4">Main Pages</h4>
+                    <ul>
                             <li><a href="#home">Home</a></li>
                             <li><a href="#about">About SWF</a></li>
                             <li><a href="#application">Apply for Fund</a></li>
                             <li><a href="#contact">Contact Us</a></li>
                         </ul>
                     </div>
-                    <div class="footer-nav-column">
-                        <h4>Student Portal</h4>
-                        <ul class="footer-links">
+                
+                <div class="column is-2">
+                    <h4 class="title is-6 has-text-white mb-4">Student Portal</h4>
+                    <ul>
                             <li><a href="{{ route('login') }}">Student Login</a></li>
                             <li><a href="{{ route('register') }}">Register Account</a></li>
-                            <li><a href="/application-status">Check Application Status</a></li>
-                            <li><a href="/faq">Frequently Asked Questions</a></li>
+                        <li><a href="/application-status">Check Status</a></li>
+                        <li><a href="/faq">FAQ</a></li>
                         </ul>
-                    </div>
-                    <div class="footer-nav-column">
-                        <h4>Resources</h4>
-                        <ul class="footer-links">
-                            <li><a href="/guidelines">SWF Guidelines</a></li>
-                            <li><a href="/forms">Download Forms</a></li>
-                            <li><a href="/announcements">Announcements</a></li>
-                            <li><a href="/help">Help & Support</a></li>
-                        </ul>
-                    </div>
-                </div>
             </div>
             
-            <!-- Contact & Social -->
-            <div class="footer-section footer-contact">
-                <h3>Contact Information</h3>
-                <div class="footer-contact-info">
-                    <div class="footer-contact-item">
-                        <div class="footer-contact-icon">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                                <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z" fill="currentColor"/>
-                            </svg>
-                        </div>
-                        <div class="footer-contact-details">
-                            <span class="footer-contact-label">Email:</span>
-                            <a href="mailto:sw.rcmp@unikl.edu.my" class="footer-contact-link">sw.rcmp@unikl.edu.my</a>
-                        </div>
-                    </div>
+                <div class="column is-4">
+                    <h4 class="title is-6 has-text-white mb-4">Contact Information</h4>
+                    <p><i class="fas fa-envelope mr-2"></i><a href="mailto:sw.rcmp@unikl.edu.my">sw.rcmp@unikl.edu.my</a></p>
+                    <p><i class="fas fa-phone mr-2"></i><a href="tel:+6052536200">+60 5-253 6200</a></p>
+                    <p><i class="fas fa-map-marker-alt mr-2"></i>No. 3, Jalan Greentown, 30450 Ipoh, Perak</p>
+                    <p><i class="fas fa-clock mr-2"></i>Mon-Fri: 8:00 AM - 5:00 PM</p>
                     
-                    <div class="footer-contact-item">
-                        <div class="footer-contact-icon">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                                <path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z" fill="currentColor"/>
-                            </svg>
-                        </div>
-                        <div class="footer-contact-details">
-                            <span class="footer-contact-label">Phone:</span>
-                            <a href="tel:+6052536200" class="footer-contact-link">+60 5-253 6200</a>
-                        </div>
-                    </div>
-                    
-                    <div class="footer-contact-item">
-                        <div class="footer-contact-icon">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                                <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" fill="currentColor"/>
-                            </svg>
-                        </div>
-                        <div class="footer-contact-details">
-                            <span class="footer-contact-label">Address:</span>
-                            <address class="footer-address">
-                                No. 3, Jalan Greentown<br>
-                                30450 Ipoh, Perak, Malaysia
-                            </address>
-                        </div>
-                    </div>
-                    
-                    <div class="footer-contact-item">
-                        <div class="footer-contact-icon">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                                <path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z" fill="currentColor"/>
-                                <path d="M12.5 7H11v6l5.25 3.15.75-1.23-4.5-2.67z" fill="currentColor"/>
-                            </svg>
-                        </div>
-                        <div class="footer-contact-details">
-                            <span class="footer-contact-label">Office Hours:</span>
-                            <div class="footer-hours">
-                                <div>Mon-Fri: 8:00 AM - 5:00 PM</div>
-                                <div>Sat: 8:00 AM - 12:00 PM</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="social-links">
-                    <h4>Follow Us</h4>
-                    <div class="social-icons">
-                        <a href="https://facebook.com/unikl.rcmp" target="_blank" rel="noopener noreferrer" class="social-icon" aria-label="Follow us on Facebook">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" fill="currentColor"/>
-                            </svg>
+                    <div class="buttons mt-4">
+                        <a href="https://facebook.com/unikl.rcmp" target="_blank" class="button is-outlined is-light">
+                            <span class="icon"><i class="fab fa-facebook"></i></span>
                         </a>
-                        
-                        <a href="https://instagram.com/unikl.rcmp" target="_blank" rel="noopener noreferrer" class="social-icon" aria-label="Follow us on Instagram">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" fill="currentColor"/>
-                            </svg>
+                        <a href="https://instagram.com/unikl.rcmp" target="_blank" class="button is-outlined is-light">
+                            <span class="icon"><i class="fab fa-instagram"></i></span>
                         </a>
-                        
-                        <a href="https://twitter.com/unikl_rcmp" target="_blank" rel="noopener noreferrer" class="social-icon" aria-label="Follow us on Twitter">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z" fill="currentColor"/>
-                            </svg>
+                        <a href="https://twitter.com/unikl_rcmp" target="_blank" class="button is-outlined is-light">
+                            <span class="icon"><i class="fab fa-twitter"></i></span>
                         </a>
-                        
-                        <a href="https://linkedin.com/school/unikl-rcmp" target="_blank" rel="noopener noreferrer" class="social-icon" aria-label="Follow us on LinkedIn">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" fill="currentColor"/>
-                            </svg>
+                        <a href="https://linkedin.com/school/unikl-rcmp" target="_blank" class="button is-outlined is-light">
+                            <span class="icon"><i class="fab fa-linkedin"></i></span>
                         </a>
-                        
-                        <a href="https://youtube.com/c/uniklrcmp" target="_blank" rel="noopener noreferrer" class="social-icon" aria-label="Subscribe to our YouTube channel">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" fill="currentColor"/>
-                            </svg>
-                        </a>
-                        
-                        <a href="https://t.me/uniklrcmp" target="_blank" rel="noopener noreferrer" class="social-icon" aria-label="Join our Telegram channel">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.820 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z" fill="currentColor"/>
-                            </svg>
-                        </a>
-                    </div>
                 </div>
             </div>
         </div>
         
-        <div class="footer-bottom">
-            <div class="footer-bottom-content">
-                <div class="footer-copyright">
-                    <p>&copy; {{ date('Y') }} Universiti Kuala Lumpur Royal College of Medicine Perak. All rights reserved.</p>
-                </div>
-                <div class="footer-legal">
-                    <a href="/privacy-policy">Privacy Policy</a>
-                    <span class="footer-separator">|</span>
-                    <a href="/terms-of-service">Terms of Service</a>
-                    <span class="footer-separator">|</span>
+            <div class="content has-text-centered mt-5 pt-5" style="border-top: 1px solid rgba(255,255,255,0.2);">
+                <p class="has-text-white-ter">
+                    &copy; {{ date('Y') }} Universiti Kuala Lumpur Royal College of Medicine Perak. All rights reserved.
+                </p>
+                <p class="mt-2">
+                    <a href="/privacy-policy">Privacy Policy</a> |
+                    <a href="/terms-of-service">Terms of Service</a> |
                     <a href="/accessibility">Accessibility</a>
-                </div>
+                </p>
             </div>
         </div>
     </footer>
 
-    <!-- Additional CSS for timeline and contact styles -->
-    <style>
-        .timeline {
-            position: relative;
-            padding-left: var(--spacing-xl);
-            list-style: none;
-            counter-reset: timeline-counter;
-        }
-        
-        .timeline::before {
-            content: '';
-            position: absolute;
-            left: 15px;
-            top: 0;
-            bottom: 0;
-            width: 2px;
-            background: var(--primary-color);
-        }
-        
-        .timeline-item {
-            position: relative;
-            margin-bottom: var(--spacing-lg);
-            counter-increment: timeline-counter;
-        }
-        
-        .timeline-marker {
-            position: absolute;
-            left: -23px;
-            top: 0;
-            width: 30px;
-            height: 30px;
-            background: var(--primary-color);
-            color: var(--white);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: var(--font-weight-bold);
-            font-size: var(--font-size-small);
-        }
-        
-        .timeline-content h4 {
-            margin-bottom: var(--spacing-sm);
-            color: var(--primary-color);
-        }
-        
-        .checklist {
-            list-style: none;
-            padding: 0;
-        }
-        
-        .checklist li {
-            margin-bottom: var(--spacing-sm);
-            color: var(--success);
-        }
-        
-        .contact-info {
-            margin-bottom: var(--spacing-xl);
-        }
-        
-        .contact-item {
-            display: flex;
-            align-items: flex-start;
-            gap: var(--spacing-md);
-            margin-bottom: var(--spacing-xl);
-            padding: var(--spacing-lg);
-            background: var(--white);
-            border-radius: var(--border-radius-md);
-            box-shadow: var(--shadow-sm);
-            transition: box-shadow var(--transition-fast);
-        }
-        
-        .contact-item:hover {
-            box-shadow: var(--shadow-md);
-        }
-        
-        .contact-icon {
-            flex-shrink: 0;
-            width: 48px;
-            height: 48px;
-            background: var(--secondary-color);
-            border-radius: var(--border-radius-full);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--primary-color);
-        }
-        
-        .contact-details {
-            flex: 1;
-        }
-        
-        .contact-item h4 {
-            color: var(--primary-color);
-            margin-bottom: var(--spacing-sm);
-            font-size: var(--font-size-h5);
-            font-weight: var(--font-weight-semibold);
-        }
-        
-        .contact-item address {
-            font-style: normal;
-            line-height: 1.6;
-            color: var(--gray-700);
-        }
-        
-        .contact-link {
-            color: var(--primary-color);
-            text-decoration: none;
-            font-weight: var(--font-weight-medium);
-            transition: color var(--transition-fast);
-        }
-        
-        .contact-link:hover,
-        .contact-link:focus {
-            color: var(--primary-dark);
-            text-decoration: underline;
-        }
-        
-        .contact-note {
-            font-size: var(--font-size-small);
-            color: var(--gray-600);
-            margin-top: var(--spacing-xs);
-            margin-bottom: 0;
-        }
-        
-        .office-hours {
-            margin-bottom: var(--spacing-sm);
-        }
-        
-        .hours-row {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: var(--spacing-xs);
-            padding: var(--spacing-xs) 0;
-            border-bottom: 1px solid var(--gray-200);
-        }
-        
-        .hours-row:last-child {
-            border-bottom: none;
-            margin-bottom: 0;
-        }
-        
-        .day {
-            font-weight: var(--font-weight-medium);
-            color: var(--gray-800);
-        }
-        
-        .time {
-            color: var(--gray-700);
-        }
-        
-        .map-container {
-            margin-top: var(--spacing-2xl);
-        }
-        
-        .map-container h4 {
-            color: var(--primary-color);
-            margin-bottom: var(--spacing-md);
-            font-size: var(--font-size-h5);
-        }
-        
-        .map-wrapper {
-            margin-bottom: var(--spacing-lg);
-        }
-        
-        .map-placeholder {
-            background: linear-gradient(135deg, var(--secondary-color) 0%, #f0f0f0 100%);
-            padding: var(--spacing-2xl);
-            text-align: center;
-            border-radius: var(--border-radius-lg);
-            border: 2px solid var(--gray-300);
-            min-height: 300px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        
-        .map-content {
-            max-width: 300px;
-        }
-        
-        .map-icon {
-            margin-bottom: var(--spacing-md);
-        }
-        
-        .map-title {
-            font-size: var(--font-size-h5);
-            font-weight: var(--font-weight-semibold);
-            color: var(--primary-color);
-            margin-bottom: var(--spacing-sm);
-        }
-        
-        .map-address {
-            color: var(--gray-700);
-            margin-bottom: var(--spacing-lg);
-            line-height: 1.5;
-        }
-        
-        .map-actions {
-            display: flex;
-            flex-direction: column;
-            gap: var(--spacing-sm);
-        }
-        
-        .map-info {
-            background: var(--gray-50);
-            padding: var(--spacing-md);
-            border-radius: var(--border-radius-md);
-            border-left: 4px solid var(--accent-color);
-        }
-        
-        .map-info p {
-            margin-bottom: var(--spacing-sm);
-            font-size: var(--font-size-small);
-            color: var(--gray-700);
-        }
-        
-        .map-info p:last-child {
-            margin-bottom: 0;
-        }
-        
-        .social-links {
-            margin-top: var(--spacing-md);
-        }
-        
-        /* Responsive Design for Contact Section */
-        @media (max-width: 767px) {
-            .contact-item {
-                flex-direction: column;
-                text-align: center;
-                gap: var(--spacing-sm);
-            }
+    <!-- Bulma JavaScript for mobile menu -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const navbarBurgers = Array.prototype.slice.call(document.querySelectorAll('.navbar-burger'), 0);
             
-            .contact-icon {
-                align-self: center;
+            if (navbarBurgers.length > 0) {
+                navbarBurgers.forEach(el => {
+                    el.addEventListener('click', () => {
+                        const target = el.dataset.target;
+                        const $target = document.getElementById(target);
+                        
+                        el.classList.toggle('is-active');
+                        $target.classList.toggle('is-active');
+                    });
+                });
             }
-            
-            .hours-row {
-                flex-direction: column;
-                text-align: left;
-                gap: var(--spacing-xs);
-            }
-            
-            .map-placeholder {
-                padding: var(--spacing-lg);
-                min-height: 250px;
-            }
-            
-            .map-actions {
-                gap: var(--spacing-xs);
-            }
-            
-            .map-actions .btn {
-                font-size: var(--font-size-small);
-                padding: var(--spacing-xs) var(--spacing-sm);
-            }
-        }
-        
-        @media (min-width: 768px) and (max-width: 1023px) {
-            .map-actions {
-                flex-direction: row;
-                justify-content: center;
-                gap: var(--spacing-sm);
-            }
-        }
-    </style>
+        });
+    </script>
 </body>
 </html>

@@ -32,39 +32,30 @@ class HeroSlideshow {
         // Slideshow data - in a real app, this would come from a CMS or API
         const slidesData = [
             {
-                image: '/assets/images/hero/campus-1.jpg',
-                title: 'Supporting Your Academic Journey',
-                subtitle: 'UniKL RCMP Student Welfare Fund provides essential financial assistance to help you succeed in your medical education.',
+                image: '/assets/images/hero/bgm.png',
+                title: 'UniKL RCMP Student Welfare Fund',
+                subtitle: 'Financial assistance and student support designed to keep your studies on track.',
                 cta: {
                     primary: { text: 'Apply for Financial Aid', href: '#application' },
-                    secondary: { text: 'Learn More', href: '#about' }
+                    secondary: { text: 'About the Fund', href: '#about' }
                 }
             },
             {
-                image: '/assets/images/hero/students-1.jpg',
-                title: 'Emergency Financial Support',
-                subtitle: 'Get help when you need it most. Our fund covers medical emergencies, bereavement, and critical situations.',
+                image: '/assets/images/hero/bgm2.png',
+                title: 'Support When It Matters',
+                subtitle: 'Coverage for emergencies, medical needs, and bereavement for our student community.',
                 cta: {
-                    primary: { text: 'View Fund Categories', href: '#about' },
+                    primary: { text: 'Eligibility & Categories', href: '#about' },
                     secondary: { text: 'Contact Us', href: '#contact' }
                 }
             },
             {
-                image: '/assets/images/hero/campus-2.jpg',
-                title: 'Simple Application Process',
-                subtitle: 'Apply online in just 5 easy steps. Our streamlined process ensures quick review and disbursement.',
+                image: '/assets/images/hero/bgm3.png',
+                title: 'Simple, Transparent Process',
+                subtitle: 'Apply online in a few steps. Quick review and timely disbursement.',
                 cta: {
                     primary: { text: 'Start Application', href: '/register' },
                     secondary: { text: 'View Requirements', href: '#application' }
-                }
-            },
-            {
-                image: '/assets/images/hero/graduation-1.jpg',
-                title: 'Community Support',
-                subtitle: 'Join a supportive community where students help students through the Student Welfare Fund contributions.',
-                cta: {
-                    primary: { text: 'Join Our Community', href: '/register' },
-                    secondary: { text: 'Learn About SWF', href: '#about' }
                 }
             }
         ];
