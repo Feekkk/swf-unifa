@@ -29,8 +29,9 @@
         ::placeholder{color:#94a3b8}
         .navbar{background-color:var(--primary-dark)!important}
         .navbar .navbar-item{color:#fff!important}
-        .button.is-primary{background-color:var(--primary);border-color:var(--primary)}
-        .button.is-primary:hover{background-color:var(--primary-dark);border-color:var(--primary-dark)}
+        .button.is-primary{background-color:var(--primary);border-color:var(--primary);color:#fff}
+        .button.is-primary:hover{background-color:var(--primary-dark);border-color:var(--primary-dark);color:#fff}
+        .password-toggle{cursor:pointer}
     </style>
 </head>
 <body>
@@ -92,8 +93,9 @@
 
                     <div class="field">
                         <label class="label">Password</label>
-                        <div class="control">
-                            <input class="input" type="password" name="password" placeholder="••••••••" required autocomplete="current-password">
+                        <div class="control has-icons-right">
+                            <input id="login-password" class="input" type="password" name="password" placeholder="••••••••" required autocomplete="current-password">
+                            <span class="icon is-small is-right password-toggle" data-toggle-target="login-password"><i class="fa-regular fa-eye"></i></span>
                         </div>
                     </div>
 
@@ -192,6 +194,22 @@
             if(burger && menu){
                 burger.addEventListener('click', ()=>{ burger.classList.toggle('is-active'); menu.classList.toggle('is-active'); });
             }
+
+            // Password visibility toggles
+            document.querySelectorAll('.password-toggle').forEach(t => {
+                t.addEventListener('click', () => {
+                    const targetId = t.getAttribute('data-toggle-target');
+                    const input = document.getElementById(targetId);
+                    if (!input) return;
+                    const isPwd = input.getAttribute('type') === 'password';
+                    input.setAttribute('type', isPwd ? 'text' : 'password');
+                    const icon = t.querySelector('i');
+                    if (icon) {
+                        icon.classList.toggle('fa-eye');
+                        icon.classList.toggle('fa-eye-slash');
+                    }
+                });
+            });
         });
     </script>
 </body>

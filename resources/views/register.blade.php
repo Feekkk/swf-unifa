@@ -29,8 +29,9 @@
         ::placeholder{color:#94a3b8}
         .navbar{background-color:var(--primary-dark)!important}
         .navbar .navbar-item{color:#fff!important}
-        .button.is-primary{background-color:var(--primary);border-color:var(--primary)}
-        .button.is-primary:hover{background-color:var(--primary-dark);border-color:var(--primary-dark)}
+        .button.is-primary{background-color:var(--primary);border-color:var(--primary);color:#fff}
+        .button.is-primary:hover{background-color:var(--primary-dark);border-color:var(--primary-dark);color:#fff}
+        .password-toggle{cursor:pointer}
     </style>
 </head>
 <body>
@@ -136,6 +137,7 @@
                                 <option value="kelantan">Kelantan</option>
                                 <option value="melaka">Melaka</option>
                                 <option value="negeri_sembilan">Negeri Sembilan</option>
+                                <option value="perak">Perak</option>
                                 <option value="perlis">Perlis</option>
                                 <option value="pulau_pinang">Pulau Pinang</option>
                                 <option value="sabah">Sabah</option>
@@ -202,11 +204,17 @@
                     <div class="grid-2">
                         <div class="field">
                             <label class="label">Password</label>
-                            <input class="input" type="password" name="password" required>
+                            <div class="control has-icons-right">
+                                <input id="register-password" class="input" type="password" name="password" required>
+                                <span class="icon is-small is-right password-toggle" data-toggle-target="register-password"><i class="fa-regular fa-eye"></i></span>
+                            </div>
                         </div>
                         <div class="field">
                             <label class="label">Confirm Password</label>
-                            <input class="input" type="password" name="password_confirmation" required>
+                            <div class="control has-icons-right">
+                                <input id="register-password-confirm" class="input" type="password" name="password_confirmation" required>
+                                <span class="icon is-small is-right password-toggle" data-toggle-target="register-password-confirm"><i class="fa-regular fa-eye"></i></span>
+                            </div>
                         </div>
                     </div>
 
@@ -300,6 +308,22 @@
             if(burger && menu){
                 burger.addEventListener('click', ()=>{ burger.classList.toggle('is-active'); menu.classList.toggle('is-active'); });
             }
+
+            // Password visibility toggles
+            document.querySelectorAll('.password-toggle').forEach(t => {
+                t.addEventListener('click', () => {
+                    const targetId = t.getAttribute('data-toggle-target');
+                    const input = document.getElementById(targetId);
+                    if (!input) return;
+                    const isPwd = input.getAttribute('type') === 'password';
+                    input.setAttribute('type', isPwd ? 'text' : 'password');
+                    const icon = t.querySelector('i');
+                    if (icon) {
+                        icon.classList.toggle('fa-eye');
+                        icon.classList.toggle('fa-eye-slash');
+                    }
+                });
+            });
         });
     </script>
 </body>
