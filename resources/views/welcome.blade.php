@@ -309,6 +309,14 @@
         /* Stronger icon color for visibility */
         .contact-columns .icon { color: var(--primary) !important; }
 
+        /* Map card */
+        .map-card{position:relative; overflow:hidden; border-radius:16px; border:1px solid #e6eaf1}
+        .map-card img{display:block; width:100%; height:320px; object-fit:cover}
+        .map-card::after{content:''; position:absolute; inset:0; background:linear-gradient(180deg, rgba(2,6,23,.2) 0%, rgba(2,6,23,.55) 75%)}
+        .map-card .map-content{position:absolute; left:0; right:0; bottom:0; padding:1rem 1.25rem; z-index:1; color:#f8fafc}
+        .map-card .map-content .title{color:#fff}
+        .map-card .buttons .button{backdrop-filter:blur(6px)}
+
         /* Content text sizes */
         p, li, .content {
             font-size: 0.9375rem;
@@ -637,7 +645,6 @@
                                 <div class="media-content">
                                     <p class="title is-6">Office Location</p>
                                     <address>
-                                        Campus Lifestyle Section<br>
                                         Universiti Kuala Lumpur<br>
                                         Royal College of Medicine Perak<br>
                                         No. 3, Jalan Greentown<br>
@@ -697,27 +704,20 @@
                         
                     <div class="column">
                         <h3 class="title is-4 mb-4">Find Us</h3>
-                        <div class="card">
-                            <div class="card-content has-text-centered" style="min-height: 300px; display: flex; flex-direction: column; justify-content: center; align-items: center;">
-                                <span class="icon is-large has-text-primary mb-4">
-                                    <i class="fas fa-map-marked-alt fa-3x"></i>
-                                </span>
+                        <div class="map-card">
+                            <img src="/assets/images/rcmp-map.png" alt="UniKL RCMP Campus Map">
+                            <div class="map-content">
                                 <p class="title is-5">UniKL RCMP Campus</p>
-                                <p class="subtitle is-6">No. 3, Jalan Greentown<br>30450 Ipoh, Perak</p>
-                                <div class="buttons is-centered mt-4">
-                                    <a href="https://maps.google.com/?q=UniKL+RCMP+Ipoh+Perak" target="_blank" class="button is-primary is-outlined">
+                                <p class="subtitle is-6" style="color:#e2e8f0">No. 3, Jalan Greentown • 30450 Ipoh, Perak</p>
+                                <div class="buttons is-left mt-2">
+                                    <a href="https://maps.google.com/?q=UniKL+RCMP+Ipoh+Perak" target="_blank" class="button is-light is-small">
                                         <span class="icon"><i class="fab fa-google"></i></span>
                                         <span>Google Maps</span>
                                     </a>
-                                    <a href="https://waze.com/ul?q=UniKL%20RCMP%20Ipoh" target="_blank" class="button is-primary is-outlined">
+                                    <a href="https://waze.com/ul?q=UniKL%20RCMP%20Ipoh" target="_blank" class="button is-light is-small">
                                         <span class="icon"><i class="fab fa-waze"></i></span>
                                         <span>Waze</span>
-                                            </a>
-                                        </div>
-                                <div class="content has-text-left mt-4" style="width: 100%;">
-                                <p><strong>Parking:</strong> Visitor parking available on campus</p>
-                                <p><strong>Public Transport:</strong> Accessible via local bus routes</p>
-                                <p><strong>Landmarks:</strong> Near Greentown Business Centre and Ipoh Parade</p>
+                                    </a>
                                 </div>
                             </div>
                         </div>
