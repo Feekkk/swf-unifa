@@ -128,16 +128,53 @@
     <footer class="footer" style="background-color: var(--primary-dark); color:#fff">
         <div class="container">
             <div class="columns">
-                <div class="column is-6">
-                    <h3 class="title is-5 has-text-white">UniKL RCMP</h3>
-                    <p class="has-text-white-ter">Student Welfare Fund portal</p>
+                <div class="column is-4">
+                    <div class="mb-3">
+                        <img src="/assets/images/logos/rcmp-white.png" alt="UniKL RCMP White Logo" style="height:90px">
+                    </div>
+                    <p class="has-text-white-ter">Universiti Kuala Lumpur Royal College of Medicine Perak is committed to providing quality medical education and supporting our students through comprehensive welfare programs.</p>
+                    <p class="has-text-white-ter mt-3">The Student Welfare Fund ensures that financial challenges do not impede academic success, fostering an environment where every student can thrive academically.</p>
+                    <p class="tag is-warning mt-4">Accredited by the Malaysian Medical Council</p>
                 </div>
-                <div class="column is-6 has-text-right">
-                    <a class="button is-light is-outlined" href="/">Back to Home</a>
+                <div class="column is-2">
+                    <h4 class="title is-6 has-text-white mb-4">Main Pages</h4>
+                    <ul>
+                        <li><a href="/">Home</a></li>
+                        <li><a href="/ #about">About SWF</a></li>
+                        <li><a href="/ #application">Apply for Fund</a></li>
+                        <li><a href="/ #contact">Contact Us</a></li>
+                    </ul>
+                </div>
+                <div class="column is-2">
+                    <h4 class="title is-6 has-text-white mb-4">Student Portal</h4>
+                    <ul>
+                        <li><a href="{{ route('login') }}">Student Login</a></li>
+                        <li><a href="{{ route('register') }}">Register Account</a></li>
+                        <li><a href="/application-status">Check Status</a></li>
+                        <li><a href="/faq">FAQ</a></li>
+                    </ul>
+                </div>
+                <div class="column is-4">
+                    <h4 class="title is-6 has-text-white mb-4">Contact Information</h4>
+                    <p><i class="fas fa-envelope mr-2"></i><a href="mailto:sw.rcmp@unikl.edu.my">sw.rcmp@unikl.edu.my</a></p>
+                    <p><i class="fas fa-phone mr-2"></i><a href="tel:+6052536200">+60 5-253 6200</a></p>
+                    <p><i class="fas fa-map-marker-alt mr-2"></i>No. 3, Jalan Greentown, 30450 Ipoh, Perak</p>
+                    <p><i class="fas fa-clock mr-2"></i>Mon-Fri: 8:00 AM - 5:00 PM</p>
+                    <div class="buttons mt-4">
+                        <a href="https://facebook.com/unikl.rcmp" target="_blank" class="button is-outlined is-light"><span class="icon"><i class="fab fa-facebook"></i></span></a>
+                        <a href="https://instagram.com/unikl.rcmp" target="_blank" class="button is-outlined is-light"><span class="icon"><i class="fab fa-instagram"></i></span></a>
+                        <a href="https://twitter.com/unikl_rcmp" target="_blank" class="button is-outlined is-light"><span class="icon"><i class="fab fa-twitter"></i></span></a>
+                        <a href="https://linkedin.com/school/unikl-rcmp" target="_blank" class="button is-outlined is-light"><span class="icon"><i class="fab fa-linkedin"></i></span></a>
+                    </div>
                 </div>
             </div>
-            <div class="content has-text-centered" style="border-top:1px solid rgba(255,255,255,0.2);padding-top:1rem">
-                <p class="has-text-white-ter">&copy; {{ date('Y') }} UniKL RCMP. All rights reserved.</p>
+            <div class="content has-text-centered mt-5 pt-5" style="border-top: 1px solid rgba(255,255,255,0.2);">
+                <p class="has-text-white-ter">&copy; {{ date('Y') }} Universiti Kuala Lumpur Royal College of Medicine Perak. All rights reserved.</p>
+                <p class="mt-2">
+                    <a href="/privacy-policy">Privacy Policy</a> |
+                    <a href="/terms-of-service">Terms of Service</a> |
+                    <a href="/accessibility">Accessibility</a>
+                </p>
             </div>
         </div>
     </footer>

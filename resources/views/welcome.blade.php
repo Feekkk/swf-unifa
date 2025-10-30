@@ -140,9 +140,12 @@
         .hero.theme-hero::before {
             content: '';
             position: absolute; inset: 0;
-            background: linear-gradient(135deg, rgba(25, 25, 112, 0.75), rgba(65, 105, 225, 0.5));
+            background: linear-gradient(180deg, rgba(0,0,0,.55), rgba(0,0,0,.35));
+            z-index: 1;
         }
         .hero.theme-hero .hero-body { position: relative; z-index: 1; }
+        /* Full-page sections */
+        .fullpage { min-height: 100vh; display: flex; align-items: center; }
         
         .section-title {
             font-family: 'Montserrat', sans-serif;
@@ -358,7 +361,7 @@
             </nav>
 
     <!-- Hero (Bulma) -->
-    <section class="hero is-large theme-hero" id="home" style="background: url('/assets/images/hero/bgm.png') center/cover no-repeat;">
+    <section class="hero is-large theme-hero fullpage" id="home" style="background: url('/assets/images/hero/bgm.png') center/cover no-repeat;">
         <div class="hero-body">
             <div class="container has-text-centered">
                 <h1 class="title is-1 has-text-white" style="text-shadow: 0 2px 8px rgba(0,0,0,.5)">UniKL RCMP Student Welfare Fund</h1>
@@ -722,7 +725,10 @@
         <div class="container">
             <div class="columns">
                 <div class="column is-4">
-                    <h3 class="title is-5 has-text-white mb-4">UniKL RCMP</h3>
+                    <div class="mb-3">
+                        <img src="/assets/images/logos/rcmp-white.png" alt="UniKL RCMP White Logo" style="height:90px">
+                    </div>
+
                     <p class="has-text-white-ter">Universiti Kuala Lumpur Royal College of Medicine Perak is committed to providing quality medical education and supporting our students through comprehensive welfare programs.</p>
                     <p class="has-text-white-ter mt-3">The Student Welfare Fund ensures that financial challenges do not impede academic success, fostering an environment where every student can thrive academically.</p>
                     <p class="tag is-warning mt-4">Accredited by the Malaysian Medical Council</p>
@@ -801,6 +807,8 @@
                     });
                 });
             }
+
+            // No slideshow (single static background)
         });
     </script>
 </body>
