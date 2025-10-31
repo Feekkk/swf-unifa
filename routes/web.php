@@ -46,6 +46,11 @@ Route::middleware('auth')->group(function () {
     // Profile edit routes
     Route::get('/profile/edit', [\App\Http\Controllers\Student\ProfileController::class, 'edit'])->name('student.profile.edit');
     Route::post('/profile', [\App\Http\Controllers\Student\ProfileController::class, 'update'])->name('student.profile.update');
+
+    // Application page (placeholder UI)
+    Route::get('/application', function () {
+        return view('student.application');
+    })->name('student.application');
 });
 
 // Logout Route (for authenticated users)

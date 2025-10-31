@@ -203,8 +203,8 @@
                             </div>
                         </div>
                     </div>
-                    <div class="buttons mt-2">
-                        <a href="#" class="button is-primary"><span class="icon"><i class="fas fa-plus"></i></span><span>Make Application</span></a>
+                            <div class="buttons mt-2">
+                                <a href="{{ route('student.application') }}" class="button is-primary"><span class="icon"><i class="fas fa-plus"></i></span><span>Make Application</span></a>
                         <a href="#" class="button is-accent is-light"><span class="icon"><i class="fas fa-folder-open"></i></span><span>My Applications</span></a>
                     </div>
                 </div>
