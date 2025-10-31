@@ -42,6 +42,10 @@ Route::middleware('auth')->group(function () {
     Route::get('/dashboard', function () {
         return view('student.dashboard');
     })->name('dashboard');
+
+    // Profile edit routes
+    Route::get('/profile/edit', [\App\Http\Controllers\Student\ProfileController::class, 'edit'])->name('student.profile.edit');
+    Route::post('/profile', [\App\Http\Controllers\Student\ProfileController::class, 'update'])->name('student.profile.update');
 });
 
 // Logout Route (for authenticated users)

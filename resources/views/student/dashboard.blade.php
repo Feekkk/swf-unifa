@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>Dashboard - UniKL RCMP SWF</title>
+    <title>Dashboard - RCMP Unifa</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
@@ -241,6 +241,12 @@
                                 <div class="column is-12">
                                     <p class="is-size-7 has-text-grey">Bank Name</p>
                                     <p class="is-size-6">{{ $u->bank_name ?? '-' }}</p>
+                                </div>
+                                <div class="column is-12">
+                                    <a href="{{ route('student.profile.edit') }}" class="button is-primary is-light is-fullwidth">
+                                        <span class="icon"><i class="fa-solid fa-user-pen"></i></span>
+                                        <span>Edit Profile</span>
+                                    </a>
                                 </div>
                             </div>
                         </div>
