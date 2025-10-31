@@ -27,6 +27,12 @@
         .select:not(.is-multiple):not(.is-loading)::after{border-color:#000}
         ::placeholder{color:#111827}
         option{color:#000}
+
+        /* Modal: ensure system (light) card styling */
+        .modal-card{background:#ffffff!important; color:#000!important}
+        .modal-card-head{background:#ffffff!important; color:#000!important; border-bottom:1px solid #e5e7eb}
+        .modal-card-body{background:#ffffff!important; color:#000!important}
+        .modal-card-foot{background:#ffffff!important; color:#000!important; border-top:1px solid #e5e7eb}
     </style>
     @vite(['resources/js/app.js'])
 </head>
@@ -70,7 +76,7 @@
             @php($u = auth()->user())
             <div class="card">
                 <div class="card-content">
-                    <form method="POST" action="{{ route('student.profile.update') }}">
+                    <form id="edit-profile-form" method="POST" action="{{ route('student.profile.update') }}">
                         @csrf
 
                         <div class="field">
@@ -174,7 +180,7 @@
 
                         <div class="field is-grouped">
                             <div class="control">
-                                <button type="submit" class="button is-primary">
+                                <button type="submit" class="button is-primary" id="save-btn">
                                     <span class="icon"><i class="fa-solid fa-floppy-disk"></i></span>
                                     <span>Save Changes</span>
                                 </button>
@@ -278,8 +284,58 @@
                 populateOptions();
                 courseSelect.addEventListener('change', populateOptions);
             }
+
+            // Confirmation modal before submit
+            const form = document.getElementById('edit-profile-form');
+            const saveBtn = document.getElementById('save-btn');
+            const modal = document.getElementById('confirm-modal');
+            const modalBg = document.getElementById('confirm-modal-bg');
+            const cancelBtn = document.getElementById('confirm-cancel');
+            const confirmBtn = document.getElementById('confirm-submit');
+
+            function openModal(){ modal.classList.add('is-active'); }
+            function closeModal(){ modal.classList.remove('is-active'); }
+
+            if(form && saveBtn && modal){
+                form.addEventListener('submit', (e)=>{
+                    if(!modal.classList.contains('is-active')){
+                        e.preventDefault();
+                        openModal();
+                    }
+                });
+            }
+            [cancelBtn, modalBg].forEach(el=>{ if(el){ el.addEventListener('click', closeModal); } });
+            if(confirmBtn){
+                confirmBtn.addEventListener('click', ()=>{
+                    closeModal();
+                    form.submit();
+                });
+            }
         });
     </script>
+
+    <!-- Confirmation Modal -->
+    <div class="modal" id="confirm-modal">
+        <div class="modal-background" id="confirm-modal-bg"></div>
+        <div class="modal-card">
+            <header class="modal-card-head">
+                <p class="modal-card-title has-text-black" style="display:flex; align-items:center; gap:.5rem">
+                    <img src="/assets/images/logos/unikl-rcmp.png" alt="UniKL RCMP" style="height:50px; width:auto"><br>
+                    <span>Please review your profile</span>
+                </p>
+                <button class="delete" aria-label="close" id="confirm-cancel"></button>
+            </header>
+            <section class="modal-card-body has-text-black">
+                <p class="has-text-black">
+                    Before submitting, carefully review all details in your profile. Inaccurate or incomplete information may cause delays or affect your application eligibility.
+                </p>
+                <p class="mt-3 has-text-black"><strong class="has-text-danger">Note:</strong> It is the student's responsibility to ensure the information provided is accurate and up to date.</p>
+            </section>
+            <footer class="modal-card-foot">
+                <button class="button is-primary" id="confirm-submit">Submit</button>
+            </footer>
+        </div>
+    </div>
 </body>
 </html>
 
