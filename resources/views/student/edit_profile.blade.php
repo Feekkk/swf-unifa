@@ -230,10 +230,10 @@
                     <p><i class="fas fa-map-marker-alt mr-2"></i>No. 3, Jalan Greentown, 30450 Ipoh, Perak</p>
                     <p><i class="fas fa-clock mr-2"></i>Mon-Fri: 8:00 AM - 5:00 PM</p>
                     <div class="buttons mt-4">
-                        <a href="https://facebook.com/unikl.rcmp" target="_blank" class="button is-outlined is-light"><span class="icon"><i class="fab fa-facebook"></i></span></a>
-                        <a href="https://instagram.com/unikl.rcmp" target="_blank" class="button is-outlined is-light"><span class="icon"><i class="fab fa-instagram"></i></span></a>
-                        <a href="https://twitter.com/unikl_rcmp" target="_blank" class="button is-outlined is-light"><span class="icon"><i class="fab fa-twitter"></i></span></a>
-                        <a href="https://linkedin.com/school/unikl-rcmp" target="_blank" class="button is-outlined is-light"><span class="icon"><i class="fab fa-linkedin"></i></span></a>
+                        <a href="https://facebook.com/unikl.rcmp" class="button is-outlined is-light"><span class="icon"><i class="fab fa-facebook"></i></span></a>
+                        <a href="https://instagram.com/unikl.rcmp" class="button is-outlined is-light"><span class="icon"><i class="fab fa-instagram"></i></span></a>
+                        <a href="https://twitter.com/unikl_rcmp" class="button is-outlined is-light"><span class="icon"><i class="fab fa-twitter"></i></span></a>
+                        <a href="https://linkedin.com/school/unikl-rcmp" class="button is-outlined is-light"><span class="icon"><i class="fab fa-linkedin"></i></span></a>
                     </div>
                 </div>
             </div>

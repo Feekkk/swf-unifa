@@ -710,11 +710,11 @@
                                 <p class="title is-5">UniKL RCMP Campus</p>
                                 <p class="subtitle is-6" style="color:#e2e8f0">No. 3, Jalan Greentown • 30450 Ipoh, Perak</p>
                                 <div class="buttons is-left mt-2">
-                                    <a href="https://maps.google.com/?q=UniKL+RCMP+Ipoh+Perak" target="_blank" class="button is-light is-small">
+                                    <a href="https://maps.google.com/?q=UniKL+RCMP+Ipoh+Perak" class="button is-light is-small">
                                         <span class="icon"><i class="fab fa-google"></i></span>
                                         <span>Google Maps</span>
                                     </a>
-                                    <a href="https://waze.com/ul?q=UniKL%20RCMP%20Ipoh" target="_blank" class="button is-light is-small">
+                                    <a href="https://waze.com/ul?q=UniKL%20RCMP%20Ipoh" class="button is-light is-small">
                                         <span class="icon"><i class="fab fa-waze"></i></span>
                                         <span>Waze</span>
                                     </a>
@@ -767,16 +767,16 @@
                     <p><i class="fas fa-clock mr-2"></i>Mon-Fri: 8:00 AM - 5:00 PM</p>
                     
                     <div class="buttons mt-4">
-                        <a href="https://facebook.com/unikl.rcmp" target="_blank" class="button is-outlined is-light">
+                        <a href="https://facebook.com/unikl.rcmp" class="button is-outlined is-light">
                             <span class="icon"><i class="fab fa-facebook"></i></span>
                         </a>
-                        <a href="https://instagram.com/unikl.rcmp" target="_blank" class="button is-outlined is-light">
+                        <a href="https://instagram.com/unikl.rcmp" class="button is-outlined is-light">
                             <span class="icon"><i class="fab fa-instagram"></i></span>
                         </a>
-                        <a href="https://twitter.com/unikl_rcmp" target="_blank" class="button is-outlined is-light">
+                        <a href="https://twitter.com/unikl_rcmp" class="button is-outlined is-light">
                             <span class="icon"><i class="fab fa-twitter"></i></span>
                         </a>
-                        <a href="https://linkedin.com/school/unikl-rcmp" target="_blank" class="button is-outlined is-light">
+                        <a href="https://linkedin.com/school/unikl-rcmp" class="button is-outlined is-light">
                             <span class="icon"><i class="fab fa-linkedin"></i></span>
                         </a>
                 </div>
