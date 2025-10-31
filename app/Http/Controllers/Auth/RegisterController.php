@@ -77,7 +77,6 @@ class RegisterController extends Controller
             'student_id' => ['required', 'string', 'max:20', 'unique:users'],
             'course' => ['required', 'string', 'max:100'],
             'semester' => ['required', 'integer', 'min:1', 'max:10'],
-            'year_of_study' => ['required', 'integer', 'min:1', 'max:5'],
             
             // Security
             'password' => ['required', 'string', 'min:8', 'confirmed', 'regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]/'],
@@ -122,7 +121,6 @@ class RegisterController extends Controller
             'student_id' => $data['student_id'],
             'course' => $data['course'],
             'semester' => $data['semester'],
-            'year_of_study' => $data['year_of_study'],
             
             // Security
             'password' => Hash::make($data['password']),

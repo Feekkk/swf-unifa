@@ -189,28 +189,12 @@
                         </div>
                     </div>
 
-                    <div class="grid-2">
-                        <div class="field">
-                            <label class="label">Current Semester</label>
-                            <div class="select is-fullwidth">
-                            <select name="semester" required>
-                                <option value="">Select semester</option>
-                                @for($i=1;$i<=10;$i++)
-                                    <option value="{{ $i }}">Semester {{ $i }}</option>
-                                @endfor
-                            </select>
-                            </div>
-                        </div>
-                        <div class="field">
-                            <label class="label">Year of Study</label>
-                            <div class="select is-fullwidth">
-                            <select name="year_of_study" required>
-                                <option value="">Select year</option>
-                                @for($i=1;$i<=5;$i++)
-                                    <option value="{{ $i }}">Year {{ $i }}</option>
-                                @endfor
-                            </select>
-                            </div>
+                    <div class="field">
+                        <label class="label" id="semester-label">Current Semester</label>
+                        <div class="select is-fullwidth">
+                        <select id="semester-select" name="semester" required>
+                            <option value="">Select</option>
+                        </select>
                         </div>
                     </div>
 
@@ -336,6 +320,39 @@
                     }
                 });
             });
+
+            // Dynamic semester/year options based on course
+            const courseSelect = document.querySelector('select[name="course"]');
+            const semesterSelect = document.getElementById('semester-select');
+            const semesterLabel = document.getElementById('semester-label');
+
+            function populateOptions(){
+                const selectedCourse = (courseSelect?.value || '').toUpperCase();
+                const oldValue = '{{ old('semester') }}';
+                const isMbbs = selectedCourse.includes('MBBS');
+
+                semesterSelect.innerHTML = '';
+                const placeholder = document.createElement('option');
+                placeholder.value = '';
+                placeholder.textContent = isMbbs ? 'Select year' : 'Select semester';
+                semesterSelect.appendChild(placeholder);
+
+                const max = isMbbs ? 5 : 10;
+                for(let i=1;i<=max;i++){
+                    const opt = document.createElement('option');
+                    opt.value = String(i);
+                    opt.textContent = isMbbs ? `Year ${i}` : `Semester ${i}`;
+                    if(oldValue && String(oldValue) === String(i)) opt.selected = true;
+                    semesterSelect.appendChild(opt);
+                }
+
+                semesterLabel.textContent = isMbbs ? 'Current Year' : 'Current Semester';
+            }
+
+            if(courseSelect && semesterSelect){
+                populateOptions();
+                courseSelect.addEventListener('change', populateOptions);
+            }
         });
     </script>
 </body>

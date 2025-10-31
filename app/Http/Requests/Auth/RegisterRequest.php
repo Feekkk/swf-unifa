@@ -41,7 +41,6 @@ class RegisterRequest extends FormRequest
             'student_id' => ['required', 'string', 'max:20', 'unique:users', 'regex:/^[A-Z0-9]+$/'],
             'course' => ['required', 'string', 'max:100'],
             'semester' => ['required', 'integer', 'min:1', 'max:10'],
-            'year_of_study' => ['required', 'integer', 'min:1', 'max:5'],
             
             // Security
             'password' => ['required', 'string', 'confirmed', Password::min(8)
@@ -102,7 +101,6 @@ class RegisterRequest extends FormRequest
             'street_address' => 'street address',
             'postal_code' => 'postal code',
             'student_id' => 'student ID',
-            'year_of_study' => 'year of study',
             'password_confirmation' => 'password confirmation',
             'terms_accepted' => 'terms and conditions',
         ];

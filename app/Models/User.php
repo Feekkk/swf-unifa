@@ -36,7 +36,6 @@ class User extends Authenticatable
         'student_id',
         'course',
         'semester',
-        'year_of_study',
         
         // Security and Status
         'password',
@@ -66,7 +65,6 @@ class User extends Authenticatable
             'password' => 'hashed',
             'is_active' => 'boolean',
             'semester' => 'integer',
-            'year_of_study' => 'integer',
         ];
     }
 

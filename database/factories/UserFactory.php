@@ -46,7 +46,6 @@ class UserFactory extends Factory
             'student_id' => 'RCMP' . fake()->unique()->numerify('######'),
             'course' => fake()->randomElement(['bachelor_medicine', 'diploma_nursing', 'diploma_pharmacy']),
             'semester' => fake()->numberBetween(1, 8),
-            'year_of_study' => fake()->numberBetween(1, 4),
             
             // Security and Status
             'email_verified_at' => now(),
