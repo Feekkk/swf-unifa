@@ -167,10 +167,23 @@
                             <div class="select is-fullwidth">
                             <select name="course" required>
                                 <option value="">Select course</option>
-                                <option>MBBS</option>
-                                <option>Diploma in Nursing</option>
-                                <option>Diploma in Medical Assistant</option>
-                                <option>Other</option>
+                                <option>ASASI DALAM SAINS PERUBATAN</option>
+                                <option>DIPLOMA FARMASI</option>
+                                <option>DIPLOMA KEJURURAWATAN</option>
+                                <option>DIPLOMA DALAM FISIOTERAPI</option>
+                                <option>DIPLOMA PENGIMEJAN PERUBATAN</option>
+                                <option>SARJANA MUDA FARMASI (KEPUJIAN)</option>
+                                <option>SARJANA MUDA FISIOTERAPI (KEPUJIAN)</option>
+                                <option>SARJANA MUDA SAINS PSIKOLOGI (KEPUJIAN)</option>
+                                <option>SARJANA MUDA SAINS KEJURURAWATAN (KEPUJIAN)</option>
+                                <option>SARJANA MUDA SAINS (KEPUJIAN) DALAM TEKNOLOGI FARMASEUTIKAL</option>
+                                <option>SARJANA MUDA PERUBATAN DAN SARJANA MUDA PEMBEDAHAN (MBBS)</option>
+                                <option>SARJANA SAINS (FARMASI)</option>
+                                <option>SARJANA SAINS PERUBATAN</option>
+                                <option>SARJANA KESIHATAN AWAM</option>
+                                <option>SARJANA SAINS DALAM KESIHATAN AWAM</option>
+                                <option>DOKTOR FALSAFAH (FARMASI)</option>
+                                <option>DOKTOR FALSAFAH (SAINS PERUBATAN)</option>
                             </select>
                             </div>
                         </div>

@@ -34,6 +34,26 @@
             background-color: var(--primary-dark);
             color: #fff;
         }
+        /* Aids cards */
+        .aid-card .aid-header{display:flex; align-items:center; justify-content:space-between}
+        .aid-card .aid-sub{font-size:.9rem}
+        .aid-list{margin-top:.5rem}
+        .aid-list li{display:flex; align-items:flex-start; gap:.5rem; padding:.4rem 0; border-top:1px dashed rgba(0,0,0,.08)}
+        .aid-list li:first-child{border-top:none}
+        .aid-list .icon{color:var(--primary)}
+        .aid-list .item-content{flex:1}
+        .aid-list .item-title{font-weight:700}
+        .aid-list .item-note{font-size:.85rem; color:#666}
+        .amount{background:rgba(65,105,225,.1); color:var(--primary-dark); border:1px solid rgba(65,105,225,.25); padding:.15rem .5rem; border-radius:999px; font-weight:700; white-space:nowrap}
+        /* Category stack and per-category horizontal items */
+        .aid-stack{display:flex; flex-direction:column; gap:1rem}
+        .aid-items{display:flex; gap:.75rem; overflow-x:auto; padding:.25rem 0 .5rem; -webkit-overflow-scrolling:touch; scroll-snap-type:x proximity}
+        .aid-item{display:flex; align-items:center; gap:.5rem; border:1px dashed rgba(0,0,0,.12); background:#fff; padding:.5rem .75rem; border-radius:.5rem; scroll-snap-align:start; min-width:250px}
+        .aid-item .item-meta{display:flex; flex-direction:column}
+        @media (min-width: 1024px){
+            .aid-items{flex-wrap:wrap; overflow-x:visible; scroll-snap-type:none}
+            .aid-item{min-width:0; flex:1 1 calc(50% - .75rem)}
+        }
     </style>
     @vite(['resources/js/app.js'])
     @stack('head')
@@ -74,49 +94,118 @@
             <div class="columns is-variable is-5 dashboard-columns">
                 <div class="column is-12-tablet is-8-desktop">
                     <h2 class="title is-5">Application Aids Available</h2>
-                    <div class="columns is-multiline">
-                        <div class="column is-12-mobile is-6-tablet is-4-desktop">
-                            <div class="card">
-                                <div class="card-content">
-                                    <p class="title is-6 mb-2">Category 1</p>
-                                    <p class="content is-size-7">Short description for this aid category.</p>
-                                    <div class="tags mt-2">
-                                        <span class="tag is-info is-light">Aid</span>
-                                        <span class="tag is-warning is-light">Open</span>
+                    <div class="aid-stack">
+                        <div class="card aid-card">
+                            <div class="card-content">
+                                <div class="aid-header">
+                                    <p class="title is-6 mb-1">Bereavement (Khairat)</p>
+                                    <span class="tag is-info is-light">Immediate support</span>
+                                </div>
+                                <p class="aid-sub has-text-grey">Financial assistance for bereavement</p>
+                                <div class="aid-items mt-3">
+                                    <div class="aid-item">
+                                        <span class="icon is-small"><i class="fa-solid fa-user"></i></span>
+                                        <div class="item-meta">
+                                            <span class="item-title">Student</span>
+                                            <span class="item-note">One-off contribution</span>
+                                        </div>
+                                        <span class="amount">RM 500</span>
+                                    </div>
+                                    <div class="aid-item">
+                                        <span class="icon is-small"><i class="fa-solid fa-person-breastfeeding"></i></span>
+                                        <div class="item-meta">
+                                            <span class="item-title">Parent</span>
+                                            <span class="item-note">One-off contribution</span>
+                                        </div>
+                                        <span class="amount">RM 200</span>
+                                    </div>
+                                    <div class="aid-item">
+                                        <span class="icon is-small"><i class="fa-solid fa-children"></i></span>
+                                        <div class="item-meta">
+                                            <span class="item-title">Sibling</span>
+                                            <span class="item-note">One-off contribution</span>
+                                        </div>
+                                        <span class="amount">RM 100</span>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="column is-12-mobile is-6-tablet is-4-desktop">
-                            <div class="card">
-                                <div class="card-content">
-                                    <p class="title is-6 mb-2">Category 2</p>
-                                    <p class="content is-size-7">Short description for this aid category.</p>
-                                    <div class="tags mt-2">
-                                        <span class="tag is-info is-light">Aid</span>
-                                        <span class="tag is-warning is-light">Open</span>
+
+                        <div class="card aid-card">
+                            <div class="card-content">
+                                <div class="aid-header">
+                                    <p class="title is-6 mb-1">Illness & Injuries</p>
+                                    <span class="tag is-warning is-light">Medical</span>
+                                </div>
+                                <p class="aid-sub has-text-grey">Out-patient, in-patient, and injury support</p>
+                                <div class="aid-items mt-3">
+                                    <div class="aid-item">
+                                        <span class="icon is-small"><i class="fa-solid fa-notes-medical"></i></span>
+                                        <div class="item-meta">
+                                            <span class="item-title">Out-patient treatment</span>
+                                            <span class="item-note">Limited to RM 30 / semester (two claims / year)</span>
+                                        </div>
+                                        <span class="amount">Up to RM 30</span>
+                                    </div>
+                                    <div class="aid-item">
+                                        <span class="icon is-small"><i class="fa-solid fa-hospital"></i></span>
+                                        <div class="item-meta">
+                                            <span class="item-title">In-patient treatment</span>
+                                            <span class="item-note">If costs exceed insurance annual limit RM 20,000 per student. Limit up to RM 1,000. >RM 1,000 requires SWF Campus committee approval.</span>
+                                        </div>
+                                        <span class="amount">Up to RM 1,000</span>
+                                    </div>
+                                    <div class="aid-item">
+                                        <span class="icon is-small"><i class="fa-solid fa-crutch"></i></span>
+                                        <div class="item-meta">
+                                            <span class="item-title">Injuries</span>
+                                            <span class="item-note">Injury support equipment only</span>
+                                        </div>
+                                        <span class="amount">Up to RM 200</span>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="column is-12-mobile is-6-tablet is-4-desktop">
-                            <div class="card">
-                                <div class="card-content">
-                                    <p class="title is-6 mb-2">Category 3</p>
-                                    <p class="content is-size-7">Short description for this aid category.</p>
-                                    <div class="tags mt-2">
-                                        <span class="tag is-info is-light">Aid</span>
-                                        <span class="tag is-warning is-light">Open</span>
+
+                        <div class="card aid-card">
+                            <div class="card-content">
+                                <div class="aid-header">
+                                    <p class="title is-6 mb-1">Emergency</p>
+                                    <span class="tag is-danger is-light">Per claim basis</span>
+                                </div>
+                                <p class="aid-sub has-text-grey">Critical illness, natural disaster, and other emergencies</p>
+                                <div class="aid-items mt-3">
+                                    <div class="aid-item">
+                                        <span class="icon is-small"><i class="fa-solid fa-heart-pulse"></i></span>
+                                        <div class="item-meta">
+                                            <span class="item-title">Critical Illness</span>
+                                            <span class="item-note">Initial diagnosis with supporting documents</span>
+                                        </div>
+                                        <span class="amount">Up to RM 200</span>
+                                    </div>
+                                    <div class="aid-item">
+                                        <span class="icon is-small"><i class="fa-solid fa-house-flood-water"></i></span>
+                                        <div class="item-meta">
+                                            <span class="item-title">Natural Disaster</span>
+                                            <span class="item-note">Certified evidence must be included</span>
+                                        </div>
+                                        <span class="amount">Up to RM 200</span>
+                                    </div>
+                                    <div class="aid-item">
+                                        <span class="icon is-small"><i class="fa-solid fa-triangle-exclamation"></i></span>
+                                        <div class="item-meta">
+                                            <span class="item-title">Others</span>
+                                            <span class="item-note">Subject to SWF Campus committee approval</span>
+                                        </div>
+                                        <span class="amount">Case-by-case</span>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="column is-12">
-                            <div class="buttons mt-2">
-                                <a href="#" class="button is-primary"><span class="icon"><i class="fas fa-plus"></i></span><span>Make Application</span></a>
-                                <a href="#" class="button is-accent is-light"><span class="icon"><i class="fas fa-folder-open"></i></span><span>My Applications</span></a>
-                            </div>
-                        </div>
+                    </div>
+                    <div class="buttons mt-2">
+                        <a href="#" class="button is-primary"><span class="icon"><i class="fas fa-plus"></i></span><span>Make Application</span></a>
+                        <a href="#" class="button is-accent is-light"><span class="icon"><i class="fas fa-folder-open"></i></span><span>My Applications</span></a>
                     </div>
                 </div>
                 <div class="column is-12-tablet is-4-desktop">
