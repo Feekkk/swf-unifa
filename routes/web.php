@@ -47,10 +47,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile/edit', [\App\Http\Controllers\Student\ProfileController::class, 'edit'])->name('student.profile.edit');
     Route::post('/profile', [\App\Http\Controllers\Student\ProfileController::class, 'update'])->name('student.profile.update');
 
-    // Application page (placeholder UI)
-    Route::get('/application', function () {
-        return view('student.application');
-    })->name('student.application');
+    // Application routes
+    Route::get('/application', [\App\Http\Controllers\Student\ApplicationController::class, 'create'])->name('student.application');
+    Route::post('/application', [\App\Http\Controllers\Student\ApplicationController::class, 'store'])->name('student.application.store');
 });
 
 // Logout Route (for authenticated users)

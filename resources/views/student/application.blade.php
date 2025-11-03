@@ -58,7 +58,7 @@
             @php($u = auth()->user())
             <div class="card">
                 <div class="card-content">
-                    <form method="POST" action="#">
+                    <form method="POST" action="{{ route('student.application.store') }}" enctype="multipart/form-data">
                         @csrf
                         <div class="columns is-multiline">
                             <div class="column is-6">

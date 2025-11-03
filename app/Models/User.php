@@ -122,4 +122,14 @@ class User extends Authenticatable
     {
         return $query->where('semester', $semester);
     }
+
+    /**
+     * Get all applications submitted by the user.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function applications()
+    {
+        return $this->hasMany(Application::class);
+    }
 }
