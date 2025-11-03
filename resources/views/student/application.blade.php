@@ -23,6 +23,10 @@
         label, .label, .subtitle, .help, .file-name { color:#000 !important }
         /* Keep 'Choose files…' CTA not black for contrast */
         .file-cta span { color:#fff !important }
+        /* Application page specific styles */
+        .section .title.is-3 { color: #000 !important }
+        .message { background-color: inherit !important }
+        .message-body { background-color: inherit !important }
     </style>
     @vite(['resources/js/app.js'])
 </head>
@@ -56,9 +60,6 @@
                 <div class="card-content">
                     <form method="POST" action="#">
                         @csrf
-                        <!-- Prefilled hidden info from profile -->
-                        <input type="hidden" name="bank_name" value="{{ $u->bank_name ?? '' }}">
-                        <input type="hidden" name="bank_account_number" value="{{ $u->bank_account_number ?? '' }}">
                         <div class="columns is-multiline">
                             <div class="column is-6">
                                 <label class="label">Category</label>
@@ -80,25 +81,46 @@
                                 </div>
                             </div>
 
-                            <div class="column is-8">
+                            <!-- Amount Information Display -->
+                            <div class="column is-12">
                                 <article class="message is-info">
-                                    <div class="message-body" id="amount-note" style="color:#000">Please select a category and sub-category to see required details.</div>
+                                    <div class="message-body" id="amount-note">Please select a category and sub-category to see required details.</div>
                                 </article>
                             </div>
-                            <div class="column is-4">
-                                <div class="card">
-                                    <div class="card-content">
-                                        <p class="title is-6" style="color:#191970">Required Documents</p>
-                                        <ul id="requirements-list" class="content" style="margin-left:1rem; color:#000">
-                                            <li>Select a category to view requirements</li>
-                                        </ul>
+
+                            <!-- Dynamic Form Fields Container -->
+                            <div class="column is-12">
+                                <div id="dynamic-fields-container"></div>
+                            </div>
+
+                            <!-- Bank Details Section (for most categories) -->
+                            <div class="column is-12" data-section="bank-details" hidden>
+                                <hr style="margin: 1.5rem 0;">
+                                <h3 class="title is-5" style="color:#191970">Bank Details</h3>
+                                <p class="subtitle is-6" style="color:#000">Bank account information for fund disbursement</p>
+                                <div class="columns is-multiline">
+                                    <div class="column is-6">
+                                        <label class="label">Bank Name</label>
+                                        <div class="control">
+                                            <input class="input" type="text" name="bank_name" id="bank-name-input" 
+                                                   value="{{ $u->bank_name ?? '' }}" required placeholder="e.g., Maybank, CIMB Bank">
+                                        </div>
+                                    </div>
+                                    <div class="column is-6">
+                                        <label class="label">Bank Account Number</label>
+                                        <div class="control">
+                                            <input class="input" type="text" name="bank_account_number" id="bank-account-input" 
+                                                   value="{{ $u->bank_account_number ?? '' }}" required placeholder="Enter your account number">
+                                        </div>
                                     </div>
                                 </div>
                             </div>
 
-                            <!-- Only required documents uploader (dynamic) -->
+                            <!-- Documents Upload Section -->
                             <div class="column is-12" data-section="uploader" hidden>
-                                <label class="label" id="upload-label">Supporting Documents</label>
+                                <hr style="margin: 1.5rem 0;">
+                                <h3 class="title is-5" style="color:#191970">Supporting Documents</h3>
+                                <p class="subtitle is-6" style="color:#000">Please upload all required documents</p>
                                 <div class="file has-name is-fullwidth">
                                     <label class="file-label">
                                         <input class="file-input" type="file" id="upload-input" name="documents[]" multiple>
@@ -106,7 +128,20 @@
                                         <span class="file-name" id="upload-help">Upload relevant documents</span>
                                     </label>
                                 </div>
+                                <p class="help">You can upload multiple files (PDF, JPG, PNG)</p>
                                 <input type="hidden" name="amount" id="fixed-amount-hidden">
+                            </div>
+
+                            <!-- Requirements List -->
+                            <div class="column is-12" data-section="requirements" hidden>
+                                <div class="card" style="background-color: #F0F8FF;">
+                                    <div class="card-content">
+                                        <p class="title is-6" style="color:#191970"><i class="fa-solid fa-circle-info mr-2"></i>Required Documents</p>
+                                        <ul id="requirements-list" class="content" style="margin-left:1rem; color:#000">
+                                            <li>Select a category to view requirements</li>
+                                        </ul>
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
@@ -192,35 +227,94 @@
             const categorySelect = document.getElementById('category-select');
             const subcategorySelect = document.getElementById('subcategory-select');
             const amountNote = document.getElementById('amount-note');
-            const fields = {
-                uploader: document.querySelector('[data-section="uploader"]'),
-                uploadLabel: document.getElementById('upload-label'),
-                uploadHelp: document.getElementById('upload-help'),
-                fixedAmountHidden: document.getElementById('fixed-amount-hidden'),
-            };
-
-            // legacy sections removed; only uploader is shown dynamically
-
+            const fieldsContainer = document.getElementById('dynamic-fields-container');
             const reqList = document.getElementById('requirements-list');
+            const bankDetails = document.querySelector('[data-section="bank-details"]');
+            const uploader = document.querySelector('[data-section="uploader"]');
+            const requirements = document.querySelector('[data-section="requirements"]');
+            const fixedAmountHidden = document.getElementById('fixed-amount-hidden');
 
             function setRequirements(items){
                 reqList.innerHTML = '';
                 if(!items || items.length===0){
-                    const li = document.createElement('li'); li.textContent = 'No specific documents required.'; reqList.appendChild(li); return;
+                    const li = document.createElement('li'); 
+                    li.textContent = 'No specific documents required.'; 
+                    reqList.appendChild(li); 
+                    return;
                 }
-                items.forEach(text => { const li = document.createElement('li'); li.textContent = text; reqList.appendChild(li); });
+                items.forEach(text => { 
+                    const li = document.createElement('li'); 
+                    li.textContent = text; 
+                    reqList.appendChild(li); 
+                });
             }
 
             function hideAll() {
-                if (fields.uploader) fields.uploader.hidden = true;
+                fieldsContainer.innerHTML = '';
+                if (bankDetails) bankDetails.hidden = true;
+                if (uploader) uploader.hidden = true;
+                if (requirements) requirements.hidden = true;
+            }
+
+            function createField(type, name, label, placeholder = '', required = false, attrs = {}) {
+                const fieldDiv = document.createElement('div');
+                fieldDiv.className = 'field column is-6';
+                
+                const labelEl = document.createElement('label');
+                labelEl.className = 'label';
+                labelEl.textContent = label;
+                if (required) labelEl.innerHTML += ' <span style="color: red;">*</span>';
+                
+                const controlDiv = document.createElement('div');
+                controlDiv.className = 'control';
+                
+                let input;
+                if (type === 'textarea') {
+                    input = document.createElement('textarea');
+                    input.className = 'textarea';
+                    input.rows = 3;
+                } else {
+                    input = document.createElement('input');
+                    input.className = 'input';
+                    input.type = type;
+                }
+                
+                input.name = name;
+                input.id = name;
+                input.placeholder = placeholder;
+                if (required) input.required = true;
+                
+                // Add additional attributes
+                Object.keys(attrs).forEach(key => {
+                    if (key === 'step' || key === 'min' || key === 'max') {
+                        input.setAttribute(key, attrs[key]);
+                    } else {
+                        input[key] = attrs[key];
+                    }
+                });
+                
+                controlDiv.appendChild(input);
+                fieldDiv.appendChild(labelEl);
+                fieldDiv.appendChild(controlDiv);
+                
+                return fieldDiv;
+            }
+
+            function createFieldsContainer(fields) {
+                const rowDiv = document.createElement('div');
+                rowDiv.className = 'columns is-multiline';
+                fields.forEach(field => {
+                    rowDiv.appendChild(field);
+                });
+                fieldsContainer.appendChild(rowDiv);
             }
 
             function setFixedAmount(rm) {
-                fields.fixedAmountHidden.value = rm;
+                fixedAmountHidden.value = rm;
             }
 
             function setEditableAmount(limitText) {
-                fields.fixedAmountHidden.value = '';
+                fixedAmountHidden.value = '';
                 amountNote.textContent = limitText || '';
             }
 
@@ -252,83 +346,120 @@
 
             function onSubcategoryChange() {
                 hideAll();
-                const cat = categorySelect.value; const sub = subcategorySelect.value;
-                // Show common bank fields for most cases
-                if (cat) {
-                    fields.bank_name.hidden = false;
-                    fields.bank_account.hidden = false;
-                }
+                const cat = categorySelect.value; 
+                const sub = subcategorySelect.value;
+                
+                if (!cat || !sub) return;
 
                 if (cat === 'bereavement') {
-                    if (sub === 'student') { setFixedAmount(500); amountNote.textContent = 'Bereavement (Student): Fixed RM 500.'; setRequirements(['Death Certificate']); }
-                    else if (sub === 'parent') { setFixedAmount(200); amountNote.textContent = 'Bereavement (Parent): Fixed RM 200.'; setRequirements(['Death Certificate']); }
-                    else if (sub === 'sibling') { setFixedAmount(100); amountNote.textContent = 'Bereavement (Sibling): Fixed RM 100.'; setRequirements(['Death Certificate']); }
-                    if (fields.uploader){
-                        fields.uploader.hidden = false;
-                        fields.uploadLabel.textContent = 'Death Certificate';
-                        fields.uploadHelp.textContent = 'Upload the certified death certificate';
+                    if (sub === 'student') { 
+                        setFixedAmount(500); 
+                        amountNote.textContent = 'Bereavement (Student): Fixed RM 500.'; 
+                        setRequirements(['Death Certificate']);
                     }
-                    else { hideAll(); }
+                    else if (sub === 'parent') { 
+                        setFixedAmount(200); 
+                        amountNote.textContent = 'Bereavement (Parent): Fixed RM 200.'; 
+                        setRequirements(['Death Certificate']);
+                    }
+                    else if (sub === 'sibling') { 
+                        setFixedAmount(100); 
+                        amountNote.textContent = 'Bereavement (Sibling): Fixed RM 100.'; 
+                        setRequirements(['Death Certificate']);
+                    }
+                    // All bereavement need bank details
+                    if (bankDetails) bankDetails.hidden = false;
+                    if (uploader) uploader.hidden = false;
+                    if (requirements) requirements.hidden = false;
                 }
                 else if (cat === 'illness') {
                     if (sub === 'outpatient') {
                         setEditableAmount('Out-patient: Limited to RM 30 per semester.');
                         setRequirements(['Receipt Clinic']);
-                        if (fields.uploader){
-                            fields.uploader.hidden = false;
-                            fields.uploadLabel.textContent = 'Receipt Clinic';
-                            fields.uploadHelp.textContent = 'Upload the clinic receipt';
-                        }
+                        createFieldsContainer([
+                            createField('text', 'clinic_name', 'Clinic Name', 'Enter clinic/hospital name', true),
+                            createField('textarea', 'reason_visit', 'Reason for Visit', 'Describe the reason for your visit', true),
+                            createField('datetime-local', 'visit_date', 'Date & Time of Visit', '', true),
+                            createField('number', 'amount_applied', 'Total Amount Applied (RM)', '0.00', true, {step: '0.01', min: '0'}),
+                        ]);
+                        if (bankDetails) bankDetails.hidden = false;
+                        if (uploader) uploader.hidden = false;
+                        if (requirements) requirements.hidden = false;
                     } else if (sub === 'inpatient') {
-                        setEditableAmount('In-patient: Limit up to RM 1,000 (if exceeding insurance annual limit).');
-                        setRequirements(['Report / Discharge Note / Hospital Bill']);
-                        if (fields.uploader){
-                            fields.uploader.hidden = false;
-                            fields.uploadLabel.textContent = 'Hospital Documents';
-                            fields.uploadHelp.textContent = 'Upload discharge note, bill, or related documents (multiple allowed)';
-                        }
+                        setEditableAmount('In-patient: Limit up to RM 10,000.');
+                        setRequirements(['Report, Discharge Note, Hospital Bill']);
+                        createFieldsContainer([
+                            createField('textarea', 'reason_visit', 'Reason for Visit', 'Describe the reason for hospitalization', true),
+                            createField('date', 'check_in_date', 'Check-in Date', '', true),
+                            createField('date', 'check_out_date', 'Check-out Date', '', true),
+                            createField('number', 'amount_applied', 'Total Amount Applied (RM)', '0.00', true, {step: '0.01', min: '0', max: '10000'}),
+                        ]);
+                        if (bankDetails) bankDetails.hidden = false;
+                        if (uploader) uploader.hidden = false;
+                        if (requirements) requirements.hidden = false;
                     } else if (sub === 'injuries') {
                         setEditableAmount('Injuries: Coverage up to RM 200 for support equipment.');
-                        setRequirements(['Hospital Report / Receipt of purchased']);
-                        if (fields.uploader){
-                            fields.uploader.hidden = false;
-                            fields.uploadLabel.textContent = 'Injury Documents';
-                            fields.uploadHelp.textContent = 'Upload hospital report and purchase receipts (multiple allowed)';
-                        }
-                    } else { hideAll(); }
+                        setRequirements(['Hospital Report, Receipt of purchased']);
+                        createFieldsContainer([
+                            createField('number', 'amount_applied', 'Total Amount Applied (RM)', '0.00', true, {step: '0.01', min: '0', max: '200'}),
+                        ]);
+                        if (bankDetails) bankDetails.hidden = false;
+                        if (uploader) uploader.hidden = false;
+                        if (requirements) requirements.hidden = false;
+                    }
                 }
                 else if (cat === 'emergency') {
                     if (sub === 'critical') {
-                        setEditableAmount('Critical Illness: Up to RM 200 per claim basis.');
+                        setEditableAmount('Critical Illness: Coverage up to RM 200.');
                         setRequirements(['Supporting Document']);
-                        if (fields.uploader){
-                            fields.uploader.hidden = false;
-                            fields.uploadLabel.textContent = 'Supporting Document';
-                            fields.uploadHelp.textContent = 'Upload initial diagnosis or relevant document';
-                        }
+                        createFieldsContainer([
+                            createField('number', 'amount_applied', 'Total Amount Applied (RM)', '0.00', true, {step: '0.01', min: '0', max: '200'}),
+                        ]);
+                        if (bankDetails) bankDetails.hidden = false;
+                        if (uploader) uploader.hidden = false;
+                        if (requirements) requirements.hidden = false;
                     } else if (sub === 'disaster') {
-                        setEditableAmount('Natural Disaster: Contribution limit RM 200.');
-                        setRequirements(['Supporting Document (Police Report, Photos)']);
-                        if (fields.uploader){
-                            fields.uploader.hidden = false;
-                            fields.uploadLabel.textContent = 'Supporting Documents';
-                            fields.uploadHelp.textContent = 'Upload police report and photos of the incident (multiple allowed)';
-                        }
+                        setEditableAmount('Natural Disaster: Coverage up to RM 200.');
+                        setRequirements(['Supporting Document (Police Report, Photo of incident)']);
+                        createFieldsContainer([
+                            createField('textarea', 'case_description', 'Case Description', 'Describe what happened and how it affected you', true),
+                            createField('number', 'amount_applied', 'Total Amount Applied (RM)', '0.00', true, {step: '0.01', min: '0', max: '200'}),
+                        ]);
+                        if (bankDetails) bankDetails.hidden = false;
+                        if (uploader) uploader.hidden = false;
+                        if (requirements) requirements.hidden = false;
                     } else if (sub === 'others') {
-                        setEditableAmount('Other emergencies: Subject to committee approval.');
+                        setEditableAmount('Other emergencies: Subject to committee approval (limit RM 5,000).');
                         setRequirements(['Supporting Document']);
-                        if (fields.uploader){
-                            fields.uploader.hidden = false;
-                            fields.uploadLabel.textContent = 'Supporting Documents';
-                            fields.uploadHelp.textContent = 'Upload relevant supporting documents (multiple allowed)';
-                        }
-                    } else { hideAll(); }
+                        createFieldsContainer([
+                            createField('textarea', 'case_description', 'Case Description', 'Describe your emergency situation in detail', true),
+                            createField('number', 'amount_applied', 'Total Amount Applied (RM)', '0.00', true, {step: '0.01', min: '0', max: '5000'}),
+                        ]);
+                        if (bankDetails) bankDetails.hidden = false;
+                        if (uploader) uploader.hidden = false;
+                        if (requirements) requirements.hidden = false;
+                    }
                 }
             }
 
             if (categorySelect && subcategorySelect) {
                 categorySelect.addEventListener('change', populateSubcategories);
                 subcategorySelect.addEventListener('change', onSubcategoryChange);
+            }
+
+            // Handle file upload display
+            const fileInput = document.getElementById('upload-input');
+            if (fileInput) {
+                fileInput.addEventListener('change', (e) => {
+                    const files = e.target.files;
+                    const helpText = document.getElementById('upload-help');
+                    if (files && files.length > 0) {
+                        const names = Array.from(files).map(f => f.name).join(', ');
+                        helpText.textContent = names;
+                    } else {
+                        helpText.textContent = 'Upload relevant documents';
+                    }
+                });
             }
         });
     </script>
