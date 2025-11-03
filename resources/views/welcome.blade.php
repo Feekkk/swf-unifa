@@ -8,7 +8,7 @@
     <meta name="author" content="UniKL RCMP">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'UniKL RCMP') }} - Student Welfare Fund</title>
+    <title>RCMP Unifa - Financial Aids System</title>
 
     <!-- Bulma CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css">
@@ -20,7 +20,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
     <!-- Favicon -->
-    <link rel="icon" type="image/png" href="/assets/images/logos/unikl-rcmp.png">
+    <link rel="icon" type="image/png" href="/assets/images/logos/rcmp.png">   
 
     <!-- Custom Styles -->
     <style>

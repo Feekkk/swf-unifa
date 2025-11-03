@@ -1,0 +1,64 @@
+### Application Document needed
+(can upload multiple file)
+
+a.Bereavement (Khairat)
+i.Student (RM 500 fixed)
+- Bank Name (Fill In)
+- No Account Bank (Fill In)
+- Death Certificate *Upload File*
+
+ii.Parent (RM 200 fixed)
+- Bank Name (Fill In)
+- No Account Bank (Fill In)
+- Death Certificate *Upload File*
+
+iii. Sibling (RM 100 fixed)
+- Bank Name (Fill In)
+- No Account Bank (Fill In)
+- Death Certificate *Upload File*
+
+b.Illness & Injuries
+i.Out-patient treatment (limited RM 30 per semester)
+- Clinic Name (Fill In)
+- Reason Visit (Fill In)
+- Date & Time Visit (Calendar)
+- Total Amount Applied (RM) (Fill In)
+- Bank Name (Fill In)
+- No Account Bank (Fill In)
+- Receipt Clinic *Upload File*
+
+ii.In-patient treatment (limit RM 10 000)
+- Reason Visit (Fill In)
+- Check in Date (Calendar)
+- Check out Date (Calendar)
+- Total Amount Applied (RM) (Fill In)
+- Bank Name (Fill In)
+- No Account Bank (Fill In)
+- Report, Discharge Note, Hospital Bill *Upload File*
+
+iii.Injuries (limit RM 200)
+- Total Amount Applied (RM) (Fill In)
+- Bank Name(Fill In)
+- No Account Bank (Fill In)
+- Hospital Report, Receipt of purchased *Upload File*
+
+c.Emergency
+i.Crticial Illness (limit RM 200)
+- Total Amount Applied (RM) (Fill In)
+- Bank Name (Fill In)
+- No Account Bank (Fill In)
+- Supporting Document *Upload File*
+
+ii.Natural Disaster (limit RM 200)
+- Case (Fill In)
+- Total Amount Applied (RM) (Fill In)
+- Bank Name (Fill In)
+- No Account Bank (Fill In)
+- Supporting Document (Police Report, Photo of incident) *Upload File*
+
+iii.Others (limit RM5000)
+- Case(Fill In)
+- Total Amount Applied (RM) (Fill In)
+- Bank Name (Fill In)
+- No Account Bank (Fill In)
+- Supporting Document (Police Report, Photo of incident) *Upload File*

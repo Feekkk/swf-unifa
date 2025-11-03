@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>New Application - RCMP Unifa</title>
+    <link rel="icon" type="image/png" href="/assets/images/logos/rcmp.png">  
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
@@ -50,49 +51,62 @@
             <h1 class="title is-3">New Application</h1>
             <p class="subtitle is-6">Fill in the details below to start your Student Welfare Fund application.</p>
 
+            @php($u = auth()->user())
             <div class="card">
                 <div class="card-content">
                     <form method="POST" action="#">
                         @csrf
+                        <!-- Prefilled hidden info from profile -->
+                        <input type="hidden" name="bank_name" value="{{ $u->bank_name ?? '' }}">
+                        <input type="hidden" name="bank_account_number" value="{{ $u->bank_account_number ?? '' }}">
                         <div class="columns is-multiline">
-                            <div class="column is-12">
-                                <label class="label">Application Type</label>
+                            <div class="column is-6">
+                                <label class="label">Category</label>
                                 <div class="select is-fullwidth">
-                                    <select name="application_type" required>
-                                        <option value="">Select type</option>
+                                    <select id="category-select" name="category" required>
+                                        <option value="">Select category</option>
                                         <option value="bereavement">Bereavement (Khairat)</option>
                                         <option value="illness">Illness &amp; Injuries</option>
                                         <option value="emergency">Emergency</option>
                                     </select>
                                 </div>
                             </div>
-
                             <div class="column is-6">
-                                <label class="label">Requested Amount (RM)</label>
-                                <input class="input" type="number" name="amount" min="0" step="1" placeholder="e.g., 200" required>
-                            </div>
-                            <div class="column is-6">
-                                <label class="label">Bank Account Number</label>
-                                <input class="input" type="text" name="bank_account_number" placeholder="e.g., 1234567890" required>
-                            </div>
-
-                            <div class="column is-12">
-                                <label class="label">Reason / Description</label>
-                                <textarea class="textarea" name="reason" rows="4" placeholder="Provide a brief description and justification" required></textarea>
+                                <label class="label">Sub-category</label>
+                                <div class="select is-fullwidth">
+                                    <select id="subcategory-select" name="subcategory" required>
+                                        <option value="">Select sub-category</option>
+                                    </select>
+                                </div>
                             </div>
 
-                            <div class="column is-12">
-                                <label class="label">Supporting Documents</label>
+                            <div class="column is-8">
+                                <article class="message is-info">
+                                    <div class="message-body" id="amount-note" style="color:#000">Please select a category and sub-category to see required details.</div>
+                                </article>
+                            </div>
+                            <div class="column is-4">
+                                <div class="card">
+                                    <div class="card-content">
+                                        <p class="title is-6" style="color:#191970">Required Documents</p>
+                                        <ul id="requirements-list" class="content" style="margin-left:1rem; color:#000">
+                                            <li>Select a category to view requirements</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Only required documents uploader (dynamic) -->
+                            <div class="column is-12" data-section="uploader" hidden>
+                                <label class="label" id="upload-label">Supporting Documents</label>
                                 <div class="file has-name is-fullwidth">
                                     <label class="file-label">
-                                        <input class="file-input" type="file" name="documents" multiple>
-                                        <span class="file-cta">
-                                            <span class="icon"><i class="fa-solid fa-paperclip"></i></span>
-                                            <span>Choose files…</span>
-                                        </span>
-                                        <span class="file-name">Optional: Upload receipts, medical letters, etc.</span>
+                                        <input class="file-input" type="file" id="upload-input" name="documents[]" multiple>
+                                        <span class="file-cta"><span class="icon"><i class="fa-solid fa-paperclip"></i></span><span>Choose files…</span></span>
+                                        <span class="file-name" id="upload-help">Upload relevant documents</span>
                                     </label>
                                 </div>
+                                <input type="hidden" name="amount" id="fixed-amount-hidden">
                             </div>
                         </div>
 
@@ -172,6 +186,149 @@
             const menu = document.getElementById('navbarMenu');
             if(burger && menu){
                 burger.addEventListener('click', ()=>{ burger.classList.toggle('is-active'); menu.classList.toggle('is-active'); });
+            }
+
+            // Dynamic form by category/subcategory
+            const categorySelect = document.getElementById('category-select');
+            const subcategorySelect = document.getElementById('subcategory-select');
+            const amountNote = document.getElementById('amount-note');
+            const fields = {
+                uploader: document.querySelector('[data-section="uploader"]'),
+                uploadLabel: document.getElementById('upload-label'),
+                uploadHelp: document.getElementById('upload-help'),
+                fixedAmountHidden: document.getElementById('fixed-amount-hidden'),
+            };
+
+            // legacy sections removed; only uploader is shown dynamically
+
+            const reqList = document.getElementById('requirements-list');
+
+            function setRequirements(items){
+                reqList.innerHTML = '';
+                if(!items || items.length===0){
+                    const li = document.createElement('li'); li.textContent = 'No specific documents required.'; reqList.appendChild(li); return;
+                }
+                items.forEach(text => { const li = document.createElement('li'); li.textContent = text; reqList.appendChild(li); });
+            }
+
+            function hideAll() {
+                if (fields.uploader) fields.uploader.hidden = true;
+            }
+
+            function setFixedAmount(rm) {
+                fields.fixedAmountHidden.value = rm;
+            }
+
+            function setEditableAmount(limitText) {
+                fields.fixedAmountHidden.value = '';
+                amountNote.textContent = limitText || '';
+            }
+
+            function populateSubcategories() {
+                subcategorySelect.innerHTML = '';
+                const placeholder = document.createElement('option');
+                placeholder.value = '';
+                placeholder.textContent = 'Select sub-category';
+                subcategorySelect.appendChild(placeholder);
+                const cat = categorySelect.value;
+                if (cat === 'bereavement') {
+                    ['Student','Parent','Sibling'].forEach((label, i) => {
+                        const val = ['student','parent','sibling'][i];
+                        const opt = document.createElement('option');
+                        opt.value = val; opt.textContent = label; subcategorySelect.appendChild(opt);
+                    });
+                } else if (cat === 'illness') {
+                    [['outpatient','Out-patient treatment'],['inpatient','In-patient treatment'],['injuries','Injuries']].forEach(([v,l])=>{
+                        const opt = document.createElement('option'); opt.value=v; opt.textContent=l; subcategorySelect.appendChild(opt);
+                    });
+                } else if (cat === 'emergency') {
+                    [['critical','Critical Illness'],['disaster','Natural Disaster'],['others','Others']].forEach(([v,l])=>{
+                        const opt = document.createElement('option'); opt.value=v; opt.textContent=l; subcategorySelect.appendChild(opt);
+                    });
+                }
+                amountNote.textContent = 'Please choose a sub-category to proceed.';
+                hideAll();
+            }
+
+            function onSubcategoryChange() {
+                hideAll();
+                const cat = categorySelect.value; const sub = subcategorySelect.value;
+                // Show common bank fields for most cases
+                if (cat) {
+                    fields.bank_name.hidden = false;
+                    fields.bank_account.hidden = false;
+                }
+
+                if (cat === 'bereavement') {
+                    if (sub === 'student') { setFixedAmount(500); amountNote.textContent = 'Bereavement (Student): Fixed RM 500.'; setRequirements(['Death Certificate']); }
+                    else if (sub === 'parent') { setFixedAmount(200); amountNote.textContent = 'Bereavement (Parent): Fixed RM 200.'; setRequirements(['Death Certificate']); }
+                    else if (sub === 'sibling') { setFixedAmount(100); amountNote.textContent = 'Bereavement (Sibling): Fixed RM 100.'; setRequirements(['Death Certificate']); }
+                    if (fields.uploader){
+                        fields.uploader.hidden = false;
+                        fields.uploadLabel.textContent = 'Death Certificate';
+                        fields.uploadHelp.textContent = 'Upload the certified death certificate';
+                    }
+                    else { hideAll(); }
+                }
+                else if (cat === 'illness') {
+                    if (sub === 'outpatient') {
+                        setEditableAmount('Out-patient: Limited to RM 30 per semester.');
+                        setRequirements(['Receipt Clinic']);
+                        if (fields.uploader){
+                            fields.uploader.hidden = false;
+                            fields.uploadLabel.textContent = 'Receipt Clinic';
+                            fields.uploadHelp.textContent = 'Upload the clinic receipt';
+                        }
+                    } else if (sub === 'inpatient') {
+                        setEditableAmount('In-patient: Limit up to RM 1,000 (if exceeding insurance annual limit).');
+                        setRequirements(['Report / Discharge Note / Hospital Bill']);
+                        if (fields.uploader){
+                            fields.uploader.hidden = false;
+                            fields.uploadLabel.textContent = 'Hospital Documents';
+                            fields.uploadHelp.textContent = 'Upload discharge note, bill, or related documents (multiple allowed)';
+                        }
+                    } else if (sub === 'injuries') {
+                        setEditableAmount('Injuries: Coverage up to RM 200 for support equipment.');
+                        setRequirements(['Hospital Report / Receipt of purchased']);
+                        if (fields.uploader){
+                            fields.uploader.hidden = false;
+                            fields.uploadLabel.textContent = 'Injury Documents';
+                            fields.uploadHelp.textContent = 'Upload hospital report and purchase receipts (multiple allowed)';
+                        }
+                    } else { hideAll(); }
+                }
+                else if (cat === 'emergency') {
+                    if (sub === 'critical') {
+                        setEditableAmount('Critical Illness: Up to RM 200 per claim basis.');
+                        setRequirements(['Supporting Document']);
+                        if (fields.uploader){
+                            fields.uploader.hidden = false;
+                            fields.uploadLabel.textContent = 'Supporting Document';
+                            fields.uploadHelp.textContent = 'Upload initial diagnosis or relevant document';
+                        }
+                    } else if (sub === 'disaster') {
+                        setEditableAmount('Natural Disaster: Contribution limit RM 200.');
+                        setRequirements(['Supporting Document (Police Report, Photos)']);
+                        if (fields.uploader){
+                            fields.uploader.hidden = false;
+                            fields.uploadLabel.textContent = 'Supporting Documents';
+                            fields.uploadHelp.textContent = 'Upload police report and photos of the incident (multiple allowed)';
+                        }
+                    } else if (sub === 'others') {
+                        setEditableAmount('Other emergencies: Subject to committee approval.');
+                        setRequirements(['Supporting Document']);
+                        if (fields.uploader){
+                            fields.uploader.hidden = false;
+                            fields.uploadLabel.textContent = 'Supporting Documents';
+                            fields.uploadHelp.textContent = 'Upload relevant supporting documents (multiple allowed)';
+                        }
+                    } else { hideAll(); }
+                }
+            }
+
+            if (categorySelect && subcategorySelect) {
+                categorySelect.addEventListener('change', populateSubcategories);
+                subcategorySelect.addEventListener('change', onSubcategoryChange);
             }
         });
     </script>
