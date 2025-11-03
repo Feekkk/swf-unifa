@@ -28,8 +28,15 @@
         .select select{background:#ffffff;color:var(--text);border:1px solid #dfe3ea;border-radius:12px;padding:.6rem .9rem}
         .input:focus, .textarea:focus, .select select:focus{border-color:var(--primary);box-shadow:0 0 0 0.125em rgba(65,105,225,.25)}
         ::placeholder{color:#94a3b8}
-        .navbar{background-color:var(--primary-dark)!important}
-        .navbar .navbar-item{color:#fff!important}
+        .navbar{background-color:var(--primary-dark)!important; transition:background-color 0.3s ease}
+        .navbar:hover{background-color:rgba(25,25,112,0.95)!important}
+        .navbar .navbar-item{color:#fff!important; position:relative; overflow:hidden; transition:background-color 0.3s ease}
+        .navbar-menu .navbar-item::after{content:''; position:absolute; bottom:0; left:50%; width:0; height:2px; background:var(--accent); transform:translateX(-50%); transition:width 0.3s ease}
+        .navbar-menu .navbar-item:hover::after{width:80%}
+        .navbar-menu .navbar-item:hover{background-color:rgba(255,255,255,0.1)!important}
+        .navbar-brand .navbar-item::after,
+        .navbar-item.has-icon::after,
+        .navbar-item.no-underline::after{display:none!important}
         .button.is-primary{background-color:var(--primary);border-color:var(--primary);color:#fff}
         .button.is-primary:hover{background-color:var(--primary-dark);border-color:var(--primary-dark);color:#fff}
         .password-toggle{cursor:pointer}
@@ -316,6 +323,46 @@
             const menu = document.getElementById('navbarMenu');
             if(burger && menu){
                 burger.addEventListener('click', ()=>{ burger.classList.toggle('is-active'); menu.classList.toggle('is-active'); });
+            }
+
+            // Handle navbar hover effects
+            const navbarItems = document.querySelectorAll('.navbar-menu .navbar-item');
+            const brandItem = document.querySelector('.navbar-brand .navbar-item');
+            const navbarEnd = document.querySelector('.navbar-end');
+            
+            navbarItems.forEach(item => {
+                if (item.querySelector('.button') || item.querySelector('i.fa, i.fas, i.far')) {
+                    item.classList.add('has-icon');
+                }
+            });
+            
+            if (brandItem) {
+                brandItem.addEventListener('mouseenter', () => {
+                    navbarItems.forEach(item => item.classList.add('no-underline'));
+                });
+                brandItem.addEventListener('mouseleave', () => {
+                    navbarItems.forEach(item => item.classList.remove('no-underline'));
+                });
+            }
+            
+            if (burger) {
+                burger.addEventListener('mouseenter', () => {
+                    navbarItems.forEach(item => item.classList.add('no-underline'));
+                });
+                burger.addEventListener('mouseleave', () => {
+                    navbarItems.forEach(item => item.classList.remove('no-underline'));
+                });
+            }
+            
+            if (navbarEnd) {
+                navbarEnd.addEventListener('mouseenter', () => {
+                    const menuItems = document.querySelectorAll('.navbar-start .navbar-item');
+                    menuItems.forEach(item => item.classList.add('no-underline'));
+                });
+                navbarEnd.addEventListener('mouseleave', () => {
+                    const menuItems = document.querySelectorAll('.navbar-start .navbar-item');
+                    menuItems.forEach(item => item.classList.remove('no-underline'));
+                });
             }
 
             // Password visibility toggles

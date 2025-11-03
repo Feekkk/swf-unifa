@@ -11,8 +11,15 @@
     <style>
         :root { --primary-dark:#191970; --primary:#4169E1; --accent:#FFC000; --background:#FAF9F6; --text:#000 }
         body{background:var(--background); color:var(--text)}
-        .navbar{background-color:var(--primary-dark)!important; min-height:4.5rem; box-shadow:0 2px 8px rgba(0,0,0,.1)}
-        .navbar .navbar-item{color:#fff!important}
+        .navbar{background-color:var(--primary-dark)!important; min-height:4.5rem; box-shadow:0 2px 8px rgba(0,0,0,.1); transition:background-color 0.3s ease}
+        .navbar:hover{background-color:rgba(25,25,112,0.95)!important}
+        .navbar .navbar-item{color:#fff!important; position:relative; overflow:hidden; transition:background-color 0.3s ease}
+        .navbar-menu .navbar-item::after{content:''; position:absolute; bottom:0; left:50%; width:0; height:2px; background:var(--accent); transform:translateX(-50%); transition:width 0.3s ease}
+        .navbar-menu .navbar-item:hover::after{width:80%}
+        .navbar-menu .navbar-item:hover{background-color:rgba(255,255,255,0.1)!important}
+        .navbar-brand .navbar-item::after,
+        .navbar-item.has-icon::after,
+        .navbar-item.no-underline::after{display:none!important}
         .navbar-brand .brand-wrap{display:flex; align-items:center}
         .navbar-brand .brand-wrap img.logo{max-height:3.5rem}
         .navbar-brand .brand-name{display:flex; flex-direction:column; margin-left:.5rem}
@@ -262,6 +269,46 @@
             const menu = document.getElementById('navbarMenu');
             if(burger && menu){
                 burger.addEventListener('click', ()=>{ burger.classList.toggle('is-active'); menu.classList.toggle('is-active'); });
+            }
+
+            // Handle navbar hover effects
+            const navbarItems = document.querySelectorAll('.navbar-menu .navbar-item');
+            const brandItem = document.querySelector('.navbar-brand .navbar-item');
+            const navbarEnd = document.querySelector('.navbar-end');
+            
+            navbarItems.forEach(item => {
+                if (item.querySelector('.button') || item.querySelector('i.fa, i.fas, i.far')) {
+                    item.classList.add('has-icon');
+                }
+            });
+            
+            if (brandItem) {
+                brandItem.addEventListener('mouseenter', () => {
+                    navbarItems.forEach(item => item.classList.add('no-underline'));
+                });
+                brandItem.addEventListener('mouseleave', () => {
+                    navbarItems.forEach(item => item.classList.remove('no-underline'));
+                });
+            }
+            
+            if (burger) {
+                burger.addEventListener('mouseenter', () => {
+                    navbarItems.forEach(item => item.classList.add('no-underline'));
+                });
+                burger.addEventListener('mouseleave', () => {
+                    navbarItems.forEach(item => item.classList.remove('no-underline'));
+                });
+            }
+            
+            if (navbarEnd) {
+                navbarEnd.addEventListener('mouseenter', () => {
+                    const menuItems = document.querySelectorAll('.navbar-start .navbar-item');
+                    menuItems.forEach(item => item.classList.add('no-underline'));
+                });
+                navbarEnd.addEventListener('mouseleave', () => {
+                    const menuItems = document.querySelectorAll('.navbar-start .navbar-item');
+                    menuItems.forEach(item => item.classList.remove('no-underline'));
+                });
             }
         });
     </script>

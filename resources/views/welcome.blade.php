@@ -73,8 +73,59 @@
         .navbar-brand .brand-name img.wordmark { height: 1.6rem; }
         .navbar-brand .brand-name .rcmp { margin-top: .15rem; font-weight: 800; letter-spacing: .5px; color: #fff; font-size: .85rem; }
         
+        .navbar-menu .navbar-item {
+            position: relative;
+            overflow: hidden;
+            transition: background-color 0.3s ease;
+        }
+        
+        .navbar-menu .navbar-item::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background: var(--accent);
+            transform: translateX(-50%);
+            transition: width 0.3s ease;
+        }
+        
+        .navbar-menu .navbar-item:hover::after {
+            width: 80%;
+        }
+        
         .navbar-menu .navbar-item:hover {
             background-color: rgba(255, 255, 255, 0.1) !important;
+        }
+        
+        /* Remove animation when hovering over brand, icons, or buttons */
+        .navbar-brand .navbar-item:hover::after,
+        .navbar-item .button:hover::after,
+        .navbar-item i:hover::after,
+        .navbar-burger:hover ~ * .navbar-item::after {
+            display: none;
+        }
+        
+        /* Dark background effect on navbar hover */
+        .navbar {
+            transition: background-color 0.3s ease;
+        }
+        
+        .navbar:hover {
+            background-color: rgba(25, 25, 112, 0.95) !important;
+        }
+        
+        /* Ensure icons and buttons don't trigger underline */
+        .navbar-item.has-icon::after,
+        .navbar-item .icon::after,
+        .navbar-item.no-underline::after {
+            display: none !important;
+        }
+        
+        /* Prevent underline on brand item */
+        .navbar-brand .navbar-item::after {
+            display: none !important;
         }
 
         /* Theme overrides for Bulma */
@@ -820,7 +871,49 @@
                 });
             }
 
-            // No slideshow (single static background)
+            // Handle navbar hover effects
+            const navbar = document.querySelector('.navbar');
+            const navbarItems = document.querySelectorAll('.navbar-menu .navbar-item');
+            const brandItem = document.querySelector('.navbar-brand .navbar-item');
+            const navbarEnd = document.querySelector('.navbar-end');
+            
+            // Add classes to identify menu items vs buttons/icons
+            navbarItems.forEach(item => {
+                if (item.querySelector('.button') || item.querySelector('i.fa, i.fas, i.far')) {
+                    item.classList.add('has-icon');
+                }
+            });
+            
+            // Remove underline effect when hovering over brand, burger, or items with buttons/icons
+            if (brandItem) {
+                brandItem.addEventListener('mouseenter', () => {
+                    navbarItems.forEach(item => item.classList.add('no-underline'));
+                });
+                brandItem.addEventListener('mouseleave', () => {
+                    navbarItems.forEach(item => item.classList.remove('no-underline'));
+                });
+            }
+            
+            const burger = document.querySelector('.navbar-burger');
+            if (burger) {
+                burger.addEventListener('mouseenter', () => {
+                    navbarItems.forEach(item => item.classList.add('no-underline'));
+                });
+                burger.addEventListener('mouseleave', () => {
+                    navbarItems.forEach(item => item.classList.remove('no-underline'));
+                });
+            }
+            
+            if (navbarEnd) {
+                navbarEnd.addEventListener('mouseenter', () => {
+                    const menuItems = document.querySelectorAll('.navbar-start .navbar-item');
+                    menuItems.forEach(item => item.classList.add('no-underline'));
+                });
+                navbarEnd.addEventListener('mouseleave', () => {
+                    const menuItems = document.querySelectorAll('.navbar-start .navbar-item');
+                    menuItems.forEach(item => item.classList.remove('no-underline'));
+                });
+            }
         });
     </script>
 </body>
