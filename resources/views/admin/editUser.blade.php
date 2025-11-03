@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>Admin Dashboard - RCMP Unifa</title>
+    <title>Edit User - Admin - RCMP Unifa</title>
     <link rel="icon" type="image/png" href="/assets/images/logos/rcmp.png">  
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
@@ -18,7 +18,7 @@
         .navbar-brand .brand-name{display:flex; flex-direction:column; margin-left:.5rem}
         .navbar-brand .brand-name img.wordmark{height:1.6rem}
         .navbar-brand .brand-name .rcmp{margin-top:.15rem; font-weight:800; letter-spacing:.5px; color:#fff; font-size:.85rem}
-
+        
         /* Dashboard theming */
         .title, .subtitle{color:var(--text)}
         .card{background:#fff; border:1px solid rgba(0,0,0,.06); box-shadow:0 4px 12px rgba(0,0,0,.06)}
@@ -28,43 +28,18 @@
         .button.is-primary:hover{filter:brightness(.95)}
         .button.is-accent{background-color:var(--accent); border-color:var(--accent); color:#000}
         .button.is-accent:hover{filter:brightness(.95)}
-
+        .input, .select select { background-color: #fff !important; color: #000 !important; }
+        
         /* Spacing tweaks */
         .dashboard-columns{gap:1.25rem}
-        .footer {
-            background-color: var(--primary-dark);
-            color: #fff;
-        }
+        .footer { background-color: var(--primary-dark); color: #fff; }
         .footer a { color: rgba(255, 255, 255, 0.8); }
         .footer a:hover { color: var(--accent); }
-        
-        /* Admin specific styles */
-        .admin-card {
-            transition: transform 0.2s, box-shadow 0.2s;
-            cursor: pointer;
-        }
-        .admin-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-        }
-        .admin-card-icon {
-            width: 80px;
-            height: 80px;
-            border-radius: 16px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 1.5rem;
-            background: linear-gradient(135deg, rgba(65, 105, 225, 0.1), rgba(255, 192, 0, 0.1));
-        }
-        .admin-card-icon i {
-            font-size: 2.5rem;
-            color: var(--primary);
-        }
+        .password-toggle { cursor: pointer; }
     </style>
     @vite(['resources/js/app.js'])
     @stack('head')
-    </head>
+</head>
 <body>
     <nav class="navbar is-fixed-top" role="navigation" aria-label="main navigation">
         <div class="container">
@@ -85,7 +60,8 @@
             <div id="navbarMenu" class="navbar-menu">
                 <div class="navbar-start">
                     <a class="navbar-item" href="/">Home</a>
-                    <a class="navbar-item" href="/admin/applications">View Applications</a>
+                    <a class="navbar-item" href="/admin/dashboard">Dashboard</a>
+                    <a class="navbar-item" href="/admin/users">Manage Users</a>
                 </div>
                 <div class="navbar-end">
                     <a class="navbar-item" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a>
@@ -97,14 +73,37 @@
 
     <section class="section" style="padding-top:6rem">
         <div class="container">
-            <h1 class="title is-3">Admin Dashboard</h1>
-            <p class="subtitle is-6">Welcome, {{ Auth::guard('admin')->user()->name ?? 'Admin' }}.</p>
-            
-            @if (session('success') || session('status'))
+            <div class="level">
+                <div class="level-left">
+                    <div>
+                        <h1 class="title is-3">Edit User Password</h1>
+                        <p class="subtitle is-6">Change password for {{ $userName }} ({{ ucfirst($role) }})</p>
+                    </div>
+                </div>
+                <div class="level-right">
+                    <a href="{{ route('admin.users.index') }}" class="button is-light">
+                        <span class="icon"><i class="fas fa-arrow-left"></i></span>
+                        <span>Back to Users</span>
+                    </a>
+                </div>
+            </div>
+
+            @if ($errors->any())
+                <div class="notification is-danger is-light mb-4" style="border-left: 4px solid #f14668;">
+                    <button class="delete" onclick="this.parentElement.remove()"></button>
+                    <ul class="mb-0">
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+
+            @if (session('success'))
                 <div class="notification is-success is-light mb-4" style="border-left: 4px solid #48c774;">
                     <button class="delete" onclick="this.parentElement.remove()"></button>
                     <span class="icon mr-2"><i class="fa-solid fa-circle-check"></i></span>
-                    {{ session('success') ?? session('status') }}
+                    {{ session('success') }}
                 </div>
             @endif
 
@@ -116,81 +115,75 @@
                 </div>
             @endif
 
-            <div class="columns is-variable is-5 dashboard-columns">
-                <div class="column is-12-tablet is-8-desktop">
-                    <h2 class="title is-5">Quick Actions</h2>
-                    
-                    <div class="columns is-multiline">
-                        <div class="column is-6">
-                            <div class="card admin-card">
-                                <div class="card-content has-text-centered">
-                                    <div class="admin-card-icon">
-                                        <i class="fas fa-file-invoice"></i>
-                                    </div>
-                                    <h3 class="title is-5">View Applications</h3>
-                                    <p class="subtitle is-6" style="color:#000">Review and manage student applications for financial aid</p>
-                                    <div class="buttons is-centered mt-4">
-                                        <a href="/admin/applications" class="button is-primary">
-                                            <span class="icon"><i class="fas fa-eye"></i></span>
-                                            <span>View All</span>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="column is-6">
-                            <div class="card admin-card">
-                                <div class="card-content has-text-centered">
-                                    <div class="admin-card-icon">
-                                        <i class="fas fa-user-shield"></i>
-                                    </div>
-                                    <h3 class="title is-5">Manage Users</h3>
-                                    <p class="subtitle is-6" style="color:#000">View and manage registered user accounts and settings</p>
-                                    <div class="buttons is-centered mt-4">
-                                        <a href="/admin/users" class="button is-accent">
-                                            <span class="icon"><i class="fas fa-users-cog"></i></span>
-                                            <span>Manage Registered Users</span>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="column is-12-tablet is-4-desktop">
-                    <h2 class="title is-5">Profile Information</h2>
+            <div class="columns">
+                <div class="column is-8 is-offset-2">
                     <div class="card">
                         <div class="card-content">
-                            @php($admin = Auth::guard('admin')->user())
-                            <div class="columns is-multiline is-mobile">
-                                <div class="column is-12">
-                                    <p class="is-size-7" style="color:#000">Name</p>
-                                    <p class="is-size-6">{{ $admin->name ?? '-' }}</p>
-                                </div>
-                                <div class="column is-12">
-                                    <p class="is-size-7" style="color:#000">Email</p>
-                                    <p class="is-size-6">{{ $admin->email ?? '-' }}</p>
-                                </div>
-                                <div class="column is-12">
-                                    <p class="is-size-7" style="color:#000">Role</p>
-                                    <p class="is-size-6">
-                                        <span class="tag is-info">Administrator</span>
-                                    </p>
-                                </div>
-                                <div class="column is-12">
-                                    <a href="/admin/profile/edit" class="button is-primary is-light is-fullwidth">
-                                        <span class="icon"><i class="fa-solid fa-user-pen"></i></span>
-                                        <span>Edit Profile</span>
-                                    </a>
-                                </div>
+                            <h2 class="title is-5 mb-4">User Information</h2>
+                            <div class="field">
+                                <label class="label">Name</label>
+                                <p class="is-size-6">{{ $userName }}</p>
                             </div>
+                            <div class="field">
+                                <label class="label">Email</label>
+                                <p class="is-size-6">{{ $user->email }}</p>
+                            </div>
+                            <div class="field">
+                                <label class="label">Role</label>
+                                <p class="is-size-6">
+                                    <span class="tag {{ $role === 'admin' ? 'is-warning' : 'is-info' }}">
+                                        {{ ucfirst($role) }}
+                                    </span>
+                                </p>
+                            </div>
+
+                            <hr class="mt-5 mb-5">
+
+                            <h2 class="title is-5 mb-4">Change Password</h2>
+                            <p class="help mb-4" style="color:#000">Enter the new password for this user.</p>
+
+                            <form method="POST" action="{{ route('admin.users.updatePassword', ['role' => $role, 'id' => $user->id]) }}">
+                                @csrf
+
+                                <div class="field">
+                                    <label class="label">New Password</label>
+                                    <div class="control has-icons-right">
+                                        <input class="input @error('password') is-danger @enderror" type="password" name="password" id="new-password" placeholder="Enter new password" required>
+                                        <span class="icon is-small is-right password-toggle" data-toggle-target="new-password">
+                                            <i class="fa-regular fa-eye"></i>
+                                        </span>
+                                    </div>
+                                    @error('password')
+                                        <p class="help is-danger">{{ $message }}</p>
+                                    @enderror
+                                </div>
+
+                                <div class="field">
+                                    <label class="label">Confirm New Password</label>
+                                    <div class="control has-icons-right">
+                                        <input class="input @error('password') is-danger @enderror" type="password" name="password_confirmation" id="confirm-password" placeholder="Confirm new password" required>
+                                        <span class="icon is-small is-right password-toggle" data-toggle-target="confirm-password">
+                                            <i class="fa-regular fa-eye"></i>
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <div class="field is-grouped">
+                                    <div class="control">
+                                        <button type="submit" class="button is-primary">
+                                            <span class="icon"><i class="fa-solid fa-floppy-disk"></i></span>
+                                            <span>Update Password</span>
+                                        </button>
+                                    </div>
+                                    <div class="control">
+                                        <a href="{{ route('admin.users.index') }}" class="button is-light">Cancel</a>
+                                    </div>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>
             </div>
-            @yield('content')
         </div>
     </section>
 
@@ -218,7 +211,8 @@
                     <ul>
                         <li><a href="/admin/dashboard">Dashboard</a></li>
                         <li><a href="/admin/applications">View Applications</a></li>
-                        <li><a href="/admin/profile">Profile</a></li>
+                        <li><a href="/admin/users">Manage Users</a></li>
+                        <li><a href="/admin/profile/edit">Profile</a></li>
                     </ul>
                 </div>
                 <div class="column is-4">
@@ -261,9 +255,32 @@
             const burger = document.querySelector('.navbar-burger');
             const menu = document.getElementById('navbarMenu');
             if(burger && menu){
-                burger.addEventListener('click', ()=>{ burger.classList.toggle('is-active'); menu.classList.toggle('is-active'); });
+                burger.addEventListener('click', ()=>{ 
+                    burger.classList.toggle('is-active'); 
+                    menu.classList.toggle('is-active'); 
+                });
             }
+
+            // Password toggle functionality
+            document.querySelectorAll('.password-toggle').forEach(toggle => {
+                toggle.addEventListener('click', function() {
+                    const targetId = this.getAttribute('data-toggle-target');
+                    const input = document.getElementById(targetId);
+                    const icon = this.querySelector('i');
+                    
+                    if (input.type === 'password') {
+                        input.type = 'text';
+                        icon.classList.remove('fa-eye');
+                        icon.classList.add('fa-eye-slash');
+                    } else {
+                        input.type = 'password';
+                        icon.classList.remove('fa-eye-slash');
+                        icon.classList.add('fa-eye');
+                    }
+                });
+            });
         });
     </script>
 </body>
 </html>
+

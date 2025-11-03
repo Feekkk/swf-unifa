@@ -64,6 +64,12 @@ Route::middleware('auth:admin')->group(function () {
     // Admin profile routes
     Route::get('/admin/profile/edit', [\App\Http\Controllers\Admin\ProfileController::class, 'edit'])->name('admin.profile.edit');
     Route::post('/admin/profile/update', [\App\Http\Controllers\Admin\ProfileController::class, 'update'])->name('admin.profile.update');
+
+    // Admin user management
+    Route::get('/admin/users', [\App\Http\Controllers\Admin\UserController::class, 'index'])->name('admin.users.index');
+    Route::get('/admin/users/{role}/{id}/edit', [\App\Http\Controllers\Admin\UserController::class, 'edit'])->name('admin.users.edit');
+    Route::post('/admin/users/{role}/{id}/password', [\App\Http\Controllers\Admin\UserController::class, 'updatePassword'])->name('admin.users.updatePassword');
+    Route::delete('/admin/users/{role}/{id}', [\App\Http\Controllers\Admin\UserController::class, 'destroy'])->name('admin.users.destroy');
 });
 
 // Logout Route (accessible by both students and admins)
