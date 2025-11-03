@@ -37,6 +37,30 @@
         }
         .footer a { color: rgba(255, 255, 255, 0.8); }
         .footer a:hover { color: var(--accent); }
+        
+        /* Admin specific styles */
+        .admin-card {
+            transition: transform 0.2s, box-shadow 0.2s;
+            cursor: pointer;
+        }
+        .admin-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        }
+        .admin-card-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            background: linear-gradient(135deg, rgba(65, 105, 225, 0.1), rgba(255, 192, 0, 0.1));
+        }
+        .admin-card-icon i {
+            font-size: 2.5rem;
+            color: var(--primary);
+        }
     </style>
     @vite(['resources/js/app.js'])
     @stack('head')
@@ -61,6 +85,7 @@
             <div id="navbarMenu" class="navbar-menu">
                 <div class="navbar-start">
                     <a class="navbar-item" href="/">Home</a>
+                    <a class="navbar-item" href="/admin/applications">View Applications</a>
                 </div>
                 <div class="navbar-end">
                     <a class="navbar-item" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a>
@@ -83,16 +108,150 @@
                 </div>
             @endif
 
-            <div class="content">
-                <p>Admin dashboard functionality coming soon...</p>
+            @if (session('error'))
+                <div class="notification is-danger is-light mb-4" style="border-left: 4px solid #f14668;">
+                    <button class="delete" onclick="this.parentElement.remove()"></button>
+                    <span class="icon mr-2"><i class="fa-solid fa-circle-exclamation"></i></span>
+                    {{ session('error') }}
+                </div>
+            @endif
+
+            <div class="columns is-variable is-5 dashboard-columns">
+                <div class="column is-12-tablet is-8-desktop">
+                    <h2 class="title is-5">Quick Actions</h2>
+                    
+                    <div class="columns is-multiline">
+                        <div class="column is-6">
+                            <div class="card admin-card">
+                                <div class="card-content has-text-centered">
+                                    <div class="admin-card-icon">
+                                        <i class="fas fa-file-invoice"></i>
+                                    </div>
+                                    <h3 class="title is-5">View Applications</h3>
+                                    <p class="subtitle is-6" style="color:#000">Review and manage student applications for financial aid</p>
+                                    <div class="buttons is-centered mt-4">
+                                        <a href="/admin/applications" class="button is-primary">
+                                            <span class="icon"><i class="fas fa-eye"></i></span>
+                                            <span>View All</span>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="column is-6">
+                            <div class="card admin-card">
+                                <div class="card-content has-text-centered">
+                                    <div class="admin-card-icon">
+                                        <i class="fas fa-user-shield"></i>
+                                    </div>
+                                    <h3 class="title is-5">Admin Profile</h3>
+                                    <p class="subtitle is-6" style="color:#000">Manage your admin account settings and preferences</p>
+                                    <div class="buttons is-centered mt-4">
+                                        <a href="/admin/profile" class="button is-accent">
+                                            <span class="icon"><i class="fas fa-user-cog"></i></span>
+                                            <span>View Profile</span>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="column is-12-tablet is-4-desktop">
+                    <h2 class="title is-5">Profile Information</h2>
+                    <div class="card">
+                        <div class="card-content">
+                            @php($admin = Auth::guard('admin')->user())
+                            <div class="columns is-multiline is-mobile">
+                                <div class="column is-12">
+                                    <p class="is-size-7" style="color:#000">Name</p>
+                                    <p class="is-size-6">{{ $admin->name ?? '-' }}</p>
+                                </div>
+                                <div class="column is-12">
+                                    <p class="is-size-7" style="color:#000">Email</p>
+                                    <p class="is-size-6">{{ $admin->email ?? '-' }}</p>
+                                </div>
+                                <div class="column is-12">
+                                    <p class="is-size-7" style="color:#000">Role</p>
+                                    <p class="is-size-6">
+                                        <span class="tag is-info">Administrator</span>
+                                    </p>
+                                </div>
+                                <div class="column is-12">
+                                    <a href="/admin/profile" class="button is-primary is-light is-fullwidth">
+                                        <span class="icon"><i class="fa-solid fa-user-pen"></i></span>
+                                        <span>Edit Profile</span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
+            @yield('content')
         </div>
     </section>
 
     <footer class="footer">
         <div class="container">
-            <div class="content has-text-centered">
-                <p>&copy; {{ date('Y') }} Universiti Kuala Lumpur Royal College of Medicine Perak. All rights reserved.</p>
+            <div class="columns">
+                <div class="column is-4">
+                    <div class="mb-3">
+                        <img src="/assets/images/logos/rcmp-white.png" alt="UniKL RCMP White Logo" style="height:90px">
+                    </div>
+                    <p class="has-text-white-ter">Universiti Kuala Lumpur Royal College of Medicine Perak is committed to providing quality medical education and supporting our students through comprehensive welfare programs.</p>
+                    <p class="tag is-warning mt-4">Accredited by the Malaysian Medical Council</p>
+                </div>
+                <div class="column is-2">
+                    <h4 class="title is-6 has-text-white mb-4">Main Pages</h4>
+                    <ul>
+                        <li><a href="/">Home</a></li>
+                        <li><a href="/#about">About SWF</a></li>
+                        <li><a href="/#application">Apply for Fund</a></li>
+                        <li><a href="/#contact">Contact Us</a></li>
+                    </ul>
+                </div>
+                <div class="column is-2">
+                    <h4 class="title is-6 has-text-white mb-4">Admin Portal</h4>
+                    <ul>
+                        <li><a href="/admin/dashboard">Dashboard</a></li>
+                        <li><a href="/admin/applications">View Applications</a></li>
+                        <li><a href="/admin/profile">Profile</a></li>
+                    </ul>
+                </div>
+                <div class="column is-4">
+                    <h4 class="title is-6 has-text-white mb-4">Contact Information</h4>
+                    <p><i class="fas fa-envelope mr-2"></i><a href="mailto:sw.rcmp@unikl.edu.my">sw.rcmp@unikl.edu.my</a></p>
+                    <p><i class="fas fa-phone mr-2"></i><a href="tel:+6052536200">+60 5-253 6200</a></p>
+                    <p><i class="fas fa-map-marker-alt mr-2"></i>No. 3, Jalan Greentown, 30450 Ipoh, Perak</p>
+                    <p><i class="fas fa-clock mr-2"></i>Mon-Fri: 8:00 AM - 5:00 PM</p>
+                    <div class="buttons mt-4">
+                        <a href="https://facebook.com/unikl.rcmp" class="button is-outlined is-light">
+                            <span class="icon"><i class="fab fa-facebook"></i></span>
+                        </a>
+                        <a href="https://instagram.com/unikl.rcmp" class="button is-outlined is-light">
+                            <span class="icon"><i class="fab fa-instagram"></i></span>
+                        </a>
+                        <a href="https://twitter.com/unikl_rcmp" class="button is-outlined is-light">
+                            <span class="icon"><i class="fab fa-twitter"></i></span>
+                        </a>
+                        <a href="https://linkedin.com/school/unikl-rcmp" class="button is-outlined is-light">
+                            <span class="icon"><i class="fab fa-linkedin"></i></span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="content has-text-centered mt-5 pt-5" style="border-top: 1px solid rgba(255,255,255,0.2);">
+                <p class="has-text-white-ter">
+                    &copy; {{ date('Y') }} Universiti Kuala Lumpur Royal College of Medicine Perak. All rights reserved.
+                </p>
+                <p class="mt-2">
+                    <a href="/privacy-policy">Privacy Policy</a> |
+                    <a href="/terms-of-service">Terms of Service</a> |
+                    <a href="/accessibility">Accessibility</a>
+                </p>
             </div>
         </div>
     </footer>
