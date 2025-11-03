@@ -50,6 +50,9 @@ Route::middleware('auth')->group(function () {
     // Application routes
     Route::get('/application', [\App\Http\Controllers\Student\ApplicationController::class, 'create'])->name('student.application');
     Route::post('/application', [\App\Http\Controllers\Student\ApplicationController::class, 'store'])->name('student.application.store');
+    Route::get('/my-applications', function () {
+        return view('student.myApplication');
+    })->name('student.applications.index');
 });
 
 // Logout Route (for authenticated users)

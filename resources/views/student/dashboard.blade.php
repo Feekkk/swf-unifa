@@ -44,7 +44,7 @@
         .aid-list .icon{color:var(--primary)}
         .aid-list .item-content{flex:1}
         .aid-list .item-title{font-weight:700}
-        .aid-list .item-note{font-size:.85rem; color:#666}
+        .aid-list .item-note{font-size:.85rem; color:#000}
         .amount{background:rgba(65,105,225,.1); color:var(--primary-dark); border:1px solid rgba(65,105,225,.25); padding:.15rem .5rem; border-radius:999px; font-weight:700; white-space:nowrap}
         /* Category stack and per-category horizontal items */
         .aid-stack{display:flex; flex-direction:column; gap:1rem}
@@ -119,7 +119,7 @@
                                     <p class="title is-6 mb-1">Bereavement (Khairat)</p>
                                     <span class="tag is-info is-light">Immediate support</span>
                                 </div>
-                                <p class="aid-sub has-text-grey">Financial assistance for bereavement</p>
+                                <p class="aid-sub" style="color:#000">Financial assistance for bereavement</p>
                                 <div class="aid-items mt-3">
                                     <div class="aid-item">
                                         <span class="icon is-small"><i class="fa-solid fa-user"></i></span>
@@ -155,7 +155,7 @@
                                     <p class="title is-6 mb-1">Illness & Injuries</p>
                                     <span class="tag is-warning is-light">Medical</span>
                                 </div>
-                                <p class="aid-sub has-text-grey">Out-patient, in-patient, and injury support</p>
+                                <p class="aid-sub" style="color:#000">Out-patient, in-patient, and injury support</p>
                                 <div class="aid-items mt-3">
                                     <div class="aid-item">
                                         <span class="icon is-small"><i class="fa-solid fa-notes-medical"></i></span>
@@ -191,7 +191,7 @@
                                     <p class="title is-6 mb-1">Emergency</p>
                                     <span class="tag is-danger is-light">Per claim basis</span>
                                 </div>
-                                <p class="aid-sub has-text-grey">Critical illness, natural disaster, and other emergencies</p>
+                                <p class="aid-sub" style="color:#000">Critical illness, natural disaster, and other emergencies</p>
                                 <div class="aid-items mt-3">
                                     <div class="aid-item">
                                         <span class="icon is-small"><i class="fa-solid fa-heart-pulse"></i></span>
@@ -223,7 +223,7 @@
                     </div>
                             <div class="buttons mt-2">
                                 <a href="{{ route('student.application') }}" class="button is-primary"><span class="icon"><i class="fas fa-plus"></i></span><span>Make Application</span></a>
-                        <a href="#" class="button is-accent is-light"><span class="icon"><i class="fas fa-folder-open"></i></span><span>My Applications</span></a>
+                        <a href="{{ route('student.applications.index') }}" class="button is-accent is-light"><span class="icon"><i class="fas fa-folder-open"></i></span><span>My Applications</span></a>
                     </div>
                 </div>
                 <div class="column is-12-tablet is-4-desktop">
@@ -233,31 +233,31 @@
                             @php($u = auth()->user())
                             <div class="columns is-multiline is-mobile">
                                 <div class="column is-12">
-                                    <p class="is-size-7 has-text-grey">Name</p>
+                                    <p class="is-size-7" style="color:#000">Name</p>
                                     <p class="is-size-6">{{ $u->display_name ?? '-' }}</p>
                                 </div>
                                 <div class="column is-12">
-                                    <p class="is-size-7 has-text-grey">Student ID</p>
+                                    <p class="is-size-7" style="color:#000">Student ID</p>
                                     <p class="is-size-6">{{ $u->student_id ?? '-' }}</p>
                                 </div>
                                 <div class="column is-12">
-                                    <p class="is-size-7 has-text-grey">Email</p>
+                                    <p class="is-size-7" style="color:#000">Email</p>
                                     <p class="is-size-6">{{ $u->email ?? '-' }}</p>
                                 </div>
                                 <div class="column is-12">
-                                    <p class="is-size-7 has-text-grey">Course</p>
+                                    <p class="is-size-7" style="color:#000">Course</p>
                                     <p class="is-size-6">{{ $u->course ?? '-' }}</p>
                                 </div>
                                 <div class="column is-12">
-                                    <p class="is-size-7 has-text-grey">Semester</p>
+                                    <p class="is-size-7" style="color:#000">Semester</p>
                                     <p class="is-size-6">{{ $u->semester ?? '-' }}</p>
                                 </div>
                                 <div class="column is-12">
-                                    <p class="is-size-7 has-text-grey">State</p>
+                                    <p class="is-size-7" style="color:#000">State</p>
                                     <p class="is-size-6">{{ $u->state ?? '-' }}</p>
                                 </div>
                                 <div class="column is-12">
-                                    <p class="is-size-7 has-text-grey">Bank Name</p>
+                                    <p class="is-size-7" style="color:#000">Bank Name</p>
                                     <p class="is-size-6">{{ $u->bank_name ?? '-' }}</p>
                                 </div>
                                 <div class="column is-12">
