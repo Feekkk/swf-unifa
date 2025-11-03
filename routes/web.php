@@ -61,6 +61,9 @@ Route::middleware('auth:admin')->group(function () {
         return view('admin.dashboard');
     })->name('admin.dashboard');
 
+    // View applications
+    Route::get('/admin/applications', [\App\Http\Controllers\Admin\ApplicationController::class, 'index'])->name('admin.applications.index');
+
     // Admin profile routes
     Route::get('/admin/profile/edit', [\App\Http\Controllers\Admin\ProfileController::class, 'edit'])->name('admin.profile.edit');
     Route::post('/admin/profile/update', [\App\Http\Controllers\Admin\ProfileController::class, 'update'])->name('admin.profile.update');

@@ -133,24 +133,24 @@
                                     <div class="aid-item">
                                         <span class="icon is-small"><i class="fa-solid fa-user"></i></span>
                                         <div class="item-meta">
-                                            <span class="item-title">Student</span>
-                                            <span class="item-note">One-off contribution</span>
+                                            <span class="item-title"><b>Student</b></span>
+                                            <span class="item-note has-text-black">One-off contribution</span>
                                         </div>
                                         <span class="amount">RM 500</span>
                                     </div>
                                     <div class="aid-item">
                                         <span class="icon is-small"><i class="fa-solid fa-person-breastfeeding"></i></span>
                                         <div class="item-meta">
-                                            <span class="item-title">Parent</span>
-                                            <span class="item-note">One-off contribution</span>
+                                            <span class="item-title"><b>Parent</b></span>
+                                            <span class="item-note has-text-black">One-off contribution</span>
                                         </div>
                                         <span class="amount">RM 200</span>
                                     </div>
                                     <div class="aid-item">
                                         <span class="icon is-small"><i class="fa-solid fa-children"></i></span>
                                         <div class="item-meta">
-                                            <span class="item-title">Sibling</span>
-                                            <span class="item-note">One-off contribution</span>
+                                            <span class="item-title"><b>Sibling</b></span>
+                                            <span class="item-note has-text-black">One-off contribution</span>
                                         </div>
                                         <span class="amount">RM 100</span>
                                     </div>
@@ -161,32 +161,32 @@
                         <div class="card aid-card">
                             <div class="card-content">
                                 <div class="aid-header">
-                                    <p class="title is-6 mb-1">Illness & Injuries</p>
+                                    <p class="title is-6 mb-1"><b>Illness & Injuries</b></p>
                                     <span class="tag is-warning is-light">Medical</span>
                                 </div>
-                                <p class="aid-sub" style="color:#000">Out-patient, in-patient, and injury support</p>
+                                <p class="aid-sub" style="color:#000"><b>Out-patient, in-patient, and injury support</b></p>
                                 <div class="aid-items mt-3">
                                     <div class="aid-item">
                                         <span class="icon is-small"><i class="fa-solid fa-notes-medical"></i></span>
                                         <div class="item-meta">
-                                            <span class="item-title">Out-patient treatment</span>
-                                            <span class="item-note">Limited to RM 30 / semester (two claims / year)</span>
+                                            <span class="item-title"><b>Out-patient treatment</b></span>
+                                            <span class="item-note has-text-black">Limited to RM 30 / semester (two claims / year)</span>
                                         </div>
                                         <span class="amount">Up to RM 30</span>
                                     </div>
                                     <div class="aid-item">
                                         <span class="icon is-small"><i class="fa-solid fa-hospital"></i></span>
                                         <div class="item-meta">
-                                            <span class="item-title">In-patient treatment</span>
-                                            <span class="item-note">If costs exceed insurance annual limit RM 20,000 per student. Limit up to RM 1,000. >RM 1,000 requires SWF Campus committee approval.</span>
+                                            <span class="item-title"><b>In-patient treatment</b></span>
+                                            <span class="item-note has-text-black">If costs exceed insurance annual limit RM 20,000 per student. Limit up to RM 1,000. >RM 1,000 requires SWF Campus committee approval.</span>
                                         </div>
                                         <span class="amount">Up to RM 1,000</span>
                                     </div>
                                     <div class="aid-item">
                                         <span class="icon is-small"><i class="fa-solid fa-crutch"></i></span>
                                         <div class="item-meta">
-                                            <span class="item-title">Injuries</span>
-                                            <span class="item-note">Injury support equipment only</span>
+                                            <span class="item-title"><b>Injuries</b></span>
+                                            <span class="item-note has-text-black">Injury support equipment only</span>
                                         </div>
                                         <span class="amount">Up to RM 200</span>
                                     </div>
@@ -197,32 +197,32 @@
                         <div class="card aid-card">
                             <div class="card-content">
                                 <div class="aid-header">
-                                    <p class="title is-6 mb-1">Emergency</p>
+                                    <p class="title is-6 mb-1"><b>Emergency</b></p>
                                     <span class="tag is-danger is-light">Per claim basis</span>
                                 </div>
-                                <p class="aid-sub" style="color:#000">Critical illness, natural disaster, and other emergencies</p>
+                                <p class="aid-sub" style="color:#000"><b>Critical illness, natural disaster, and other emergencies</b></p>
                                 <div class="aid-items mt-3">
                                     <div class="aid-item">
                                         <span class="icon is-small"><i class="fa-solid fa-heart-pulse"></i></span>
                                         <div class="item-meta">
-                                            <span class="item-title">Critical Illness</span>
-                                            <span class="item-note">Initial diagnosis with supporting documents</span>
+                                            <span class="item-title"><b>Critical Illness</b></span>
+                                            <span class="item-note has-text-black">Initial diagnosis with supporting documents</span>
                                         </div>
                                         <span class="amount">Up to RM 200</span>
                                     </div>
                                     <div class="aid-item">
                                         <span class="icon is-small"><i class="fa-solid fa-house-flood-water"></i></span>
                                         <div class="item-meta">
-                                            <span class="item-title">Natural Disaster</span>
-                                            <span class="item-note">Certified evidence must be included</span>
+                                            <span class="item-title"><b>Natural Disaster</b></span>
+                                            <span class="item-note has-text-black">Certified evidence must be included</span>
                                         </div>
                                         <span class="amount">Up to RM 200</span>
                                     </div>
                                     <div class="aid-item">
                                         <span class="icon is-small"><i class="fa-solid fa-triangle-exclamation"></i></span>
                                         <div class="item-meta">
-                                            <span class="item-title">Others</span>
-                                            <span class="item-note">Subject to SWF Campus committee approval</span>
+                                            <span class="item-title"><b>Others</b></span>
+                                            <span class="item-note has-text-black">Subject to SWF Campus committee approval</span>
                                         </div>
                                         <span class="amount">Case-by-case</span>
                                     </div>
@@ -242,32 +242,32 @@
                             @php($u = auth()->user())
                             <div class="columns is-multiline is-mobile">
                                 <div class="column is-12">
-                                    <p class="is-size-7" style="color:#000">Name</p>
-                                    <p class="is-size-6">{{ $u->display_name ?? '-' }}</p>
+                                    <p class="is-size-7" style="color:#000"><b>Name</b></p>
+                                    <p class="is-size-6 has-text-black">{{ $u->display_name ?? '-' }}</p>
                                 </div>
                                 <div class="column is-12">
-                                    <p class="is-size-7" style="color:#000">Student ID</p>
-                                    <p class="is-size-6">{{ $u->student_id ?? '-' }}</p>
+                                    <p class="is-size-7" style="color:#000"><b>Student ID</b></p>
+                                    <p class="is-size-6 has-text-black">{{ $u->student_id ?? '-' }}</p>
                                 </div>
                                 <div class="column is-12">
-                                    <p class="is-size-7" style="color:#000">Email</p>
-                                    <p class="is-size-6">{{ $u->email ?? '-' }}</p>
+                                    <p class="is-size-7" style="color:#000"><b>Email</b></p>
+                                    <p class="is-size-6 has-text-black">{{ $u->email ?? '-' }}</p>
                                 </div>
                                 <div class="column is-12">
-                                    <p class="is-size-7" style="color:#000">Course</p>
-                                    <p class="is-size-6">{{ $u->course ?? '-' }}</p>
+                                    <p class="is-size-7" style="color:#000"><b>Course</b></p>
+                                    <p class="is-size-6 has-text-black">{{ $u->course ?? '-' }}</p>
                                 </div>
                                 <div class="column is-12">
-                                    <p class="is-size-7" style="color:#000">Semester</p>
-                                    <p class="is-size-6">{{ $u->semester ?? '-' }}</p>
+                                    <p class="is-size-7" style="color:#000"><b>Semester</b></p>
+                                    <p class="is-size-6 has-text-black">{{ $u->semester ?? '-' }}</p>
                                 </div>
                                 <div class="column is-12">
-                                    <p class="is-size-7" style="color:#000">State</p>
-                                    <p class="is-size-6">{{ $u->state ?? '-' }}</p>
+                                    <p class="is-size-7" style="color:#000"><b>State</b></p>
+                                    <p class="is-size-6 has-text-black">{{ $u->state ?? '-' }}</p>
                                 </div>
                                 <div class="column is-12">
-                                    <p class="is-size-7" style="color:#000">Bank Name</p>
-                                    <p class="is-size-6">{{ $u->bank_name ?? '-' }}</p>
+                                    <p class="is-size-7" style="color:#000"><b>Bank Name</b></p>
+                                    <p class="is-size-6 has-text-black">{{ $u->bank_name ?? '-' }}</p>
                                 </div>
                                 <div class="column is-12">
                                     <a href="{{ route('student.profile.edit') }}" class="button is-primary is-light is-fullwidth">
