@@ -475,19 +475,19 @@
                             <div class="icon-wrapper">
                                 <i class="fas fa-bullseye"></i>
                         </div>
-                            <h3 class="title is-3">Our Primary Objective</h3>
-                            <p class="is-size-5 has-text-justified">
-                            The Student Welfare Fund (SWF) at UniKL RCMP exists to ensure that no student’s academic journey is disrupted by unforeseen financial hardship. 
+                            <h3 class="title is-3" style="color: #000;">Our Primary Objective</h3>
+                            <p class="is-size-5 has-text-justified has-text-black">
+                            The Student Welfare Fund (SWF) at UniKL RCMP exists to ensure that no student's academic journey is disrupted by unforeseen financial hardship. 
                             Established as Tabung Kebajikan Siswa (TKS) in 2005 and rebranded as SWF in 2017, the fund provides timely, compassionate assistance for 
-                            emergencies, medical needs or injuries, bereavement, and other critical circumstances that may affect students’ well‑being and continuity of study.
+                            emergencies, medical needs or injuries, bereavement, and other critical circumstances that may affect students' well‑being and continuity of study.
                         </p>
-<p class="is-size-6 has-text-justified">
+<p class="is-size-6 has-text-justified has-text-black">
   SWF is managed by the Campus Lifestyle Division and Campus Lifestyle Section with transparent processes and clear eligibility guidelines. 
   Funds are sourced from student contributions and are channeled directly to support essential needs such as immediate living expenses, treatment and recovery support, 
   transportation for urgent situations, and other welfare-related costs. Our objective is simple: to give students a reliable safety net so they can stay focused 
   on their learning, personal growth, and contribution to the campus community.
 </p>
-    <p class="is-size-5 has-text-justified">
+    <p class="is-size-5 has-text-justified has-text-black">
   If you or a fellow student is facing an unexpected financial challenge, please review the application steps below and prepare the required documents. 
   Our team is ready to guide you through the process with confidentiality and care.
 </p>
@@ -568,48 +568,40 @@
                 <div class="columns">
                     <div class="column is-two-thirds">
                         <div class="content">
-                            <h3 class="title is-4 mb-5">Step-by-Step Process</h3>
+                            <h3 class="title is-4 mb-5 has-text-black">Step-by-Step Process</h3>
                             
                             <div class="timeline-item">
                                 <span class="timeline-badge">1</span>
                                 <div class="content">
-                                    <h4 class="title is-5">Create Account</h4>
-                                    <p>Register for an account using your student credentials and personal information.</p>
+                                    <h4 class="title is-5 has-text-black">Create Account & Submit Application</h4>
+                                    <p>Register for an account and complete the comprehensive application form with accurate details about your situation and required documentation.</p>
                                 </div>
                             </div>
                             
                             <div class="timeline-item">
                                 <span class="timeline-badge">2</span>
                                 <div class="content">
-                                    <h4 class="title is-5">Complete Application</h4>
-                                    <p>Fill out the comprehensive application form with accurate details about your situation.</p>
+                                    <h4 class="title is-5 has-text-black">Admin Verification</h4>
+                                    <p>Your application will be verified by the admin team to ensure all information and documents are complete and accurate.</p>
                                 </div>
                             </div>
                             
                             <div class="timeline-item">
-                                <span inv="timeline-badge">3</span>
+                                <span class="timeline-badge">3</span>
                                 <div class="content">
-                                    <h4 class="title is-5">Submit Documentation</h4>
-                                    <p>Upload required supporting documents such as medical reports, receipts, or certificates.</p>
+                                    <h4 class="title is-5 has-text-black">Committee Review</h4>
+                                    <p>Once verified, your application will be reviewed by the SWF Campus Committee for final approval and fund allocation.</p>
                                 </div>
                             </div>
                             
                             <div class="timeline-item">
                                 <span class="timeline-badge">4</span>
                                 <div class="content">
-                                    <h4 class="title is-5">Committee Review</h4>
-                                    <p>Your application will be reviewed by the SWF Campus Committee for approval.</p>
+                                    <h4 class="title is-5 has-text-black">Receive Funds</h4>
+                                    <p>Upon approval, funds will be disbursed directly to your registered bank account according to established procedures.</p>
                                 </div>
                             </div>
-                            
-                            <div class="timeline-item">
-                                <span class="timeline-badge">5</span>
-                                <div class="content">
-                                    <h4 class="title is-5">Receive Funds</h4>
-                                    <p>Upon approval, funds will be disbursed according to the established procedures.</p>
-                                </div>
                     </div>
-                            </div>
                     </div>
                     
                     <div class="column">
@@ -617,7 +609,6 @@
                             <header class="card-header">
                                 <p class="card-header-title">
                                     Required Documents
-                                </p>
                             </header>
                             <div class="card-content">
                                 <div class="content">
@@ -678,7 +669,7 @@
                                 <div class="media-content">
                                     <p class="title is-6">Email</p>
                                     <p>
-                                        <a href="mailto:sw.rcmp@unikl.edu.my">sw.rcmp@unikl.edu.my</a><br>
+                                        <a href="mailto:sw.rcmp@unikl.edu.my" style="color: #000;">sw.rcmp@unikl.edu.my</a><br>
                                         <small class="has-text-grey">Primary contact for SWF inquiries</small>
                                     </p>
                                 </div>
@@ -693,7 +684,7 @@
                                 <div class="media-content">
                                     <p class="title is-6">Phone</p>
                                     <p>
-                                        <a href="tel:+6052536200">+60 5-253 6200</a><br>
+                                        <a href="tel:+6052536200" style="color: #000;">+60 5-253 6200</a><br>
                                         <small class="has-text-grey">Main campus line</small>
                                     </p>
                                 </div>
@@ -707,10 +698,10 @@
                                 </figure>
                                 <div class="media-content">
                                     <p class="title is-6">Office Hours</p>
-                                    <p>
-                                        <strong>Monday - Friday:</strong> 8:00 AM - 5:00 PM<br>
-                                        <strong>Saturday:</strong> 8:00 AM - 12:00 PM<br>
-                                        <strong>Sunday:</strong> Closed<br>
+                                    <p class="has-text-black">
+                                        Monday - Friday: 8:00 AM - 5:00 PM<br>
+                                        Saturday: 8:00 AM - 12:00 PM<br>
+                                        Sunday: Closed<br>
                                         <small class="has-text-grey">Best time to visit: Tuesday - Thursday, 9:00 AM - 4:00 PM</small>
                                     </p>
                                 </div>
@@ -760,7 +751,7 @@
                     <ul>
                             <li><a href="#home">Home</a></li>
                             <li><a href="#about">About SWF</a></li>
-                            <li><a href="#application">Apply for Fund</a></li>
+                            <li><a href="{{ route('register') }}">Apply for Fund</a></li>
                             <li><a href="#contact">Contact Us</a></li>
                         </ul>
                     </div>

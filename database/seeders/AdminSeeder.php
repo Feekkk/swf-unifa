@@ -20,11 +20,6 @@ class AdminSeeder extends Seeder
             'name' => 'Admin',
             'email' => 'admin@unikl.com',
             'password' => Hash::make('admin123'),
-        ],
-        [
-            'name' => 'Admin 2',
-            'email' => 'admin@unikl.com',
-            'password' => Hash::make('admin123'),
         ]);
     }
 }
