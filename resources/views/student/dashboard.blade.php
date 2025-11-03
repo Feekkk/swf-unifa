@@ -35,6 +35,8 @@
             background-color: var(--primary-dark);
             color: #fff;
         }
+        .footer a { color: rgba(255, 255, 255, 0.8); }
+        .footer a:hover { color: var(--accent); }
         /* Aids cards */
         .aid-card .aid-header{display:flex; align-items:center; justify-content:space-between}
         .aid-card .aid-sub{font-size:.9rem}

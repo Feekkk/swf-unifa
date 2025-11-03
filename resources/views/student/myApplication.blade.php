@@ -18,6 +18,8 @@
         .button.is-primary{background-color:#4169E1; border-color:#4169E1; color:#fff}
         .button.is-primary:hover{filter:brightness(.95)}
         .footer{background-color:#191970; color:#fff}
+        .footer a { color: rgba(255, 255, 255, 0.8); }
+        .footer a:hover { color: var(--accent); }
         .label, .subtitle, .help { color:#000 !important }
         
         /* Status badges */

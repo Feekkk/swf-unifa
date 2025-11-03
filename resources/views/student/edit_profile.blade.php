@@ -19,6 +19,8 @@
         .button.is-primary{background-color:var(--primary); border-color:var(--primary); color:#fff}
         .button.is-primary:hover{filter:brightness(.95)}
         .footer { background-color: var(--primary-dark); color: #fff; }
+        .footer a { color: rgba(255, 255, 255, 0.8); }
+        .footer a:hover { color: var(--accent); }
         .grid-2{display:grid;grid-template-columns:repeat(2,1fr);gap:1rem}
         @media(max-width:768px){.grid-2{grid-template-columns:1fr}}
 

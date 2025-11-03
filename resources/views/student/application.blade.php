@@ -18,6 +18,8 @@
         .button.is-primary{background-color:#4169E1; border-color:#4169E1; color:#fff}
         .button.is-primary:hover{filter:brightness(.95)}
         .footer{background-color:#191970; color:#fff}
+        .footer a { color: rgba(255, 255, 255, 0.8); }
+        .footer a:hover { color: var(--accent); }
         .input, .textarea{background:#fff!important; color:#000!important; border:1px solid #cbd5e1}
         .select select{background:#fff!important; color:#000!important; border:1px solid #cbd5e1}
         label, .label, .subtitle, .help, .file-name { color:#000 !important }

@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
-        :root{--primary-dark:#191970;--primary:#4169E1;--background:#FAF9F6;--text:#0f172a;--text-muted:#475569}
+        :root{--primary-dark:#191970;--primary:#4169E1;--accent:#FFC000;--background:#FAF9F6;--text:#0f172a;--text-muted:#475569}
         body{background:var(--background)}
         .auth-hero{background:radial-gradient(1200px 600px at 60% 40%, rgba(25,25,112,.35), rgba(25,25,112,0) 60%),linear-gradient(135deg, rgba(25,25,112,1), rgba(65,105,225,.75));border-radius:16px;min-height:560px;position:relative;overflow:hidden;border:1px solid rgba(255,255,255,.15);box-shadow:0 18px 40px rgba(0,0,0,.2)}
         .auth-hero::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg, rgba(0,0,0,.25) 0%, rgba(0,0,0,.55) 70%);z-index:1}
@@ -33,6 +33,8 @@
         .button.is-primary{background-color:var(--primary);border-color:var(--primary);color:#fff}
         .button.is-primary:hover{background-color:var(--primary-dark);border-color:var(--primary-dark);color:#fff}
         .password-toggle{cursor:pointer}
+        .footer a { color: rgba(255, 255, 255, 0.8); }
+        .footer a:hover { color: var(--accent); }
     </style>
 </head>
 <body>

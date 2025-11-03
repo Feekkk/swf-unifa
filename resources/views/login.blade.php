@@ -38,6 +38,8 @@
         .role-option .icon{color:var(--primary)}
         .role-option.is-active{border-color:var(--primary);box-shadow:0 0 0 0.125em rgba(65,105,225,.15)}
         @media(max-width:480px){.role-options{grid-template-columns:1fr}}
+        .footer a { color: rgba(255, 255, 255, 0.8); }
+        .footer a:hover { color: var(--accent); }
     </style>
 </head>
 <body>
