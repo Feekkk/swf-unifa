@@ -28,6 +28,8 @@ class LoginRequest extends FormRequest
         return [
             'login' => ['required', 'string'],
             'password' => ['required', 'string'],
+            'user_type' => ['required', 'in:student,staff'],
+            'staff_role' => ['nullable', 'required_if:user_type,staff', 'in:admin,approval,committee'],
         ];
     }
 
@@ -54,8 +56,29 @@ class LoginRequest extends FormRequest
         $this->ensureIsNotRateLimited();
 
         $login = $this->input('login');
+        $userType = $this->input('user_type');
+        $staffRole = $this->input('staff_role');
         
-        // Determine if login is email or student ID
+        // Handle admin login
+        if ($userType === 'staff' && $staffRole === 'admin') {
+            $credentials = [
+                'email' => $login,
+                'password' => $this->input('password'),
+            ];
+
+            if (! Auth::guard('admin')->attempt($credentials, $this->boolean('remember'))) {
+                RateLimiter::hit($this->throttleKey());
+
+                throw ValidationException::withMessages([
+                    'login' => 'These credentials do not match our records.',
+                ]);
+            }
+
+            RateLimiter::clear($this->throttleKey());
+            return;
+        }
+        
+        // Handle student login
         $field = filter_var($login, FILTER_VALIDATE_EMAIL) ? 'email' : 'student_id';
         
         $credentials = [

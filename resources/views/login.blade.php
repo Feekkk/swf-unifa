@@ -166,7 +166,7 @@
     					<div class="hero-content">
     						<p class="brand"><span class="icon"><i class="fa-solid fa-graduation-cap"></i></span> UniKL RCMP • SWF</p>
     						<h2 class="title is-2 has-text-white">Revolutionize Student Support</h2>
-    						<p class="is-size-5" style="color:#c7f7f3">“Our SWF portal streamlines requests so students get help faster.”</p>
+    						<p class="is-size-5" style="color:#ffffff">“Our SWF portal streamlines requests so students get help faster.”</p>
     					</div>
     				</div>
     			</div>

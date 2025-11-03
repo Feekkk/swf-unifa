@@ -55,5 +55,12 @@ Route::middleware('auth')->group(function () {
     })->name('student.applications.index');
 });
 
-// Logout Route (for authenticated users)
-Route::post('/logout', [LoginController::class, 'logout'])->name('logout')->middleware('auth');
+// Admin Dashboard Routes
+Route::middleware('auth:admin')->group(function () {
+    Route::get('/admin/dashboard', function () {
+        return view('admin.dashboard');
+    })->name('admin.dashboard');
+});
+
+// Logout Route (accessible by both students and admins)
+Route::post('/logout', [LoginController::class, 'logout'])->name('logout');

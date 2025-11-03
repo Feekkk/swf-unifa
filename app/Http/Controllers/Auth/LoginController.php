@@ -112,14 +112,25 @@ class LoginController extends Controller
 
         $request->session()->regenerate();
 
+        // Determine redirect based on user type
+        $userType = $request->input('user_type');
+        $staffRole = $request->input('staff_role');
+        
+        $redirectTo = $this->redirectTo;
+        
+        // Redirect admins to admin dashboard
+        if ($userType === 'staff' && $staffRole === 'admin') {
+            $redirectTo = '/admin/dashboard';
+        }
+
         // Log successful login
         \Log::info('User logged in successfully', [
-            'user_id' => Auth::id(),
+            'user_id' => Auth::guard($userType === 'staff' && $staffRole === 'admin' ? 'admin' : 'web')->id(),
             'ip_address' => $request->ip(),
             'user_agent' => $request->userAgent()
         ]);
 
-        return redirect()->intended($this->redirectTo)
+        return redirect($redirectTo)
             ->with('success', 'Welcome back! You have been logged in successfully.');
     }
 
@@ -150,10 +161,12 @@ class LoginController extends Controller
     {
         // Log the logout event
         \Log::info('User logged out', [
-            'user_id' => Auth::id(),
+            'user_id' => Auth::guard('admin')->check() ? Auth::guard('admin')->id() : Auth::id(),
             'ip_address' => $request->ip()
         ]);
 
+        // Logout from both guards
+        Auth::guard('admin')->logout();
         Auth::logout();
 
         $request->session()->invalidate();
