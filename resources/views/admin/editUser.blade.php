@@ -121,15 +121,15 @@
                         <div class="card-content">
                             <h2 class="title is-5 mb-4">User Information</h2>
                             <div class="field">
-                                <label class="label">Name</label>
-                                <p class="is-size-6">{{ $userName }}</p>
+                                <label class="label has-text-black">Name</label>
+                                <p class="is-size-6 has-text-black">{{ $userName }}</p>
                             </div>
                             <div class="field">
-                                <label class="label">Email</label>
-                                <p class="is-size-6">{{ $user->email }}</p>
+                                <label class="label has-text-black">Email</label>
+                                <p class="is-size-6 has-text-black">{{ $user->email }}</p>
                             </div>
                             <div class="field">
-                                <label class="label">Role</label>
+                                <label class="label has-text-black">Role</label>
                                 <p class="is-size-6">
                                     <span class="tag {{ $role === 'admin' ? 'is-warning' : 'is-info' }}">
                                         {{ ucfirst($role) }}
@@ -146,7 +146,7 @@
                                 @csrf
 
                                 <div class="field">
-                                    <label class="label">New Password</label>
+                                    <label class="label has-text-black">New Password</label>
                                     <div class="control has-icons-right">
                                         <input class="input @error('password') is-danger @enderror" type="password" name="password" id="new-password" placeholder="Enter new password" required>
                                         <span class="icon is-small is-right password-toggle" data-toggle-target="new-password">
@@ -159,7 +159,7 @@
                                 </div>
 
                                 <div class="field">
-                                    <label class="label">Confirm New Password</label>
+                                    <label class="label has-text-black">Confirm New Password</label>
                                     <div class="control has-icons-right">
                                         <input class="input @error('password') is-danger @enderror" type="password" name="password_confirmation" id="confirm-password" placeholder="Confirm new password" required>
                                         <span class="icon is-small is-right password-toggle" data-toggle-target="confirm-password">
