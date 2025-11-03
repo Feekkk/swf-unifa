@@ -180,7 +180,7 @@
                                     </p>
                                 </div>
                                 <div class="column is-12">
-                                    <a href="/admin/profile" class="button is-primary is-light is-fullwidth">
+                                    <a href="/admin/profile/edit" class="button is-primary is-light is-fullwidth">
                                         <span class="icon"><i class="fa-solid fa-user-pen"></i></span>
                                         <span>Edit Profile</span>
                                     </a>

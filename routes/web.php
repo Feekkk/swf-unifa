@@ -60,6 +60,10 @@ Route::middleware('auth:admin')->group(function () {
     Route::get('/admin/dashboard', function () {
         return view('admin.dashboard');
     })->name('admin.dashboard');
+
+    // Admin profile routes
+    Route::get('/admin/profile/edit', [\App\Http\Controllers\Admin\ProfileController::class, 'edit'])->name('admin.profile.edit');
+    Route::post('/admin/profile/update', [\App\Http\Controllers\Admin\ProfileController::class, 'update'])->name('admin.profile.update');
 });
 
 // Logout Route (accessible by both students and admins)
