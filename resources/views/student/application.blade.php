@@ -88,6 +88,9 @@
                 <div class="card-content">
                     <form method="POST" action="{{ route('student.application.store') }}" enctype="multipart/form-data">
                         @csrf
+                        <h3 class="title is-5" style="color:#191970">Application Category</h3>
+                        <p class="subtitle is-6" style="color:#000">Select the category and sub-category of your application</p>
+                        
                         <div class="columns is-multiline">
                             <div class="column is-6">
                                 <label class="label">Category</label>
