@@ -55,6 +55,34 @@
             <h1 class="title is-3">New Application</h1>
             <p class="subtitle is-6">Fill in the details below to start your Student Welfare Fund application.</p>
 
+            @if (session('success'))
+                <div class="notification is-success is-light mb-4" style="border-left: 4px solid #48c774;">
+                    <button class="delete" onclick="this.parentElement.remove()"></button>
+                    <span class="icon mr-2"><i class="fa-solid fa-circle-check"></i></span>
+                    {{ session('success') }}
+                </div>
+            @endif
+
+            @if (session('error'))
+                <div class="notification is-danger is-light mb-4" style="border-left: 4px solid #f14668;">
+                    <button class="delete" onclick="this.parentElement.remove()"></button>
+                    <span class="icon mr-2"><i class="fa-solid fa-circle-exclamation"></i></span>
+                    {{ session('error') }}
+                </div>
+            @endif
+
+            @if ($errors->any())
+                <div class="notification is-danger is-light mb-4" style="border-left: 4px solid #f14668;">
+                    <button class="delete" onclick="this.parentElement.remove()"></button>
+                    <span class="icon mr-2"><i class="fa-solid fa-circle-exclamation"></i></span>
+                    <ul style="margin-left:1rem">
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+
             @php($u = auth()->user())
             <div class="card">
                 <div class="card-content">

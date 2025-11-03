@@ -24,6 +24,9 @@ document.addEventListener('DOMContentLoaded', () => {
   
   // Setup global event listeners
   setupGlobalEvents();
+  
+  // Auto-dismiss success notifications after 5 seconds
+  setupAutoDismissNotifications();
 });
 
 /**
@@ -49,10 +52,20 @@ function initializeComponents() {
  * Setup global event listeners
  */
 function setupGlobalEvents() {
-  // Handle external links
+  // Handle external links only (links to different domains)
+  const currentHost = window.location.host;
   DOM.selectAll('a[href^="http"]').forEach(link => {
-    link.setAttribute('target', '_blank');
-    link.setAttribute('rel', 'noopener noreferrer');
+    try {
+      const linkUrl = new URL(link.href);
+      // Only add target="_blank" if the link is to a different domain
+      if (linkUrl.host !== currentHost) {
+        link.setAttribute('target', '_blank');
+        link.setAttribute('rel', 'noopener noreferrer');
+      }
+    } catch (e) {
+      // If URL parsing fails, skip this link
+      console.warn('Could not parse URL:', link.href);
+    }
   });
   
   // Handle scroll-to-top functionality
@@ -79,6 +92,25 @@ function setupGlobalEvents() {
       e.preventDefault();
       window.print();
     });
+  });
+}
+
+/**
+ * Setup auto-dismiss for success notifications
+ */
+function setupAutoDismissNotifications() {
+  // Get all success notifications
+  const successNotifications = DOM.selectAll('.notification.is-success');
+  
+  successNotifications.forEach(notification => {
+    // Auto-dismiss after 5 seconds
+    setTimeout(() => {
+      notification.style.transition = 'opacity 0.3s ease-out';
+      notification.style.opacity = '0';
+      setTimeout(() => {
+        notification.remove();
+      }, 300);
+    }, 5000);
   });
 }
 

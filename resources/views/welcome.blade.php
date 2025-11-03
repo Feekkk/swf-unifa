@@ -407,6 +407,22 @@
         <!-- Introduction Section -->
         <section class="section" id="about">
             <div class="container">
+                @if (session('success'))
+                    <div class="notification is-success is-light mb-4" style="border-left: 4px solid #48c774;">
+                        <button class="delete" onclick="this.parentElement.remove()"></button>
+                        <span class="icon mr-2"><i class="fa-solid fa-circle-check"></i></span>
+                        {{ session('success') }}
+                    </div>
+                @endif
+
+                @if (session('error'))
+                    <div class="notification is-danger is-light mb-4" style="border-left: 4px solid #f14668;">
+                        <button class="delete" onclick="this.parentElement.remove()"></button>
+                        <span class="icon mr-2"><i class="fa-solid fa-circle-exclamation"></i></span>
+                        {{ session('error') }}
+                    </div>
+                @endif
+
                 <h2 class="title is-2 has-text-centered section-title">Introduction</h2>
                 
                 <div class="columns is-vcentered intro-grid">

@@ -92,6 +92,23 @@
         <div class="container">
             <h1 class="title is-3">Student Dashboard</h1>
             <p class="subtitle is-6">Welcome, {{ auth()->user()->display_name ?? 'Student' }}.</p>
+            
+            @if (session('success') || session('status'))
+                <div class="notification is-success is-light mb-4" style="border-left: 4px solid #48c774;">
+                    <button class="delete" onclick="this.parentElement.remove()"></button>
+                    <span class="icon mr-2"><i class="fa-solid fa-circle-check"></i></span>
+                    {{ session('success') ?? session('status') }}
+                </div>
+            @endif
+
+            @if (session('error'))
+                <div class="notification is-danger is-light mb-4" style="border-left: 4px solid #f14668;">
+                    <button class="delete" onclick="this.parentElement.remove()"></button>
+                    <span class="icon mr-2"><i class="fa-solid fa-circle-exclamation"></i></span>
+                    {{ session('error') }}
+                </div>
+            @endif
+
             <div class="columns is-variable is-5 dashboard-columns">
                 <div class="column is-12-tablet is-8-desktop">
                     <h2 class="title is-5">Application Aids Available</h2>

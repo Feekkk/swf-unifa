@@ -75,7 +75,9 @@
     						<h1 class="title is-3">Welcome Back!</h1>
     						<p class="subtitle is-6">Sign in to your SWF account</p>
                 @if ($errors->any())
-                	<div class="notification is-danger is-light">
+                	<div class="notification is-danger is-light" style="border-left: 4px solid #f14668;">
+                		<button class="delete" onclick="this.parentElement.remove()"></button>
+                		<span class="icon mr-2"><i class="fa-solid fa-circle-exclamation"></i></span>
                 		<ul style="margin-left:1rem">
                 			@foreach ($errors->all() as $error)
                 				<li>{{ $error }}</li>
@@ -85,7 +87,11 @@
                 @endif
 
                 @if (session('status'))
-                	<div class="notification is-success is-light">{{ session('status') }}</div>
+                	<div class="notification is-success is-light" style="border-left: 4px solid #48c774;">
+                		<button class="delete" onclick="this.parentElement.remove()"></button>
+                		<span class="icon mr-2"><i class="fa-solid fa-circle-check"></i></span>
+                		{{ session('status') }}
+                	</div>
                 @endif
 
                 <form method="POST" action="{{ route('login') }}">
