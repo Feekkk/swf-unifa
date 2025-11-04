@@ -70,5 +70,19 @@ class ApplicationController extends Controller
             ]
         ]);
     }
+
+    /**
+     * Show a single application with full details.
+     */
+    public function show($id)
+    {
+        $application = Application::with(['user', 'documents', 'reviewer', 'verifier'])
+            ->where('status', 'verify')
+            ->findOrFail($id);
+
+        return view('committee.application', [
+            'application' => $application,
+        ]);
+    }
 }
 

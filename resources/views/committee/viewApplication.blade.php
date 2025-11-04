@@ -214,7 +214,7 @@
                                     </td>
                                     <td>
                                         <div class="buttons are-small">
-                                            <a href="#" class="button is-light"><span class="icon"><i class="fa-regular fa-eye"></i></span><span>View</span></a>
+                                            <a href="{{ route('committee.applications.show', $app->id) }}" class="button is-light"><span class="icon"><i class="fa-regular fa-eye"></i></span><span>View</span></a>
                                         </div>
                                     </td>
                                 </tr>
