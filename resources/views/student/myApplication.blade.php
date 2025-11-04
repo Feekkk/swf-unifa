@@ -106,7 +106,7 @@
             <div class="level">
                 <div class="level-left">
                     <div>
-                        <h1 class="title is-3">My Applications</h1>
+                        <h1 class="title is-3 has-text-black">My Applications</h1>
                         <p class="subtitle is-6">View all your Student Welfare Fund applications and their status.</p>
                     </div>
                 </div>

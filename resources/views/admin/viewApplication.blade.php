@@ -201,8 +201,7 @@
                                     </td>
                                     <td>
                                         <div class="buttons are-small">
-                                            <a class="button is-light"><span class="icon"><i class="fa-regular fa-eye"></i></span><span>View</span></a>
-                                            <a class="button is-primary is-light"><span class="icon"><i class="fa-regular fa-pen-to-square"></i></span></a>
+                                            <a href="{{ route('admin.applications.show', $app->id) }}" class="button is-light"><span class="icon"><i class="fa-regular fa-eye"></i></span><span>View</span></a>
                                         </div>
                                     </td>
                                 </tr>

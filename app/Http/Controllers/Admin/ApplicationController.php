@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Application;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\RedirectResponse;
 
 class ApplicationController extends Controller
 {
@@ -61,6 +63,44 @@ class ApplicationController extends Controller
                 'sort' => (string) $request->input('sort', 'newest'),
             ]
         ]);
+    }
+
+    /**
+     * Show a single application with full details.
+     */
+    public function show($id)
+    {
+        $application = Application::with(['user', 'documents', 'reviewer'])
+            ->findOrFail($id);
+
+        return view('admin.application', [
+            'application' => $application,
+        ]);
+    }
+
+    /**
+     * Verify/Approve an application.
+     */
+    public function verify(Request $request, $id): RedirectResponse
+    {
+        $application = Application::findOrFail($id);
+
+        $request->validate([
+            'amount_approved' => 'nullable|numeric|min:0',
+            'admin_notes' => 'nullable|string|max:1000',
+        ]);
+
+        $application->update([
+            'status' => 'approved',
+            'amount_approved' => $request->input('amount_approved', $application->total_amount),
+            'admin_notes' => $request->input('admin_notes'),
+            'reviewed_at' => now(),
+            'reviewed_by' => Auth::id(),
+        ]);
+
+        return redirect()
+            ->route('admin.applications.show', $application->id)
+            ->with('success', 'Application has been verified and approved successfully.');
     }
 }
 

@@ -63,6 +63,8 @@ Route::middleware('auth:admin')->group(function () {
 
     // View applications
     Route::get('/admin/applications', [\App\Http\Controllers\Admin\ApplicationController::class, 'index'])->name('admin.applications.index');
+    Route::get('/admin/applications/{id}', [\App\Http\Controllers\Admin\ApplicationController::class, 'show'])->name('admin.applications.show');
+    Route::post('/admin/applications/{id}/verify', [\App\Http\Controllers\Admin\ApplicationController::class, 'verify'])->name('admin.applications.verify');
 
     // Admin profile routes
     Route::get('/admin/profile/edit', [\App\Http\Controllers\Admin\ProfileController::class, 'edit'])->name('admin.profile.edit');
