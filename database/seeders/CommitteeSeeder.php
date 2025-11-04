@@ -43,7 +43,10 @@ class CommitteeSeeder extends Seeder
         ];
 
         foreach ($committees as $committee) {
-            Committee::create($committee);
+            Committee::firstOrCreate(
+                ['email' => $committee['email']],
+                $committee
+            );
         }
     }
 }

@@ -17,14 +17,17 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory(10)->create();
 
-        User::factory()->create([
-            'full_name' => 'Test User',
-            'email' => 'test@example.com',
-        ]);
+        if (!User::where('email', 'test@example.com')->exists()) {
+            User::factory()->create([
+                'full_name' => 'Test User',
+                'email' => 'test@example.com',
+            ]);
+        }
 
         // Seed committee accounts
         $this->call([
             CommitteeSeeder::class,
+            AdminSeeder::class,
         ]);
     }
 }

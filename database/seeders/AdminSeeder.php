@@ -16,10 +16,12 @@ class AdminSeeder extends Seeder
      */
     public function run(): void
     {
-        Admin::create([
-            'name' => 'Admin',
-            'email' => 'admin@unikl.com',
-            'password' => Hash::make('admin123'),
-        ]);
+        Admin::firstOrCreate(
+            ['email' => 'admin@unikl.com'],
+            [
+                'name' => 'Admin',
+                'password' => Hash::make('admin123'),
+            ]
+        );
     }
 }
