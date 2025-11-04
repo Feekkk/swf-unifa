@@ -23,6 +23,7 @@ class Application extends Model
         'reviewed_at',
         'reviewed_by',
         'verified_by',
+        'committee_remarks',
     ];
 
     protected $casts = [
@@ -43,11 +44,11 @@ class Application extends Model
     }
 
     /**
-     * Get the admin who reviewed the application.
+     * Get the committee member who reviewed the application.
      */
     public function reviewer(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'reviewed_by');
+        return $this->belongsTo(Committee::class, 'reviewed_by');
     }
 
     /**

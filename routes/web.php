@@ -94,6 +94,8 @@ Route::middleware('auth:committee')->group(function () {
     // Committee application routes
     Route::get('/committee/applications', [\App\Http\Controllers\Committee\ApplicationController::class, 'index'])->name('committee.applications.index');
     Route::get('/committee/applications/{id}', [\App\Http\Controllers\Committee\ApplicationController::class, 'show'])->name('committee.applications.show');
+    Route::post('/committee/applications/{id}/approve', [\App\Http\Controllers\Committee\ApplicationController::class, 'approve'])->name('committee.applications.approve');
+    Route::post('/committee/applications/{id}/reject', [\App\Http\Controllers\Committee\ApplicationController::class, 'reject'])->name('committee.applications.reject');
 });
 
 // Logout Route (accessible by students, admins, and committees)

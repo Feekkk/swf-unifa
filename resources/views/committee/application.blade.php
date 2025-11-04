@@ -47,6 +47,12 @@
         .info-value{color:var(--text); flex:1}
         .status-chip{display:inline-flex; align-items:center; gap:.4rem; padding:.4rem .8rem; border-radius:999px; font-size:.875rem; font-weight:700}
         .status-verify{background:rgba(59,130,246,.15); color:#1e40af; border:1px solid rgba(59,130,246,.4)}
+        .status-approved{background:rgba(16,185,129,.12); color:#065f46; border:1px solid rgba(16,185,129,.35)}
+        .status-rejected{background:rgba(244,63,94,.12); color:#7f1d1d; border:1px solid rgba(244,63,94,.35)}
+        .button.is-success{background-color:#10b981; border-color:#10b981; color:#fff}
+        .button.is-success:hover{filter:brightness(.95)}
+        .button.is-danger{background-color:#f14668; border-color:#f14668; color:#fff}
+        .button.is-danger:hover{filter:brightness(.95)}
 
         .footer { background-color: var(--primary-dark); color: #fff; }
         .footer a { color: rgba(255, 255, 255, 0.8); }
@@ -188,9 +194,10 @@
                         <div class="info-row">
                             <div class="info-label">Status</div>
                             <div class="info-value">
-                                <span class="status-chip status-verify">
-                                    <i class="fa-solid fa-check-circle"></i>
-                                    Verified
+                                @php($status = strtolower($application->status ?? 'verify'))
+                                <span class="status-chip {{ $status==='approved'?'status-approved':($status==='rejected'?'status-rejected':'status-verify') }}">
+                                    @if($status==='approved')<i class="fa-solid fa-circle-check"></i>@elseif($status==='rejected')<i class="fa-solid fa-circle-xmark"></i>@else<i class="fa-solid fa-check-circle"></i>@endif
+                                    {{ ucfirst(str_replace('_', ' ', $status)) }}
                                 </span>
                             </div>
                         </div>
@@ -235,7 +242,7 @@
                         @if($application->reviewer)
                         <div class="info-row">
                             <div class="info-label">Reviewed By</div>
-                            <div class="info-value">{{ $application->reviewer->display_name ?? $application->reviewer->username }}</div>
+                            <div class="info-value">{{ $application->reviewer->name ?? $application->reviewer->email }}</div>
                         </div>
                         @endif
                     </div>
@@ -340,6 +347,120 @@
                     <div class="content">
                         <div class="notification is-light" style="background-color:#f3f4f6; border-left: 4px solid var(--primary);">
                             <p style="white-space: pre-wrap;">{{ $application->admin_notes }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @endif
+
+            <!-- Committee Remarks -->
+            @if($application->committee_remarks)
+            <div class="card">
+                <div class="card-content">
+                    <h2 class="section-title">
+                        <span class="icon-text">
+                            <span class="icon"><i class="fa-solid fa-comment"></i></span>
+                            <span>Committee Remarks</span>
+                        </span>
+                    </h2>
+                    <div class="content">
+                        <div class="notification is-light" style="background-color:#f3f4f6; border-left: 4px solid var(--accent);">
+                            <p style="white-space: pre-wrap;">{{ $application->committee_remarks }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @endif
+
+            <!-- Approval/Rejection Form (Only show if status is verify) -->
+            @if(strtolower($application->status) === 'verify')
+            <div class="card">
+                <div class="card-content">
+                    <h2 class="section-title">
+                        <span class="icon-text">
+                            <span class="icon"><i class="fa-solid fa-gavel"></i></span>
+                            <span>Committee Decision</span>
+                        </span>
+                    </h2>
+                    
+                    @if ($errors->any())
+                        <div class="notification is-danger is-light mb-4" style="border-left: 4px solid #f14668;">
+                            <button class="delete" onclick="this.parentElement.remove()"></button>
+                            <span class="icon mr-2"><i class="fa-solid fa-circle-exclamation"></i></span>
+                            <ul style="margin-left:1rem">
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
+
+                    <div class="columns">
+                        <!-- Approve Form -->
+                        <div class="column is-6">
+                            <form method="POST" action="{{ route('committee.applications.approve', $application->id) }}" id="approve-form">
+                                @csrf
+                                <h3 class="title is-5 mb-4" style="color:#10b981">
+                                    <span class="icon-text">
+                                        <span class="icon"><i class="fa-solid fa-check-circle"></i></span>
+                                        <span>Approve Application</span>
+                                    </span>
+                                </h3>
+                                
+                                <div class="field">
+                                    <label class="label">Amount Approved (RM)</label>
+                                    <div class="control">
+                                        <input class="input" type="number" name="amount_approved" step="0.01" min="0" value="{{ old('amount_approved', $application->amount_approved ?? $application->total_amount) }}" required>
+                                    </div>
+                                    <p class="help">Enter the approved amount</p>
+                                </div>
+
+                                <div class="field">
+                                    <label class="label">Committee Remarks (Optional)</label>
+                                    <div class="control">
+                                        <textarea class="textarea" name="committee_remarks" rows="3" placeholder="Add any remarks or notes">{{ old('committee_remarks') }}</textarea>
+                                    </div>
+                                </div>
+
+                                <div class="field">
+                                    <div class="control">
+                                        <button type="submit" class="button is-success">
+                                            <span class="icon"><i class="fa-solid fa-check"></i></span>
+                                            <span>Approve Application</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+
+                        <!-- Reject Form -->
+                        <div class="column is-6">
+                            <form method="POST" action="{{ route('committee.applications.reject', $application->id) }}" id="reject-form">
+                                @csrf
+                                <h3 class="title is-5 mb-4" style="color:#f14668">
+                                    <span class="icon-text">
+                                        <span class="icon"><i class="fa-solid fa-times-circle"></i></span>
+                                        <span>Reject Application</span>
+                                    </span>
+                                </h3>
+
+                                <div class="field">
+                                    <label class="label">Committee Remarks (Optional)</label>
+                                    <div class="control">
+                                        <textarea class="textarea" name="committee_remarks" rows="3" placeholder="Add reason for rejection">{{ old('committee_remarks') }}</textarea>
+                                    </div>
+                                    <p class="help">Please provide a reason for rejection</p>
+                                </div>
+
+                                <div class="field">
+                                    <div class="control">
+                                        <button type="submit" class="button is-danger" onclick="return confirm('Are you sure you want to reject this application?');">
+                                            <span class="icon"><i class="fa-solid fa-times"></i></span>
+                                            <span>Reject Application</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>

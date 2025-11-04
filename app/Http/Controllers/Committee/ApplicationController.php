@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Committee;
 use App\Http\Controllers\Controller;
 use App\Models\Application;
 use Illuminate\Http\Request;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Auth;
 
 class ApplicationController extends Controller
 {
@@ -77,12 +79,64 @@ class ApplicationController extends Controller
     public function show($id)
     {
         $application = Application::with(['user', 'documents', 'reviewer', 'verifier'])
-            ->where('status', 'verify')
             ->findOrFail($id);
+
+        // Only allow viewing verified applications (or already approved/rejected ones)
+        if (!in_array($application->status, ['verify', 'approved', 'rejected'])) {
+            abort(404);
+        }
 
         return view('committee.application', [
             'application' => $application,
         ]);
+    }
+
+    /**
+     * Approve an application.
+     */
+    public function approve(Request $request, $id): RedirectResponse
+    {
+        $application = Application::where('status', 'verify')->findOrFail($id);
+
+        $validated = $request->validate([
+            'amount_approved' => 'required|numeric|min:0',
+            'committee_remarks' => 'nullable|string|max:1000',
+        ]);
+
+        $application->update([
+            'status' => 'approved',
+            'amount_approved' => $validated['amount_approved'],
+            'committee_remarks' => $validated['committee_remarks'] ?? null,
+            'reviewed_by' => Auth::guard('committee')->id(),
+            'reviewed_at' => now(),
+        ]);
+
+        return redirect()
+            ->route('committee.applications.show', $application->id)
+            ->with('success', 'Application has been approved successfully.');
+    }
+
+    /**
+     * Reject an application.
+     */
+    public function reject(Request $request, $id): RedirectResponse
+    {
+        $application = Application::where('status', 'verify')->findOrFail($id);
+
+        $validated = $request->validate([
+            'committee_remarks' => 'nullable|string|max:1000',
+        ]);
+
+        $application->update([
+            'status' => 'rejected',
+            'committee_remarks' => $validated['committee_remarks'] ?? null,
+            'reviewed_by' => Auth::guard('committee')->id(),
+            'reviewed_at' => now(),
+        ]);
+
+        return redirect()
+            ->route('committee.applications.show', $application->id)
+            ->with('success', 'Application has been rejected.');
     }
 }
 
