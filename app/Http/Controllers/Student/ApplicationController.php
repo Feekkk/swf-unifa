@@ -7,6 +7,7 @@ use App\Http\Requests\Student\ApplicationRequest;
 use App\Models\Application;
 use App\Models\ApplicationDocument;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -129,6 +130,113 @@ class ApplicationController extends Controller
                 'file_type' => $file->getMimeType(),
                 'file_size' => $file->getSize(),
             ]);
+        }
+    }
+
+    /**
+     * Add a document to an existing application (only if status is pending).
+     */
+    public function addDocument(Request $request, $id): RedirectResponse
+    {
+        $application = Application::where('user_id', Auth::id())
+            ->findOrFail($id);
+
+        // Check if application status is pending
+        if ($application->status !== 'pending') {
+            return redirect()->back()
+                ->with('error', 'You can only edit documents for pending applications.');
+        }
+
+        $request->validate([
+            'document' => ['required', 'file', 'max:10240', 'mimes:pdf,jpg,jpeg,png'],
+        ]);
+
+        try {
+            $file = $request->file('document');
+            
+            // Generate unique filename
+            $filename = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
+            $path = 'applications/' . $application->id . '/' . $filename;
+
+            // Store file
+            $file->storeAs('applications/' . $application->id, $filename, 'public');
+
+            // Save document metadata
+            ApplicationDocument::create([
+                'application_id' => $application->id,
+                'filename' => $file->getClientOriginalName(),
+                'file_path' => $path,
+                'file_type' => $file->getMimeType(),
+                'file_size' => $file->getSize(),
+            ]);
+
+            Log::info('Document added to application', [
+                'user_id' => Auth::id(),
+                'application_id' => $application->id,
+                'filename' => $file->getClientOriginalName(),
+            ]);
+
+            return redirect()->back()
+                ->with('success', 'Document added successfully.');
+
+        } catch (\Exception $e) {
+            Log::error('Failed to add document', [
+                'user_id' => Auth::id(),
+                'application_id' => $application->id,
+                'error' => $e->getMessage(),
+            ]);
+
+            return redirect()->back()
+                ->with('error', 'Failed to add document. Please try again.');
+        }
+    }
+
+    /**
+     * Delete a document from an application (only if status is pending).
+     */
+    public function deleteDocument($id, $documentId): RedirectResponse
+    {
+        $application = Application::where('user_id', Auth::id())
+            ->findOrFail($id);
+
+        // Check if application status is pending
+        if ($application->status !== 'pending') {
+            return redirect()->back()
+                ->with('error', 'You can only delete documents from pending applications.');
+        }
+
+        $document = ApplicationDocument::where('application_id', $application->id)
+            ->where('id', $documentId)
+            ->firstOrFail();
+
+        try {
+            // Delete file from storage
+            if (Storage::disk('public')->exists($document->file_path)) {
+                Storage::disk('public')->delete($document->file_path);
+            }
+
+            // Delete document record
+            $document->delete();
+
+            Log::info('Document deleted from application', [
+                'user_id' => Auth::id(),
+                'application_id' => $application->id,
+                'document_id' => $documentId,
+            ]);
+
+            return redirect()->back()
+                ->with('success', 'Document deleted successfully.');
+
+        } catch (\Exception $e) {
+            Log::error('Failed to delete document', [
+                'user_id' => Auth::id(),
+                'application_id' => $application->id,
+                'document_id' => $documentId,
+                'error' => $e->getMessage(),
+            ]);
+
+            return redirect()->back()
+                ->with('error', 'Failed to delete document. Please try again.');
         }
     }
 }

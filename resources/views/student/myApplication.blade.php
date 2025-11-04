@@ -287,7 +287,55 @@
                                     </div>
 
                                     <div id="documents-{{ $application->id }}" style="display:none; margin-top:1rem; padding-top:1rem; border-top:1px solid #e5e7eb;">
-                                        <p class="heading mb-3">Uploaded Documents</p>
+                                        <div class="level is-mobile mb-3">
+                                            <div class="level-left">
+                                                <p class="heading mb-0">Uploaded Documents</p>
+                                            </div>
+                                            <div class="level-right">
+                                                @if($application->status === 'pending')
+                                                    <button class="button is-small is-primary" onclick="toggleAddDocument({{ $application->id }})">
+                                                        <span class="icon"><i class="fa-solid fa-plus"></i></span>
+                                                        <span>Add Document</span>
+                                                    </button>
+                                                @endif
+                                            </div>
+                                        </div>
+
+                                        <!-- Add Document Form (only shown for pending applications) -->
+                                        @if($application->status === 'pending')
+                                        <div id="add-document-{{ $application->id }}" style="display:none; margin-bottom:1rem; padding:1rem; background-color:#f9fafb; border-radius:8px; border:1px dashed #d1d5db;">
+                                            <form method="POST" action="{{ route('student.applications.documents.add', $application->id) }}" enctype="multipart/form-data">
+                                                @csrf
+                                                <div class="field">
+                                                    <div class="file has-name">
+                                                        <label class="file-label">
+                                                            <input class="file-input" type="file" name="document" accept=".pdf,.jpg,.jpeg,.png" required onchange="updateFileName(this, 'file-name-{{ $application->id }}')">
+                                                            <span class="file-cta">
+                                                                <span class="file-icon"><i class="fa-solid fa-upload"></i></span>
+                                                                <span class="file-label">Choose file…</span>
+                                                            </span>
+                                                            <span class="file-name" id="file-name-{{ $application->id }}">No file selected</span>
+                                                        </label>
+                                                    </div>
+                                                    <p class="help">Accepted formats: PDF, JPG, PNG (Max 10MB)</p>
+                                                </div>
+                                                <div class="field is-grouped">
+                                                    <div class="control">
+                                                        <button type="submit" class="button is-primary is-small">
+                                                            <span class="icon"><i class="fa-solid fa-upload"></i></span>
+                                                            <span>Upload</span>
+                                                        </button>
+                                                    </div>
+                                                    <div class="control">
+                                                        <button type="button" class="button is-light is-small" onclick="toggleAddDocument({{ $application->id }})">
+                                                            Cancel
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                        @endif
+
                                         <div class="columns is-multiline">
                                             @foreach($application->documents as $document)
                                                 <div class="column is-6">
@@ -303,10 +351,22 @@
                                                                 </div>
                                                             </div>
                                                             <div class="level-right">
-                                                                <a href="{{ asset('storage/' . $document->file_path) }}" target="_blank" class="button is-small is-light">
-                                                                    <span class="icon"><i class="fa-solid fa-eye"></i></span>
-                                                                    <span>View</span>
-                                                                </a>
+                                                                <div class="buttons">
+                                                                    <a href="{{ asset('storage/' . $document->file_path) }}" target="_blank" class="button is-small is-light">
+                                                                        <span class="icon"><i class="fa-solid fa-eye"></i></span>
+                                                                        <span>View</span>
+                                                                    </a>
+                                                                    @if($application->status === 'pending')
+                                                                        <form method="POST" action="{{ route('student.applications.documents.delete', [$application->id, $document->id]) }}" style="display:inline;" onsubmit="return confirm('Are you sure you want to delete this document?');">
+                                                                            @csrf
+                                                                            @method('DELETE')
+                                                                            <button type="submit" class="button is-small is-danger is-light">
+                                                                                <span class="icon"><i class="fa-solid fa-trash"></i></span>
+                                                                                <span>Delete</span>
+                                                                            </button>
+                                                                        </form>
+                                                                    @endif
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -402,6 +462,22 @@
             const documentsDiv = document.getElementById('documents-' + applicationId);
             if (documentsDiv) {
                 documentsDiv.style.display = documentsDiv.style.display === 'none' ? 'block' : 'none';
+            }
+        }
+
+        function toggleAddDocument(applicationId) {
+            const addDocumentDiv = document.getElementById('add-document-' + applicationId);
+            if (addDocumentDiv) {
+                addDocumentDiv.style.display = addDocumentDiv.style.display === 'none' ? 'block' : 'none';
+            }
+        }
+
+        function updateFileName(input, fileNameId) {
+            const fileNameSpan = document.getElementById(fileNameId);
+            if (fileNameSpan && input.files && input.files[0]) {
+                fileNameSpan.textContent = input.files[0].name;
+            } else {
+                fileNameSpan.textContent = 'No file selected';
             }
         }
     </script>

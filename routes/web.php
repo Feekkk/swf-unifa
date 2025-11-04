@@ -53,6 +53,10 @@ Route::middleware('auth')->group(function () {
     Route::get('/my-applications', function () {
         return view('student.myApplication');
     })->name('student.applications.index');
+    
+    // Document management routes (only for pending applications)
+    Route::post('/applications/{id}/documents', [\App\Http\Controllers\Student\ApplicationController::class, 'addDocument'])->name('student.applications.documents.add');
+    Route::delete('/applications/{id}/documents/{documentId}', [\App\Http\Controllers\Student\ApplicationController::class, 'deleteDocument'])->name('student.applications.documents.delete');
 });
 
 // Admin Dashboard Routes
