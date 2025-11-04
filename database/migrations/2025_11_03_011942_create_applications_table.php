@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\DB;
 
 return new class extends Migration
 {
@@ -27,14 +28,20 @@ return new class extends Migration
             $table->string('bank_name');
             $table->string('bank_account_number');
             
-            // Application Status
-            $table->enum('status', ['pending', 'under_review', 'approved', 'rejected', 'disbursed'])->default('pending');
+            // Application Status (includes 'verify' status)
+            $table->enum('status', ['pending', 'verify', 'under_review', 'approved', 'rejected', 'disbursed'])->default('pending');
             
             // Admin fields
             $table->text('admin_notes')->nullable();
+            $table->text('committee_remarks')->nullable();
             $table->decimal('amount_approved', 10, 2)->nullable();
             $table->timestamp('reviewed_at')->nullable();
-            $table->foreignId('reviewed_by')->nullable()->constrained('users')->onDelete('set null');
+            
+            // Foreign keys
+            // Note: reviewed_by will reference committees (added after committees table is created)
+            // verified_by will reference admins (added after admins table is created)
+            $table->foreignId('reviewed_by')->nullable();
+            $table->foreignId('verified_by')->nullable();
             
             $table->timestamps();
         });

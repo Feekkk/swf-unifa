@@ -11,8 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
+        // Add foreign key constraints after both admins and committees tables exist
         Schema::table('applications', function (Blueprint $table) {
-            $table->text('committee_remarks')->nullable()->after('admin_notes');
+            // Add foreign key to admins table
+            $table->foreign('verified_by')->references('id')->on('admins')->onDelete('set null');
+            
+            // Add foreign key to committees table
+            $table->foreign('reviewed_by')->references('id')->on('committees')->onDelete('set null');
         });
     }
 
@@ -22,7 +27,9 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('applications', function (Blueprint $table) {
-            $table->dropColumn('committee_remarks');
+            $table->dropForeign(['verified_by']);
+            $table->dropForeign(['reviewed_by']);
         });
     }
 };
+

@@ -17,27 +17,27 @@ class CommitteeSeeder extends Seeder
         $committees = [
             [
                 'name' => 'Dr. Ahmad bin Abdullah',
-                'email' => 'committee1@unikl.edu.my',
+                'email' => 'committee1@unikl.com',
                 'password' => Hash::make('committee123'),
             ],
             [
                 'name' => 'Prof. Dr. Siti Nurhaliza binti Hassan',
-                'email' => 'committee2@unikl.edu.my',
+                'email' => 'committee2@unikl.com',
                 'password' => Hash::make('committee123'),
             ],
             [
                 'name' => 'Dr. Muhammad Faiz bin Ismail',
-                'email' => 'committee3@unikl.edu.my',
+                'email' => 'committee3@unikl.com',
                 'password' => Hash::make('committee123'),
             ],
             [
                 'name' => 'Dr. Nurul Ain binti Mohd Zain',
-                'email' => 'committee4@unikl.edu.my',
+                'email' => 'committee4@unikl.com',
                 'password' => Hash::make('committee123'),
             ],
             [
                 'name' => 'Dr. Lim Wei Ming',
-                'email' => 'committee5@unikl.edu.my',
+                'email' => 'committee5@unikl.com',
                 'password' => Hash::make('committee123'),
             ],
         ];

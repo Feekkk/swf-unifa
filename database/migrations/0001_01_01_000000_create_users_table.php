@@ -13,10 +13,32 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            
+            // Personal Information
+            $table->string('full_name');
+            $table->string('username', 20)->unique();
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            
+            // Bank Information
+            $table->string('bank_name', 100);
+            $table->string('bank_account_number', 20);
+            
+            // Contact Information
+            $table->string('phone_number', 20);
+            $table->string('street_address');
+            $table->string('city', 100);
+            $table->string('state', 100);
+            $table->string('postal_code', 5);
+            
+            // Academic Information
+            $table->string('student_id', 20)->unique();
+            $table->string('course', 100);
+            $table->integer('semester');
+            
+            // Status
+            $table->boolean('is_active')->default(true);
             $table->rememberToken();
             $table->timestamps();
         });
@@ -42,8 +64,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('users');
-        Schema::dropIfExists('password_reset_tokens');
         Schema::dropIfExists('sessions');
+        Schema::dropIfExists('password_reset_tokens');
+        Schema::dropIfExists('users');
     }
 };
