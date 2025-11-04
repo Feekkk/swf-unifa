@@ -139,7 +139,7 @@
                                 <select name="category">
                                     <option value="all" {{ ($filters['category'] ?? 'all')==='all'?'selected':'' }}>All</option>
                                     <option value="bereavement" {{ ($filters['category'] ?? '')==='bereavement'?'selected':'' }}>Bereavement</option>
-                                    <option value="medical" {{ ($filters['category'] ?? '')==='medical'?'selected':'' }}>Medical</option>
+                                    <option value="illness" {{ ($filters['category'] ?? '')==='illness'?'selected':'' }}>Illness & Injuries</option>
                                     <option value="emergency" {{ ($filters['category'] ?? '')==='emergency'?'selected':'' }}>Emergency</option>
                                 </select>
                             </div>

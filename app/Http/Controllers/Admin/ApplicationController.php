@@ -17,11 +17,22 @@ class ApplicationController extends Controller
         // Search by application id, user name, user student_id
         if ($search = trim((string) $request->input('q'))) {
             $query->where(function ($q) use ($search) {
-                $q->where('id', 'like', "%$search%")
-                  ->orWhere('subcategory', 'like', "%$search%")
+                // Handle APP- format search (e.g., "APP-000001" or "APP-1" or just "1")
+                $numericSearch = preg_replace('/[^0-9]/', '', $search);
+                if ($numericSearch && is_numeric($numericSearch)) {
+                    $q->where('id', '=', (int) $numericSearch);
+                }
+                
+                // Search by subcategory
+                $q->orWhere('subcategory', 'like', "%$search%")
+                  // Search by user full_name, username, student_id, or email
                   ->orWhereHas('user', function ($uq) use ($search) {
-                      $uq->where('display_name', 'like', "%$search%")
-                         ->orWhere('student_id', 'like', "%$search%");
+                      $uq->where(function ($userQuery) use ($search) {
+                          $userQuery->where('full_name', 'like', "%$search%")
+                                    ->orWhere('username', 'like', "%$search%")
+                                    ->orWhere('student_id', 'like', "%$search%")
+                                    ->orWhere('email', 'like', "%$search%");
+                      });
                   });
             });
         }
