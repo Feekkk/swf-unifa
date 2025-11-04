@@ -122,10 +122,25 @@ class LoginController extends Controller
         if ($userType === 'staff' && $staffRole === 'admin') {
             $redirectTo = '/admin/dashboard';
         }
+        
+        // Redirect committees to committee dashboard
+        if ($userType === 'staff' && $staffRole === 'committee') {
+            $redirectTo = '/committee/dashboard';
+        }
+
+        // Determine which guard to use for logging
+        $guard = 'web';
+        if ($userType === 'staff' && $staffRole === 'admin') {
+            $guard = 'admin';
+        } elseif ($userType === 'staff' && $staffRole === 'committee') {
+            $guard = 'committee';
+        }
 
         // Log successful login
         \Log::info('User logged in successfully', [
-            'user_id' => Auth::guard($userType === 'staff' && $staffRole === 'admin' ? 'admin' : 'web')->id(),
+            'user_id' => Auth::guard($guard)->id(),
+            'user_type' => $userType,
+            'staff_role' => $staffRole,
             'ip_address' => $request->ip(),
             'user_agent' => $request->userAgent()
         ]);
@@ -160,13 +175,28 @@ class LoginController extends Controller
     public function logout(Request $request)
     {
         // Log the logout event
+        $userId = null;
+        $guard = null;
+        if (Auth::guard('admin')->check()) {
+            $userId = Auth::guard('admin')->id();
+            $guard = 'admin';
+        } elseif (Auth::guard('committee')->check()) {
+            $userId = Auth::guard('committee')->id();
+            $guard = 'committee';
+        } else {
+            $userId = Auth::id();
+            $guard = 'web';
+        }
+
         \Log::info('User logged out', [
-            'user_id' => Auth::guard('admin')->check() ? Auth::guard('admin')->id() : Auth::id(),
+            'user_id' => $userId,
+            'guard' => $guard,
             'ip_address' => $request->ip()
         ]);
 
-        // Logout from both guards
+        // Logout from all guards
         Auth::guard('admin')->logout();
+        Auth::guard('committee')->logout();
         Auth::logout();
 
         $request->session()->invalidate();

@@ -81,5 +81,12 @@ Route::middleware('auth:admin')->group(function () {
     Route::delete('/admin/users/{role}/{id}', [\App\Http\Controllers\Admin\UserController::class, 'destroy'])->name('admin.users.destroy');
 });
 
-// Logout Route (accessible by both students and admins)
+// Committee Dashboard Routes
+Route::middleware('auth:committee')->group(function () {
+    Route::get('/committee/dashboard', function () {
+        return view('committee.dashboard');
+    })->name('committee.dashboard');
+});
+
+// Logout Route (accessible by students, admins, and committees)
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');

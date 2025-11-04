@@ -78,6 +78,25 @@ class LoginRequest extends FormRequest
             return;
         }
         
+        // Handle committee login
+        if ($userType === 'staff' && $staffRole === 'committee') {
+            $credentials = [
+                'email' => $login,
+                'password' => $this->input('password'),
+            ];
+
+            if (! Auth::guard('committee')->attempt($credentials, $this->boolean('remember'))) {
+                RateLimiter::hit($this->throttleKey());
+
+                throw ValidationException::withMessages([
+                    'login' => 'These credentials do not match our records.',
+                ]);
+            }
+
+            RateLimiter::clear($this->throttleKey());
+            return;
+        }
+        
         // Handle student login
         $field = filter_var($login, FILTER_VALIDATE_EMAIL) ? 'email' : 'student_id';
         
