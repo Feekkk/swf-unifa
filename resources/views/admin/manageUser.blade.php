@@ -113,13 +113,21 @@
                 </div>
             @endif
 
+            @if (isset($noResults) && $noResults)
+                <div class="notification is-warning is-light mb-4" style="border-left: 4px solid #ffb347;">
+                    <button class="delete" onclick="this.parentElement.remove()"></button>
+                    <span class="icon mr-2"><i class="fa-solid fa-search"></i></span>
+                    <strong>No users found</strong> for "<strong>{{ $search }}</strong>". Please try a different search term.
+                </div>
+            @endif
+
             <form method="GET" action="{{ route('admin.users.index') }}">
                 <div class="search-filter-container">
                     <div class="columns">
                         <div class="column is-6">
                             <div class="field has-addons">
                                 <div class="control is-expanded">
-                                    <input class="input" type="text" name="search" placeholder="Search by name, role..." value="{{ $search ?? '' }}" id="search-input">
+                                    <input class="input" type="text" name="search" placeholder="Search by name, email, student ID..." value="{{ $search ?? '' }}" id="search-input">
                                 </div>
                                 <div class="control">
                                     <button type="submit" class="button is-primary">
@@ -135,12 +143,19 @@
                                         <option value="">All Roles</option>
                                         <option value="student" {{ ($roleFilter ?? '') === 'student' ? 'selected' : '' }}>Student</option>
                                         <option value="admin" {{ ($roleFilter ?? '') === 'admin' ? 'selected' : '' }}>Admin</option>
+                                        <option value="committee" {{ ($roleFilter ?? '') === 'committee' ? 'selected' : '' }}>Committee</option>
                                     </select>
                                 </div>
                             </div>
                         </div>
                         <div class="column is-3 has-text-right">
                             <div class="buttons">
+                                @if($search ?? '')
+                                    <a href="{{ route('admin.users.index', ['role_filter' => $roleFilter ?? '']) }}" class="button is-light">
+                                        <span class="icon"><i class="fas fa-times"></i></span>
+                                        <span>Clear Search</span>
+                                    </a>
+                                @endif
                                 <a href="{{ route('admin.users.index') }}" class="button is-primary">
                                     <span class="icon"><i class="fas fa-sync"></i></span>
                                     <span>Refresh</span>
@@ -173,7 +188,7 @@
                                             <td>{{ $user['name'] }}</td>
                                             <td>{{ $user['email'] }}</td>
                                             <td>
-                                                <span class="tag {{ $user['role'] === 'admin' ? 'is-warning' : 'is-info' }}">
+                                                <span class="tag {{ $user['role'] === 'admin' ? 'is-warning' : ($user['role'] === 'committee' ? 'is-success' : 'is-info') }}">
                                                     {{ ucfirst($user['role']) }}
                                                 </span>
                                             </td>
@@ -194,8 +209,13 @@
                                             <td colspan="6" class="has-text-centered" style="padding: 3rem 1rem;">
                                                 <div class="has-text-grey">
                                                     <i class="fas fa-users fa-3x mb-4"></i>
-                                                    <p class="is-size-5">No users found</p>
-                                                    <p class="is-size-6">Users will appear here once registered</p>
+                                                    @if(isset($search) && $search)
+                                                        <p class="is-size-5">No users found matching your search</p>
+                                                        <p class="is-size-6">Try searching with a different term or <a href="{{ route('admin.users.index') }}">view all users</a></p>
+                                                    @else
+                                                        <p class="is-size-5">No users found</p>
+                                                        <p class="is-size-6">Users will appear here once registered</p>
+                                                    @endif
                                                 </div>
                                             </td>
                                         </tr>
@@ -365,6 +385,26 @@
                     this.form.submit();
                 });
             }
+
+            // Submit search form on Enter key press
+            const searchInput = document.getElementById('search-input');
+            if (searchInput) {
+                searchInput.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        e.preventDefault();
+                        this.form.submit();
+                    }
+                });
+            }
+
+            // Clear search functionality
+            const clearSearch = () => {
+                const searchInput = document.getElementById('search-input');
+                if (searchInput && searchInput.value) {
+                    searchInput.value = '';
+                    searchInput.form.submit();
+                }
+            };
         });
     </script>
 </body>

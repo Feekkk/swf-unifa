@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\UpdateUserPasswordRequest;
 use App\Models\User;
 use App\Models\Admin;
+use App\Models\Committee;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -28,6 +29,7 @@ class UserController extends Controller
         if ($search) {
             $usersQuery->where(function($query) use ($search) {
                 $query->where('full_name', 'like', "%{$search}%")
+                    ->orWhere('username', 'like', "%{$search}%")
                     ->orWhere('email', 'like', "%{$search}%")
                     ->orWhere('student_id', 'like', "%{$search}%");
             });
@@ -64,11 +66,31 @@ class UserController extends Controller
             ];
         });
 
+        // Get all committees
+        $committeesQuery = Committee::query();
+        
+        if ($search) {
+            $committeesQuery->where(function($query) use ($search) {
+                $query->where('name', 'like', "%{$search}%")
+                    ->orWhere('email', 'like', "%{$search}%");
+            });
+        }
+
+        $committeeUsers = $committeesQuery->get()->map(function($committee) {
+            return [
+                'id' => $committee->id,
+                'name' => $committee->name,
+                'email' => $committee->email,
+                'role' => 'committee',
+                'updated_at' => $committee->updated_at,
+            ];
+        });
+
         // Combine all users
-        $allUsers = $students->merge($adminUsers);
+        $allUsers = $students->merge($adminUsers)->merge($committeeUsers);
 
         // Apply role filter if selected
-        if ($roleFilter && in_array($roleFilter, ['student', 'admin'])) {
+        if ($roleFilter && in_array($roleFilter, ['student', 'admin', 'committee'])) {
             $allUsers = $allUsers->filter(function($user) use ($roleFilter) {
                 return $user['role'] === $roleFilter;
             });
@@ -77,10 +99,14 @@ class UserController extends Controller
         // Sort by updated_at descending
         $allUsers = $allUsers->sortByDesc('updated_at')->values();
 
+        // Check if search was performed but no results found
+        $noResults = $search && $allUsers->isEmpty();
+
         return view('admin.manageUser', [
             'users' => $allUsers,
             'search' => $search,
             'roleFilter' => $roleFilter,
+            'noResults' => $noResults,
         ]);
     }
 
@@ -94,6 +120,9 @@ class UserController extends Controller
             $userName = $user->full_name ?? $user->username;
         } elseif ($role === 'admin') {
             $user = Admin::findOrFail($id);
+            $userName = $user->name;
+        } elseif ($role === 'committee') {
+            $user = Committee::findOrFail($id);
             $userName = $user->name;
         } else {
             abort(404);
@@ -115,6 +144,8 @@ class UserController extends Controller
             $user = User::findOrFail($id);
         } elseif ($role === 'admin') {
             $user = Admin::findOrFail($id);
+        } elseif ($role === 'committee') {
+            $user = Committee::findOrFail($id);
         } else {
             abort(404);
         }
@@ -136,6 +167,9 @@ class UserController extends Controller
             $userName = $user->full_name ?? $user->username;
         } elseif ($role === 'admin') {
             $user = Admin::findOrFail($id);
+            $userName = $user->name;
+        } elseif ($role === 'committee') {
+            $user = Committee::findOrFail($id);
             $userName = $user->name;
         } else {
             abort(404);
