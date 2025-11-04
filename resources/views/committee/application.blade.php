@@ -49,6 +49,7 @@
         .status-verify{background:rgba(59,130,246,.15); color:#1e40af; border:1px solid rgba(59,130,246,.4)}
         .status-approved{background:rgba(16,185,129,.12); color:#065f46; border:1px solid rgba(16,185,129,.35)}
         .status-rejected{background:rgba(244,63,94,.12); color:#7f1d1d; border:1px solid rgba(244,63,94,.35)}
+        .status-under_review{background:rgba(255,192,0,.15); color:#7c5a00; border:1px solid rgba(255,192,0,.4)}
         .button.is-success{background-color:#10b981; border-color:#10b981; color:#fff}
         .button.is-success:hover{filter:brightness(.95)}
         .button.is-danger{background-color:#f14668; border-color:#f14668; color:#fff}
@@ -195,8 +196,8 @@
                             <div class="info-label">Status</div>
                             <div class="info-value">
                                 @php($status = strtolower($application->status ?? 'verify'))
-                                <span class="status-chip {{ $status==='approved'?'status-approved':($status==='rejected'?'status-rejected':'status-verify') }}">
-                                    @if($status==='approved')<i class="fa-solid fa-circle-check"></i>@elseif($status==='rejected')<i class="fa-solid fa-circle-xmark"></i>@else<i class="fa-solid fa-check-circle"></i>@endif
+                                <span class="status-chip {{ $status==='approved'?'status-approved':($status==='rejected'?'status-rejected':($status==='under_review'?'status-under_review':'status-verify')) }}">
+                                    @if($status==='approved')<i class="fa-solid fa-circle-check"></i>@elseif($status==='rejected')<i class="fa-solid fa-circle-xmark"></i>@elseif($status==='under_review')<i class="fa-solid fa-clock"></i>@else<i class="fa-solid fa-check-circle"></i>@endif
                                     {{ ucfirst(str_replace('_', ' ', $status)) }}
                                 </span>
                             </div>
@@ -372,14 +373,105 @@
             </div>
             @endif
 
-            <!-- Approval/Rejection Form (Only show if status is verify) -->
-            @if(strtolower($application->status) === 'verify')
+            <!-- Voting Status -->
+            @if(in_array(strtolower($application->status), ['verify', 'under_review']))
+            <div class="card">
+                <div class="card-content">
+                    <h2 class="section-title">
+                        <span class="icon-text">
+                            <span class="icon"><i class="fa-solid fa-vote-yea"></i></span>
+                            <span>Voting Status</span>
+                        </span>
+                    </h2>
+                    
+                    <div class="content">
+                        <div class="info-row">
+                            <div class="info-label">Total Committee Members</div>
+                            <div class="info-value">{{ $totalCommittees ?? 5 }}</div>
+                        </div>
+                        <div class="info-row">
+                            <div class="info-label">Votes Cast</div>
+                            <div class="info-value">{{ $totalVotes ?? 0 }} / {{ $totalCommittees ?? 5 }}</div>
+                        </div>
+                        <div class="info-row">
+                            <div class="info-label">Approved Votes</div>
+                            <div class="info-value">
+                                <span class="tag is-success">{{ $approveCount ?? 0 }}</span>
+                                @if(($approveCount ?? 0) >= 3)
+                                    <span class="tag is-info ml-2">✓ Threshold Met</span>
+                                @endif
+                            </div>
+                        </div>
+                        <div class="info-row">
+                            <div class="info-label">Rejected Votes</div>
+                            <div class="info-value">
+                                <span class="tag is-danger">{{ $rejectCount ?? 0 }}</span>
+                            </div>
+                        </div>
+                        @if($hasVoted ?? false)
+                        <div class="info-row">
+                            <div class="info-label">Your Vote</div>
+                            <div class="info-value">
+                                @php($vote = $currentVote ?? null)
+                                @if($vote)
+                                    <span class="tag {{ $vote->vote === 'approved' ? 'is-success' : 'is-danger' }}">
+                                        <i class="fa-solid fa-{{ $vote->vote === 'approved' ? 'check' : 'times' }}"></i>
+                                        {{ ucfirst($vote->vote) }}
+                                    </span>
+                                    @if($vote->amount_approved)
+                                        <span class="ml-2">Amount: RM {{ number_format($vote->amount_approved, 2) }}</span>
+                                    @endif
+                                @endif
+                            </div>
+                        </div>
+                        @endif
+                    </div>
+
+                    @if($application->votes && $application->votes->count() > 0)
+                    <div class="mt-4">
+                        <h3 class="title is-6 mb-3">Voting Details</h3>
+                        <div class="table-container">
+                            <table class="table is-fullwidth">
+                                <thead>
+                                    <tr>
+                                        <th>Committee Member</th>
+                                        <th>Vote</th>
+                                        <th>Amount Approved</th>
+                                        <th>Remarks</th>
+                                        <th>Voted On</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach($application->votes as $vote)
+                                    <tr>
+                                        <td>{{ $vote->committee->name ?? '-' }}</td>
+                                        <td>
+                                            <span class="tag {{ $vote->vote === 'approved' ? 'is-success' : 'is-danger' }}">
+                                                {{ ucfirst($vote->vote) }}
+                                            </span>
+                                        </td>
+                                        <td>{{ $vote->amount_approved ? 'RM ' . number_format($vote->amount_approved, 2) : '-' }}</td>
+                                        <td>{{ $vote->remarks ? Str::limit($vote->remarks, 50) : '-' }}</td>
+                                        <td>{{ $vote->created_at->format('d M Y, g:i A') }}</td>
+                                    </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    @endif
+                </div>
+            </div>
+            @endif
+
+            <!-- Approval/Rejection Form (Only show if status is verify/under_review and user hasn't voted) -->
+            @if(in_array(strtolower($application->status), ['verify', 'under_review']) && !($hasVoted ?? false))
             <div class="card">
                 <div class="card-content">
                     <h2 class="section-title">
                         <span class="icon-text">
                             <span class="icon"><i class="fa-solid fa-gavel"></i></span>
-                            <span>Committee Decision</span>
+                            <span>Cast Your Vote</span>
                         </span>
                     </h2>
                     
@@ -403,7 +495,7 @@
                                 <h3 class="title is-5 mb-4" style="color:#10b981">
                                     <span class="icon-text">
                                         <span class="icon"><i class="fa-solid fa-check-circle"></i></span>
-                                        <span>Approve Application</span>
+                                        <span>Vote to Approve</span>
                                     </span>
                                 </h3>
                                 
@@ -426,7 +518,7 @@
                                     <div class="control">
                                         <button type="submit" class="button is-success">
                                             <span class="icon"><i class="fa-solid fa-check"></i></span>
-                                            <span>Approve Application</span>
+                                            <span>Vote to Approve</span>
                                         </button>
                                     </div>
                                 </div>
@@ -440,7 +532,7 @@
                                 <h3 class="title is-5 mb-4" style="color:#f14668">
                                     <span class="icon-text">
                                         <span class="icon"><i class="fa-solid fa-times-circle"></i></span>
-                                        <span>Reject Application</span>
+                                        <span>Vote to Reject</span>
                                     </span>
                                 </h3>
 
@@ -454,14 +546,25 @@
 
                                 <div class="field">
                                     <div class="control">
-                                        <button type="submit" class="button is-danger" onclick="return confirm('Are you sure you want to reject this application?');">
+                                        <button type="submit" class="button is-danger" onclick="return confirm('Are you sure you want to vote to reject this application?');">
                                             <span class="icon"><i class="fa-solid fa-times"></i></span>
-                                            <span>Reject Application</span>
+                                            <span>Vote to Reject</span>
                                         </button>
                                     </div>
                                 </div>
                             </form>
                         </div>
+                    </div>
+                </div>
+            </div>
+            @endif
+
+            @if(in_array(strtolower($application->status), ['verify', 'under_review']) && ($hasVoted ?? false))
+            <div class="card">
+                <div class="card-content">
+                    <div class="notification is-info is-light" style="border-left: 4px solid var(--primary);">
+                        <span class="icon mr-2"><i class="fa-solid fa-info-circle"></i></span>
+                        <strong>You have already voted on this application.</strong> The final decision will be made once all committee members have cast their votes.
                     </div>
                 </div>
             </div>

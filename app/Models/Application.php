@@ -68,6 +68,14 @@ class Application extends Model
     }
 
     /**
+     * Get all votes for this application.
+     */
+    public function votes(): HasMany
+    {
+        return $this->hasMany(CommitteeVote::class);
+    }
+
+    /**
      * Get the total amount for the application.
      */
     public function getTotalAmountAttribute(): float

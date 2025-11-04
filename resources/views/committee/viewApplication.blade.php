@@ -62,6 +62,9 @@
         .pagination .pagination-link:focus, .pagination .pagination-link:hover{border-color:var(--primary)}
         .status-chip{display:inline-flex; align-items:center; gap:.4rem; padding:.2rem .55rem; border-radius:999px; font-size:.8rem; font-weight:700}
         .status-verify{background:rgba(59,130,246,.15); color:#1e40af; border:1px solid rgba(59,130,246,.4)}
+        .status-approved{background:rgba(16,185,129,.12); color:#065f46; border:1px solid rgba(16,185,129,.35)}
+        .status-rejected{background:rgba(244,63,94,.12); color:#7f1d1d; border:1px solid rgba(244,63,94,.35)}
+        .status-under_review{background:rgba(255,192,0,.15); color:#7c5a00; border:1px solid rgba(255,192,0,.4)}
         .filters{display:grid; grid-template-columns:repeat(3,1fr); gap:.75rem}
         @media(max-width:1024px){.filters{grid-template-columns:repeat(2,1fr)}}
         @media(max-width:560px){.filters{grid-template-columns:1fr}}
@@ -105,8 +108,8 @@
 
     <section class="section" style="padding-top:6rem">
         <div class="container">
-            <h1 class="title is-3">Verified Applications</h1>
-            <p class="subtitle is-6">Applications that have been verified and are ready for review</p>
+            <h1 class="title is-3">Applications for Review</h1>
+            <p class="subtitle is-6">Applications that have been verified and are ready for committee review</p>
 
             @if (session('success'))
                 <div class="notification is-success is-light mb-4" style="border-left: 4px solid #48c774;">
@@ -207,9 +210,10 @@
                                     </td>
                                     <td>RM {{ number_format($app->total_amount, 2) }}</td>
                                     <td>
-                                        <span class="status-chip status-verify">
-                                            <i class="fa-solid fa-check-circle"></i>
-                                            Verified
+                                        @php($status = strtolower($app->status ?? 'verify'))
+                                        <span class="status-chip {{ $status==='approved'?'status-approved':($status==='rejected'?'status-rejected':($status==='under_review'?'status-under_review':'status-verify')) }}">
+                                            @if($status==='approved')<i class="fa-solid fa-circle-check"></i>@elseif($status==='rejected')<i class="fa-solid fa-circle-xmark"></i>@elseif($status==='under_review')<i class="fa-solid fa-clock"></i>@else<i class="fa-solid fa-check-circle"></i>@endif
+                                            {{ ucfirst(str_replace('_', ' ', $status)) }}
                                         </span>
                                     </td>
                                     <td>
@@ -220,7 +224,7 @@
                                 </tr>
                                 @empty
                                 <tr>
-                                    <td colspan="8" class="has-text-centered has-text-grey">No verified applications found.</td>
+                                    <td colspan="8" class="has-text-centered has-text-grey">No applications found for review.</td>
                                 </tr>
                                 @endforelse
                             </tbody>
