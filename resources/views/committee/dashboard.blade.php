@@ -136,7 +136,7 @@
                                     <h3 class="title is-5">View Applications</h3>
                                     <p class="subtitle is-6" style="color:#000">Review and manage student applications for financial aid</p>
                                     <div class="buttons is-centered mt-4">
-                                        <a href="#" class="button is-primary">
+                                        <a href="{{ route('committee.applications.index') }}" class="button is-primary">
                                             <span class="icon"><i class="fas fa-eye"></i></span>
                                             <span>View All Applications</span>
                                         </a>

@@ -90,6 +90,9 @@ Route::middleware('auth:committee')->group(function () {
     // Committee profile routes
     Route::get('/committee/profile/edit', [\App\Http\Controllers\Committee\ProfileController::class, 'edit'])->name('committee.profile.edit');
     Route::post('/committee/profile/update', [\App\Http\Controllers\Committee\ProfileController::class, 'update'])->name('committee.profile.update');
+
+    // Committee application routes
+    Route::get('/committee/applications', [\App\Http\Controllers\Committee\ApplicationController::class, 'index'])->name('committee.applications.index');
 });
 
 // Logout Route (accessible by students, admins, and committees)
