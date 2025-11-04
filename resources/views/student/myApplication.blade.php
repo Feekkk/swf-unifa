@@ -36,6 +36,10 @@
             background-color: #fef3c7;
             color: #92400e;
         }
+        .status-verify {
+            background-color: #dbeafe;
+            color: #1e40af;
+        }
         .status-under_review {
             background-color: #dbeafe;
             color: #1e40af;
@@ -136,7 +140,7 @@
 
             @php
                 $applications = auth()->user()->applications()
-                    ->with(['documents', 'reviewer'])
+                    ->with(['documents', 'reviewer', 'verifier'])
                     ->orderBy('created_at', 'desc')
                     ->get();
             @endphp
@@ -182,6 +186,7 @@
                                                 $statusClass = 'status-' . str_replace('_', '-', $application->status);
                                                 $statusLabels = [
                                                     'pending' => 'Pending',
+                                                    'verify' => 'Verified',
                                                     'under_review' => 'Under Review',
                                                     'approved' => 'Approved',
                                                     'rejected' => 'Rejected',
@@ -189,6 +194,7 @@
                                                 ];
                                                 $statusIcons = [
                                                     'pending' => 'fa-clock',
+                                                    'verify' => 'fa-check-circle',
                                                     'under_review' => 'fa-hourglass-half',
                                                     'approved' => 'fa-check-circle',
                                                     'rejected' => 'fa-times-circle',
@@ -196,8 +202,8 @@
                                                 ];
                                             @endphp
                                             <span class="status-badge {{ $statusClass }}">
-                                                <span class="icon"><i class="fa-solid {{ $statusIcons[$application->status] }}"></i></span>
-                                                <span>{{ $statusLabels[$application->status] }}</span>
+                                                <span class="icon"><i class="fa-solid {{ $statusIcons[$application->status] ?? 'fa-clock' }}"></i></span>
+                                                <span>{{ $statusLabels[$application->status] ?? ucfirst($application->status) }}</span>
                                             </span>
                                         </div>
                                     </div>
@@ -241,6 +247,14 @@
                                         </div>
                                     </div>
 
+                                    @if($application->verifier)
+                                        <div class="columns is-multiline mt-2">
+                                            <div class="column is-6">
+                                                <p class="heading">Verified By</p>
+                                                <p class="subtitle is-6">{{ $application->verifier->name ?? 'Admin' }}</p>
+                                            </div>
+                                        </div>
+                                    @endif
                                     @if($application->reviewed_at)
                                         <div class="columns is-multiline mt-2">
                                             <div class="column is-6">
@@ -250,7 +264,7 @@
                                             @if($application->reviewer)
                                                 <div class="column is-6">
                                                     <p class="heading">Reviewed By</p>
-                                                    <p class="subtitle is-6">{{ $application->reviewer->full_name ?? $application->reviewer->username }}</p>
+                                                    <p class="subtitle is-6">{{ $application->reviewer->display_name ?? $application->reviewer->username }}</p>
                                                 </div>
                                             @endif
                                         </div>
