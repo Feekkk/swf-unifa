@@ -168,9 +168,9 @@
                                     </p>
                                 </div>
                                 <div class="column is-12">
-                                    <a href="#" class="button is-primary is-light is-fullwidth">
-                                        <span class="icon"><i class="fa-solid fa-user"></i></span>
-                                        <span>View Profile</span>
+                                    <a href="{{ route('committee.profile.edit') }}" class="button is-primary is-light is-fullwidth">
+                                        <span class="icon"><i class="fa-solid fa-user-pen"></i></span>
+                                        <span>Edit Profile</span>
                                     </a>
                                 </div>
                             </div>
