@@ -22,6 +22,7 @@ class Application extends Model
         'amount_approved',
         'reviewed_at',
         'reviewed_by',
+        'verified_by',
     ];
 
     protected $casts = [
@@ -47,6 +48,14 @@ class Application extends Model
     public function reviewer(): BelongsTo
     {
         return $this->belongsTo(User::class, 'reviewed_by');
+    }
+
+    /**
+     * Get the admin who verified the application.
+     */
+    public function verifier(): BelongsTo
+    {
+        return $this->belongsTo(Admin::class, 'verified_by');
     }
 
     /**

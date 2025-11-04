@@ -49,6 +49,7 @@
         .info-value{color:var(--text); flex:1}
         .status-chip{display:inline-flex; align-items:center; gap:.4rem; padding:.4rem .8rem; border-radius:999px; font-size:.875rem; font-weight:700}
         .status-pending{background:rgba(255,192,0,.15); color:#7c5a00; border:1px solid rgba(255,192,0,.4)}
+        .status-verify{background:rgba(59,130,246,.15); color:#1e40af; border:1px solid rgba(59,130,246,.4)}
         .status-approved{background:rgba(16,185,129,.12); color:#065f46; border:1px solid rgba(16,185,129,.35)}
         .status-rejected{background:rgba(244,63,94,.12); color:#7f1d1d; border:1px solid rgba(244,63,94,.35)}
         .status-under_review{background:rgba(59,130,246,.12); color:#1e40af; border:1px solid rgba(59,130,246,.35)}
@@ -195,8 +196,8 @@
                             <div class="info-label">Status</div>
                             <div class="info-value">
                                 @php($status = strtolower($application->status ?? 'pending'))
-                                <span class="status-chip {{ $status==='approved'?'status-approved':($status==='rejected'?'status-rejected':($status==='under_review'?'status-under_review':($status==='disbursed'?'status-disbursed':'status-pending'))) }}">
-                                    @if($status==='approved')<i class="fa-solid fa-circle-check"></i>@elseif($status==='rejected')<i class="fa-solid fa-circle-xmark"></i>@elseif($status==='under_review')<i class="fa-solid fa-clock"></i>@elseif($status==='disbursed')<i class="fa-solid fa-check-double"></i>@else<i class="fa-regular fa-clock"></i>@endif
+                                <span class="status-chip {{ $status==='approved'?'status-approved':($status==='rejected'?'status-rejected':($status==='verify'?'status-verify':($status==='under_review'?'status-under_review':($status==='disbursed'?'status-disbursed':'status-pending')))) }}">
+                                    @if($status==='approved')<i class="fa-solid fa-circle-check"></i>@elseif($status==='rejected')<i class="fa-solid fa-circle-xmark"></i>@elseif($status==='verify')<i class="fa-solid fa-check-circle"></i>@elseif($status==='under_review')<i class="fa-solid fa-clock"></i>@elseif($status==='disbursed')<i class="fa-solid fa-check-double"></i>@else<i class="fa-regular fa-clock"></i>@endif
                                     {{ ucfirst(str_replace('_', ' ', $status)) }}
                                 </span>
                             </div>
@@ -227,6 +228,12 @@
                         <div class="info-row">
                             <div class="info-label">Reviewed On</div>
                             <div class="info-value">{{ $application->reviewed_at->format('d M Y, g:i A') }}</div>
+                        </div>
+                        @endif
+                        @if($application->verifier)
+                        <div class="info-row">
+                            <div class="info-label">Verified By</div>
+                            <div class="info-value">{{ $application->verifier->display_name ?? $application->verifier->username }}</div>
                         </div>
                         @endif
                         @if($application->reviewer)
@@ -291,14 +298,14 @@
                 <div class="card-content">
                     <h2 class="section-title">
                         <span class="icon-text">
-                            <span class="icon"><i class="fa-solid fa-file-pdf"></i></span>
+                            <span class="icon"><i class="fa-solid fa-file-pdf" ></i></span>
                             <span>Application Documents ({{ $application->documents->count() }})</span>
                         </span>
                     </h2>
                     <div class="columns is-multiline">
                         @foreach($application->documents as $document)
                         <div class="column is-6">
-                            <div class="document-card">
+                            <div class="document-card ">
                                 <div class="level is-mobile">
                                     <div class="level-left">
                                         <div>
@@ -356,14 +363,6 @@
                     <form method="POST" action="{{ route('admin.applications.verify', $application->id) }}">
                         @csrf
                         <div class="field">
-                            <label class="label">Approved Amount</label>
-                            <div class="control">
-                                <input class="input" type="number" name="amount_approved" step="0.01" min="0" 
-                                       value="{{ $application->total_amount }}" placeholder="Enter approved amount">
-                            </div>
-                            <p class="help">Default: RM {{ number_format($application->total_amount, 2) }}</p>
-                        </div>
-                        <div class="field">
                             <label class="label">Admin Notes (Optional)</label>
                             <div class="control">
                                 <textarea class="textarea" name="admin_notes" rows="4" placeholder="Add any notes or remarks about this application">{{ old('admin_notes', $application->admin_notes) }}</textarea>
@@ -371,9 +370,9 @@
                         </div>
                         <div class="field">
                             <div class="control">
-                                <button type="submit" class="button is-success is-medium">
+                                <button type="submit" class="button is-success is-small">
                                     <span class="icon"><i class="fa-solid fa-check"></i></span>
-                                    <span>Verify & Approve Application</span>
+                                    <span>Verify Application</span>
                                 </button>
                             </div>
                         </div>

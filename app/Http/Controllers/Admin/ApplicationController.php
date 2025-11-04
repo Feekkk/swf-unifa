@@ -70,7 +70,7 @@ class ApplicationController extends Controller
      */
     public function show($id)
     {
-        $application = Application::with(['user', 'documents', 'reviewer'])
+        $application = Application::with(['user', 'documents', 'reviewer', 'verifier'])
             ->findOrFail($id);
 
         return view('admin.application', [
@@ -79,28 +79,25 @@ class ApplicationController extends Controller
     }
 
     /**
-     * Verify/Approve an application.
+     * Verify an application (sets status to verify).
      */
     public function verify(Request $request, $id): RedirectResponse
     {
         $application = Application::findOrFail($id);
 
         $request->validate([
-            'amount_approved' => 'nullable|numeric|min:0',
             'admin_notes' => 'nullable|string|max:1000',
         ]);
 
         $application->update([
-            'status' => 'approved',
-            'amount_approved' => $request->input('amount_approved', $application->total_amount),
+            'status' => 'verify',
             'admin_notes' => $request->input('admin_notes'),
-            'reviewed_at' => now(),
-            'reviewed_by' => Auth::id(),
+            'verified_by' => Auth::id(),
         ]);
 
         return redirect()
             ->route('admin.applications.show', $application->id)
-            ->with('success', 'Application has been verified and approved successfully.');
+            ->with('success', 'Application has been verified successfully.');
     }
 }
 

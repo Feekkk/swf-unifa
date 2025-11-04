@@ -62,6 +62,7 @@
         .pagination .pagination-link:focus, .pagination .pagination-link:hover{border-color:var(--primary)}
         .status-chip{display:inline-flex; align-items:center; gap:.4rem; padding:.2rem .55rem; border-radius:999px; font-size:.8rem; font-weight:700}
         .status-pending{background:rgba(255,192,0,.15); color:#7c5a00; border:1px solid rgba(255,192,0,.4)}
+        .status-verify{background:rgba(59,130,246,.15); color:#1e40af; border:1px solid rgba(59,130,246,.4)}
         .status-approved{background:rgba(16,185,129,.12); color:#065f46; border:1px solid rgba(16,185,129,.35)}
         .status-rejected{background:rgba(244,63,94,.12); color:#7f1d1d; border:1px solid rgba(244,63,94,.35)}
         .filters{display:grid; grid-template-columns:repeat(4,1fr); gap:.75rem}
@@ -126,6 +127,7 @@
                                 <select name="status">
                                     <option value="all" {{ ($filters['status'] ?? 'all')==='all'?'selected':'' }}>All</option>
                                     <option value="pending" {{ ($filters['status'] ?? '')==='pending'?'selected':'' }}>Pending</option>
+                                    <option value="verify" {{ ($filters['status'] ?? '')==='verify'?'selected':'' }}>Verify</option>
                                     <option value="approved" {{ ($filters['status'] ?? '')==='approved'?'selected':'' }}>Approved</option>
                                     <option value="rejected" {{ ($filters['status'] ?? '')==='rejected'?'selected':'' }}>Rejected</option>
                                 </select>
@@ -194,8 +196,8 @@
                                     <td>RM {{ number_format($app->total_amount, 2) }}</td>
                                     <td>
                                         @php($status = strtolower($app->status ?? 'pending'))
-                                        <span class="status-chip {{ $status==='approved'?'status-approved':($status==='rejected'?'status-rejected':'status-pending') }}">
-                                            @if($status==='approved')<i class="fa-solid fa-circle-check"></i>@elseif($status==='rejected')<i class="fa-solid fa-circle-xmark"></i>@else<i class="fa-regular fa-clock"></i>@endif
+                                        <span class="status-chip {{ $status==='approved'?'status-approved':($status==='rejected'?'status-rejected':($status==='verify'?'status-verify':'status-pending')) }}">
+                                            @if($status==='approved')<i class="fa-solid fa-circle-check"></i>@elseif($status==='rejected')<i class="fa-solid fa-circle-xmark"></i>@elseif($status==='verify')<i class="fa-solid fa-check-circle"></i>@else<i class="fa-regular fa-clock"></i>@endif
                                             {{ ucfirst($status) }}
                                         </span>
                                     </td>
