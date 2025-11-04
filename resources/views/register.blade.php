@@ -225,6 +225,11 @@
                                 <input id="register-password" class="input" type="password" name="password" required>
                                 <span class="icon is-small is-right password-toggle" data-toggle-target="register-password"><i class="fa-regular fa-eye"></i></span>
                             </div>
+                            <div id="password-strength" class="mt-2">
+                                <progress id="password-strength-bar" class="progress is-small" value="0" max="100" style="height:8px"></progress>
+                                <p id="password-strength-text" class="is-size-7" style="margin-top:.25rem; color:#475569">Strength: <span>Too weak</span></p>
+                                <p class="is-size-7" style="margin-top:.25rem; color:#64748b">Use at least 8 characters with letters and numbers.</p>
+                            </div>
                         </div>
                         <div class="field">
                             <label class="label">Confirm Password</label>
@@ -412,6 +417,46 @@
             if(courseSelect && semesterSelect){
                 populateOptions();
                 courseSelect.addEventListener('change', populateOptions);
+            }
+
+            // Password strength indicator
+            const pwdInput = document.getElementById('register-password');
+            const strengthBar = document.getElementById('password-strength-bar');
+            const strengthText = document.getElementById('password-strength-text')?.querySelector('span');
+
+            function evaluateStrength(pwd){
+                let score = 0;
+                if(!pwd) return { score: 0, label: 'Too weak', color: 'is-danger' };
+                const hasLower = /[a-z]/.test(pwd);
+                const hasUpper = /[A-Z]/.test(pwd);
+                const hasNumber = /[0-9]/.test(pwd);
+                const hasSymbol = /[^A-Za-z0-9]/.test(pwd);
+                const lengthScore = Math.min(pwd.length, 12) / 12; // 0..1
+
+                score += hasLower ? 15 : 0;
+                score += hasUpper ? 20 : 0;
+                score += hasNumber ? 25 : 0;
+                score += hasSymbol ? 25 : 0;
+                score += Math.floor(lengthScore * 15);
+                score = Math.min(score, 100);
+
+                if (score < 30) return { score, label: 'Too weak', color: 'is-danger' };
+                if (score < 60) return { score, label: 'Weak', color: 'is-warning' };
+                if (score < 85) return { score, label: 'Good', color: 'is-info' };
+                return { score, label: 'Strong', color: 'is-success' };
+            }
+
+            function updateStrength(){
+                if(!strengthBar || !strengthText) return;
+                const { score, label, color } = evaluateStrength(pwdInput?.value || '');
+                strengthBar.value = score;
+                strengthBar.className = `progress is-small ${color}`;
+                strengthText.textContent = label;
+            }
+
+            if(pwdInput){
+                pwdInput.addEventListener('input', updateStrength);
+                updateStrength();
             }
         });
     </script>
