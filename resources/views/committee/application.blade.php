@@ -62,6 +62,17 @@
         .section-title{color:var(--primary-dark); font-size:1.25rem; font-weight:700; margin-bottom:1rem; padding-bottom:.5rem; border-bottom:2px solid var(--primary)}
         .document-card{background:#f9fafb; border:1px solid #e5e7eb; border-radius:8px; padding:1rem; transition:all 0.2s}
         .document-card:hover{box-shadow:0 2px 8px rgba(0,0,0,.1); transform:translateY(-2px)}
+        /* Ensure tables follow the system theme (light/dark) */
+        .table thead th, .table thead td{background:#f5f5f5; color:var(--text)}
+        .table tbody tr{background:#ffffff; color:var(--text)}
+        @media (prefers-color-scheme: dark){
+            .table thead th, .table thead td{background:#111827; color:#ffffff}
+            .table tbody tr{background:#1f2937; color:#e5e7eb}
+        }
+        /* Force white table style specifically for Approval Details */
+        .approval-details-table thead th,
+        .approval-details-table thead td{background:#ffffff!important; color:var(--text)!important; border-color:#e5e7eb}
+        .approval-details-table tbody tr{background:#ffffff!important; color:var(--text)!important}
     </style>
     @vite(['resources/js/app.js'])
     @stack('head')
@@ -380,21 +391,17 @@
                     <h2 class="section-title">
                         <span class="icon-text">
                             <span class="icon"><i class="fa-solid fa-vote-yea"></i></span>
-                            <span>Voting Status</span>
+                            <span>Approval Status</span>
                         </span>
                     </h2>
                     
                     <div class="content">
                         <div class="info-row">
-                            <div class="info-label">Total Committee Members</div>
-                            <div class="info-value">{{ $totalCommittees ?? 5 }}</div>
-                        </div>
-                        <div class="info-row">
-                            <div class="info-label">Votes Cast</div>
+                            <div class="info-label">Approval Cast</div>
                             <div class="info-value">{{ $totalVotes ?? 0 }} / {{ $totalCommittees ?? 5 }}</div>
                         </div>
                         <div class="info-row">
-                            <div class="info-label">Approved Votes</div>
+                            <div class="info-label">Approved</div>
                             <div class="info-value">
                                 <span class="tag is-success">{{ $approveCount ?? 0 }}</span>
                                 @if(($approveCount ?? 0) >= 3)
@@ -403,14 +410,14 @@
                             </div>
                         </div>
                         <div class="info-row">
-                            <div class="info-label">Rejected Votes</div>
+                            <div class="info-label">Rejected</div>
                             <div class="info-value">
                                 <span class="tag is-danger">{{ $rejectCount ?? 0 }}</span>
                             </div>
                         </div>
                         @if($hasVoted ?? false)
                         <div class="info-row">
-                            <div class="info-label">Your Vote</div>
+                            <div class="info-label">Your Approval</div>
                             <div class="info-value">
                                 @php($vote = $currentVote ?? null)
                                 @if($vote)
@@ -429,7 +436,7 @@
 
                     @if($application->votes && $application->votes->count() > 0)
                     <div class="mt-4">
-                        <h3 class="title is-6 mb-3">Voting Details</h3>
+                        <h3 class="title is-6 mb-3">Approval Details</h3>
                         <div class="table-container">
                             <table class="table is-fullwidth">
                                 <thead>
@@ -471,7 +478,7 @@
                     <h2 class="section-title">
                         <span class="icon-text">
                             <span class="icon"><i class="fa-solid fa-gavel"></i></span>
-                            <span>Cast Your Vote</span>
+                            <span>Cast Your Approval</span>
                         </span>
                     </h2>
                     
@@ -495,7 +502,7 @@
                                 <h3 class="title is-5 mb-4" style="color:#10b981">
                                     <span class="icon-text">
                                         <span class="icon"><i class="fa-solid fa-check-circle"></i></span>
-                                        <span>Vote to Approve</span>
+                                        <span>Approve</span>
                                     </span>
                                 </h3>
                                 
@@ -518,7 +525,7 @@
                                     <div class="control">
                                         <button type="submit" class="button is-success">
                                             <span class="icon"><i class="fa-solid fa-check"></i></span>
-                                            <span>Vote to Approve</span>
+                                            <span>Approve</span>
                                         </button>
                                     </div>
                                 </div>
@@ -532,7 +539,7 @@
                                 <h3 class="title is-5 mb-4" style="color:#f14668">
                                     <span class="icon-text">
                                         <span class="icon"><i class="fa-solid fa-times-circle"></i></span>
-                                        <span>Vote to Reject</span>
+                                        <span>Reject</span>
                                     </span>
                                 </h3>
 
@@ -548,7 +555,7 @@
                                     <div class="control">
                                         <button type="submit" class="button is-danger" onclick="return confirm('Are you sure you want to vote to reject this application?');">
                                             <span class="icon"><i class="fa-solid fa-times"></i></span>
-                                            <span>Vote to Reject</span>
+                                            <span>Reject</span>
                                         </button>
                                     </div>
                                 </div>

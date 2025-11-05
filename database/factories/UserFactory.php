@@ -23,29 +23,29 @@ class UserFactory extends Factory
      */
     public function definition(): array
     {
-        $firstName = fake()->firstName();
-        $lastName = fake()->lastName();
-        $username = strtolower($firstName . $lastName . fake()->numberBetween(1, 999));
+        $firstName = $this->faker->firstName();
+        $lastName = $this->faker->lastName();
+        $username = strtolower($firstName . $lastName . $this->faker->numberBetween(1, 999));
         
         return [
             // Personal Information
             'full_name' => $firstName . ' ' . $lastName,
             'username' => $username,
-            'email' => fake()->unique()->safeEmail(),
-            'bank_name' => fake()->randomElement(['maybank', 'cimb', 'public_bank', 'rhb', 'hong_leong']),
-            'bank_account_number' => fake()->numerify('##########'),
+            'email' => $this->faker->unique()->safeEmail(),
+            'bank_name' => $this->faker->randomElement(['maybank', 'cimb', 'public_bank', 'rhb', 'hong_leong']),
+            'bank_account_number' => $this->faker->numerify('##########'),
             
             // Contact Information
-            'phone_number' => '+60' . fake()->numerify('#########'),
-            'street_address' => fake()->streetAddress(),
-            'city' => fake()->city(),
-            'state' => fake()->randomElement(['selangor', 'kuala_lumpur', 'johor', 'perak', 'penang']),
-            'postal_code' => fake()->numerify('#####'),
+            'phone_number' => '+60' . $this->faker->numerify('#########'),
+            'street_address' => $this->faker->streetAddress(),
+            'city' => $this->faker->city(),
+            'state' => $this->faker->randomElement(['selangor', 'kuala_lumpur', 'johor', 'perak', 'penang']),
+            'postal_code' => $this->faker->numerify('#####'),
             
             // Academic Information
-            'student_id' => 'RCMP' . fake()->unique()->numerify('######'),
-            'course' => fake()->randomElement(['bachelor_medicine', 'diploma_nursing', 'diploma_pharmacy']),
-            'semester' => fake()->numberBetween(1, 8),
+            'student_id' => 'RCMP' . $this->faker->unique()->numerify('######'),
+            'course' => $this->faker->randomElement(['bachelor_medicine', 'diploma_nursing', 'diploma_pharmacy']),
+            'semester' => $this->faker->numberBetween(1, 8),
             
             // Security and Status
             'email_verified_at' => now(),
